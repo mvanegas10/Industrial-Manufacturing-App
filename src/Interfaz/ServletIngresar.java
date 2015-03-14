@@ -7,6 +7,8 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mundo.AplicacionWeb;
+
 public class ServletIngresar extends ServletAbstract{
 
 	@Override
@@ -28,7 +30,7 @@ public class ServletIngresar extends ServletAbstract{
 			
 			try
 			{
-				tipoUsuario = AplicacionWeb.darInstancia().AtenticarAdminstrador(usuario, constrasenia);
+				tipoUsuario = AplicacionWeb.getInstancia().autenticarUsuario(usuario, constrasenia);
 				aceptarIngreso(respuesta);
 			}
 			catch(Exception e)
@@ -48,7 +50,7 @@ public class ServletIngresar extends ServletAbstract{
 		
 	}
 	
-	public void aceptarIngreso(PrintWriter respuesta){
+	public void denegarIngreso(PrintWriter respuesta){
 		
 	}
 }

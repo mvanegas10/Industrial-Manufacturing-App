@@ -67,6 +67,20 @@ public class AplicacionWeb {
 	// METODOS
 	//--------------------------------------------------
 	
+	public void registrarUsuario (String id, String login, String password, String tipo){
+		String[] datos = {id, login, password, tipo};
+		try{
+			crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void ingresarUsuario (String login, String password){
+		
+	}
+	
 	public void registrarProveedor (String id, String direccion, int telefono, String ciudad, String idRepLegal){
 		String[] datos = {id,direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
 		try{

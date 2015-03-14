@@ -6,6 +6,12 @@ public class Usuario {
 	// ATRIBUTOS
 	//--------------------------------------------------
 	
+	public static final String NOMBRE = "usuarios";
+	
+	public static final String[] COLUMNAS = {"id", "tipo", "login", "password"};
+	
+	public static final String[] TIPO = {"String", "String", "String", "String"};
+	
 	private String id;
 	
 	private String tipo;
