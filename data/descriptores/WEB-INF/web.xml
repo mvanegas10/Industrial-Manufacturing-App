@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+                         "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+ <description>Servlets ProdAndes</description>
+ <!-- SERVLETS -->
+ <servlet>
+  <servlet-name>Prueba</servlet-name>
+  <servlet-class>Interfaz.ServletPrueba</servlet-class>
+ </servlet>
+ <!-- MAPPING -->
+ <servlet-mapping>
+  <servlet-name>Prueba</servlet-name>
+  <url-pattern>/prueba.htm</url-pattern>
+ </servlet-mapping>
+ <login-config>
+  <auth-method>BASIC</auth-method>
+ </login-config>
+</web-app>
