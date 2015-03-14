@@ -8,7 +8,7 @@ public class MateriaPrima {
 	// ATRIBUTOS
 	//--------------------------------------------------
 	
-	public static final String NOMBRE = "MATERIAPRIMA";
+	public static final String NOMBRE = "MATERIASPRIMAS";
 	
 	public static final String[] COLUMNAS = {"id","unidadMedida","cantidadInicial"};
 	

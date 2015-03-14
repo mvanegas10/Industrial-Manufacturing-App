@@ -21,6 +21,11 @@ public class Proveedor{
 	
 	public static final String[] TIPORELACIONMATERIAPRIMA = {"String","String","int","int"};
 	
+	public static final String NOMBRERELACIONCOMPONENTE = "ProveedoresComponentes";
+	
+	public static final String[] COLUMNASRELACIONCOMPONENTE = {"id_proveedor","id_componente","volMax","tiempoMax"};
+	
+	public static final String[] TIPORELACIONCOMPONENTE = {"String","String","int","int"};
 	
 	private String id;
 	

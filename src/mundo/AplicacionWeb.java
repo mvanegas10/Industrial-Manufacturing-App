@@ -92,15 +92,27 @@ public class AplicacionWeb {
 		String[] datosSimples = {id,direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
 		try{
 			crud.insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO, datosSimples);
-			for(int i = 0; i < datosProveedorMateriaPrima.size(); i += datosProveedorMateriaPrima.get(0).length){
+			for(int i = 0; i < datosProveedorMateriaPrima.size(); i++){
 				String[] datosCompuestosMateria = datosProveedorMateriaPrima.get(i);
 				String[] datosCompuestosComponente = datosProveedorComponente.get(i);
 				crud.insertarTupla(Proveedor.NOMBRERELACIONMATERIAPRIMA, Proveedor.COLUMNASRELACIONMATERIAPRIMA, Proveedor.TIPORELACIONMATERIAPRIMA, datosCompuestosMateria);
+				crud.insertarTupla(Proveedor.NOMBRERELACIONCOMPONENTE, Proveedor.COLUMNASRELACIONCOMPONENTE, Proveedor.TIPORELACIONCOMPONENTE, datosCompuestosComponente);
 			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public void registrarMateriaPrima (String id, String unidadMedida, int cantidadInicial) {
+		String[] datosSimples = {id, unidadMedida, Integer.toString(cantidadInicial)};
+		try{
+			crud.insertarTupla(MateriaPrima.NOMBRE, MateriaPrima.COLUMNAS, MateriaPrima.TIPO, datosSimples);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+
 	}
 	
 	public ArrayList<Proveedor> darProveedores( ) throws Exception {
@@ -111,7 +123,7 @@ public class AplicacionWeb {
 		
 		for(int i = 0; i < datosProveedores.size();i+=numeroColumnas){
 			
-			ArrayList<String> datosVolumenTiempoMateriaPre = crud.darSubTabla("PROVEEMAXVOLUMENTIEMPOMATERIALES","*","TRUE");
+			ArrayList<String> datosVolumenTiempoMateriaPre = crud.darSubTabla(Proveedor.NOMBRERELACIONMATERIAPRIMA,"id_Materia, volMax, volTiempo","TRUE");
 			List<String[]> datosVolumenTiempoMateria = new ArrayList<String[]>();
 			for(int j = 0; j < datosVolumenTiempoMateriaPre.size();j+=4){
 				datosVolumenTiempoMateria.get(j)[0]=datosVolumenTiempoMateriaPre.get(j);
@@ -120,7 +132,7 @@ public class AplicacionWeb {
 				datosVolumenTiempoMateria.get(j)[3]=datosVolumenTiempoMateriaPre.get(j+3);
 			}
 			
-			ArrayList<String> datosVolumenTiempoComponentePre = crud.darSubTabla("PROVEEMAXVOLUMENTIEMPOCOMPONENTES","*","TRUE");
+			ArrayList<String> datosVolumenTiempoComponentePre = crud.darSubTabla(Proveedor.NOMBRERELACIONCOMPONENTE,"id_Materia, volMax, volTiempo","TRUE");
 			List<String[]> datosVolumenTiempoComponente = new ArrayList<String[]>();
 			for(int j = 0; j < datosVolumenTiempoComponentePre.size();j+=4){
 				datosVolumenTiempoComponente.get(j)[0]=datosVolumenTiempoComponentePre.get(j);
@@ -134,6 +146,18 @@ public class AplicacionWeb {
 		}
 		
 		return proveedores;
+	}
+	
+	public ArrayList<MateriaPrima> darMateriasPrimas( ) throws Exception {
+		ArrayList<MateriaPrima> materiasPrimas = new ArrayList<MateriaPrima>();
+		int numeroColumnas = MateriaPrima.COLUMNAS.length;
+		ArrayList<String> datosMateriasPrimas = crud.darTuplas(MateriaPrima.NOMBRE);
+		
+		for(int i = 0; i < datosMateriasPrimas.size();i+=numeroColumnas){
+			MateriaPrima materiaPrima = new MateriaPrima(datosMateriasPrimas.get(i),datosMateriasPrimas.get(i+1),Integer.parseInt(datosMateriasPrimas.get(i+2)));
+			materiasPrimas.add(materiaPrima);
+		}
+		return (materiasPrimas);
 	}
 	
 	private ArrayList<MateriaPrima> darMateriasPrimasProveedor(String idProveedor) throws Exception{
