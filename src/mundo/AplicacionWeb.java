@@ -8,7 +8,7 @@ import Interfaz.Principal;
 public class AplicacionWeb {
 	
 	//--------------------------------------------------
-	// ATRIBUTOS
+	// ATRIBUTOS---xxx
 	//--------------------------------------------------
 	
 	private static CRUD crud;
