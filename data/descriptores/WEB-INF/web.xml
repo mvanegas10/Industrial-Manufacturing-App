@@ -5,13 +5,13 @@
  <description>Servlets ProdAndes</description>
  <!-- SERVLETS -->
  <servlet>
-  <servlet-name>Prueba</servlet-name>
-  <servlet-class>Interfaz.ServletPrueba</servlet-class>
+  <servlet-name>Ingresar</servlet-name>
+  <servlet-class>Interfaz.ServletIngresar</servlet-class>
  </servlet>
  <!-- MAPPING -->
  <servlet-mapping>
-  <servlet-name>Prueba</servlet-name>
-  <url-pattern>/prueba.htm</url-pattern>
+  <servlet-name>Ingresar</servlet-name>
+  <url-pattern>/ingresar.htm</url-pattern>
  </servlet-mapping>
  <login-config>
   <auth-method>BASIC</auth-method>
