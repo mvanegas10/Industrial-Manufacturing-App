@@ -181,7 +181,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s3.execute( "CREATE TABLE usuarios (id varchar(32), tipo varchar(32), login varchar(32), precio int, disponibles int, PRIMARY KEY (id))" );
+				s3.execute( "CREATE TABLE usuarios (login varchar(32), tipo varchar(32), precio int, disponibles int, PRIMARY KEY (login))" );
 				System.out.println("Se cre� la tabla usuarios");
 			}
 			else
@@ -257,6 +257,53 @@ public class ConexionDAO
 				System.out.println("La tabla componentes ya existe");
 			s6.close();
 			crearTabla = false;
+			
+			Statement s7 = conexion.createStatement( );
+			try
+			{
+				// Verificar si ya existe la tabla
+				s7.executeQuery( "SELECT * FROM ProveedoresMateriaPrima" );
+			}
+			catch( SQLException se )
+			{
+				// La excepci�n se lanza si la tabla no existe
+				crearTabla = true;
+			}
+
+			// Se crea una nueva tabla vac�a
+			if( crearTabla )
+			{
+				s7.execute( "CREATE TABLE ProveedoresMateriaPrima (id_proveedor varchar(32), id_materiaPrima int, PRIMARY KEY (id))" );
+				System.out.println("Se cre� la tabla componentes");
+			}
+			else
+				System.out.println("La tabla componentes ya existe");
+			s7.close();
+			crearTabla = false;
+			
+			Statement s8 = conexion.createStatement( );
+			try
+			{
+				// Verificar si ya existe la tabla
+				s7.executeQuery( "SELECT * FROM ProveedoresMateriaPrima" );
+			}
+			catch( SQLException se )
+			{
+				// La excepci�n se lanza si la tabla no existe
+				crearTabla = true;
+			}
+
+			// Se crea una nueva tabla vac�a
+			if( crearTabla )
+			{
+				s7.execute( "CREATE TABLE ProveedoresMateriaPrima (id_proveedor varchar(32), id_materiaPrima int, PRIMARY KEY (id))" );
+				System.out.println("Se cre� la tabla componentes");
+			}
+			else
+				System.out.println("La tabla componentes ya existe");
+			s7.close();
+			crearTabla = false;
+			
 		}
 		catch (Exception e)
 		{
