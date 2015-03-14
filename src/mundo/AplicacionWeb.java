@@ -88,12 +88,14 @@ public class AplicacionWeb {
 		return "";
 	}
 	
-	public void registrarProveedor (String id, String direccion, int telefono, String ciudad, String idRepLegal, List<String[]> datosProveedorMateriaPrima, List<String[]> datosProveedorComponente, ArrayList<String> datosMateriasPrimas, ArrayList<String> datosComponentes){
-		String[] datos = {id,direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
+	public void registrarProveedor (String id, String direccion, int telefono, String ciudad, String idRepLegal, List<String[]> datosProveedorMateriaPrima, List<String[]> datosProveedorComponente) {
+		String[] datosSimples = {id,direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
 		try{
-			crud.insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO, datos);
+			crud.insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO, datosSimples);
 			for(int i = 0; i < datosProveedorMateriaPrima.size(); i += datosProveedorMateriaPrima.get(0).length){
-				crud.insertarTupla(Proveedor.NOMBRERELACIONMATERIAPRIMA, Proveedor.COLUMNASRELACIONMATERIAPRIMA, Proveedor.TIPORELACIONMATERIAPRIMA, datos);
+				String[] datosCompuestosMateria = datosProveedorMateriaPrima.get(i);
+				String[] datosCompuestosComponente = datosProveedorComponente.get(i);
+				crud.insertarTupla(Proveedor.NOMBRERELACIONMATERIAPRIMA, Proveedor.COLUMNASRELACIONMATERIAPRIMA, Proveedor.TIPORELACIONMATERIAPRIMA, datosCompuestosMateria);
 			}
 		}
 		catch(Exception e){

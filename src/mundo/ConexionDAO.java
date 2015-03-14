@@ -273,7 +273,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s7.execute( "CREATE TABLE ProveedoresMateriaPrima (id_proveedor varchar(32), id_materiaPrima varchar(32), PRIMARY KEY (id_proveedor,id_materiaPrima))" );
+				s7.execute( "CREATE TABLE ProveedoresMateriaPrima (id_proveedor varchar(32), id_materiaPrima varchar(32), volMax int, tiempoMax int, PRIMARY KEY (id_proveedor,id_materiaPrima))" );
 				System.out.println("Se cre� la tabla ProveedoresMateriaPrima");
 			}
 			else
@@ -296,7 +296,11 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
+<<<<<<< Updated upstream
 				s8.execute( "CREATE TABLE ProveedoresComponentes (id_proveedor varchar(32), id_componente varchar(32), PRIMARY KEY (id_proveedor,id_componente)))" );
+=======
+				s8.execute( "CREATE TABLE ProveedoresComponentes (id_proveedor varchar(32), id_componente varchar(32), volMax int, tiempoMax int, PRIMARY KEY (id_proveedor,id_componente)))" );
+>>>>>>> Stashed changes
 				System.out.println("Se cre� la tabla ProveedoresComponentes");
 			}
 			else
