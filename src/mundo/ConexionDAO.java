@@ -263,8 +263,4 @@ public class ConexionDAO
 			e.printStackTrace();
 		}
 	}
-	
-	public void insertarDato () throws Exception{
-		
-	}
 }

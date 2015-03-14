@@ -105,7 +105,7 @@ public class CRUD {
 		return resultado;
 	}
 	
-	public ArrayList<String> darSubTabla (String tabla, String listaColumnas, String condicion){
+	public ArrayList<String> darSubTabla (String tabla, String listaColumnas, String condicion) throws Exception{
 		ArrayList<String> resultado = new ArrayList<String>();
 		try
 		{
@@ -121,8 +121,9 @@ public class CRUD {
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			throw new Exception("No se encntró el registro en la tabla " + tabla);
 		}
 		return resultado;
 	}
+
 }

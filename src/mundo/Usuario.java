@@ -8,15 +8,13 @@ public class Usuario {
 	
 	public static final String NOMBRE = "usuarios";
 	
-	public static final String[] COLUMNAS = {"id", "tipo", "login", "password"};
+	public static final String[] COLUMNAS = {"login", "tipo", "password"};
 	
-	public static final String[] TIPO = {"String", "String", "String", "String"};
-	
-	private String id;
-	
-	private String tipo;
+	public static final String[] TIPO = {"String", "String", "String"};
 	
 	private String login;
+	
+	private String tipo;
 	
 	private String password;
 	
@@ -24,9 +22,8 @@ public class Usuario {
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
-	public Usuario(String id, String tipo, String login, String password) {
+	public Usuario(String login, String tipo, String password) {
 		super();
-		this.id = id;
 		this.tipo = tipo;
 		this.login = login;
 		this.password = password;
@@ -36,28 +33,20 @@ public class Usuario {
 	// SETTERS AND GETTERS
 	//--------------------------------------------------
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
 	public String getLogin() {
 		return login;
 	}
 
 	public void setLogin(String login) {
 		this.login = login;
+	}
+	
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 
 	public String getPassword() {

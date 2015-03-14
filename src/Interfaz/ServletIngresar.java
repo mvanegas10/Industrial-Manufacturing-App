@@ -1,6 +1,7 @@
 package Interfaz;
 
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Iterator;
 
@@ -30,7 +31,7 @@ public class ServletIngresar extends ServletAbstract{
 			
 			try
 			{
-				tipoUsuario = AplicacionWeb.getInstancia().autenticarUsuario(usuario, constrasenia);
+				tipoUsuario = AplicacionWeb.getInstancia().ingresarUsuario(usuario, constrasenia);
 				aceptarIngreso(respuesta);
 			}
 			catch(Exception e)

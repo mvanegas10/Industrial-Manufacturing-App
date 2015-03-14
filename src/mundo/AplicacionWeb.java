@@ -17,6 +17,8 @@ public class AplicacionWeb {
 	
 	private static AplicacionWeb instancia ;
 	
+	private int contadorId;
+	
 	//--------------------------------------------------
 	// CONSTRUCTOR E INSTANCIACION
 	//--------------------------------------------------
@@ -33,6 +35,7 @@ public class AplicacionWeb {
 		conexion.iniciarConexion();
 		conexion.crearTablas();
 		crud = new CRUD(conexion);
+		contadorId = 0;
 	}
 	
 	//--------------------------------------------------
@@ -77,12 +80,15 @@ public class AplicacionWeb {
 		}
 	}
 	
-	public void ingresarUsuario (String login, String password){
-		
+	public String ingresarUsuario (String login, String password) throws Exception{
+		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "login, password", login + ", " + password);
+		if ( usuario.get(0) != null )
+			return usuario.get(0);
+		return "";
 	}
 	
-	public void registrarProveedor (String id, String direccion, int telefono, String ciudad, String idRepLegal){
-		String[] datos = {id,direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
+	public void registrarProveedor (String direccion, int telefono, String ciudad, String idRepLegal){
+		String[] datos = {Integer.toString(contadorId++),direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
 		try{
 			crud.insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO, datos);
 		}
@@ -91,7 +97,7 @@ public class AplicacionWeb {
 		}
 	}
 	
-	public ArrayList<Proveedor> darProveedores( ) {
+	public ArrayList<Proveedor> darProveedores( ) throws Exception {
 		ArrayList<Proveedor> proveedores = new ArrayList<Proveedor>();
 		int numeroColumnas = Proveedor.COLUMNAS.length;
 		
@@ -124,7 +130,7 @@ public class AplicacionWeb {
 		return proveedores;
 	}
 	
-	private ArrayList<MateriaPrima> darMateriasPrimasProveedor(String idProveedor) {
+	private ArrayList<MateriaPrima> darMateriasPrimasProveedor(String idProveedor) throws Exception{
 		ArrayList<String> materiasPrimasPre = crud.darSubTabla("PROOVEDORESMATERIAS", "*", "id_proveedor=idProveedor");
 		ArrayList<MateriaPrima> materiasPrimas = new ArrayList<MateriaPrima>();
 		for(int i = 0; i < materiasPrimasPre.size();i+=MateriaPrima.COLUMNAS.length){
@@ -134,7 +140,7 @@ public class AplicacionWeb {
 		return materiasPrimas;
 	}
 
-	private ArrayList<Componente> darComponentesProveedor(String idProveedor) {
+	private ArrayList<Componente> darComponentesProveedor(String idProveedor) throws Exception {
 		ArrayList<String> componentesPre = crud.darSubTabla("PROOVEDORESCOMPONENTES", "*", "id_proveedor=idProveedor");
 		ArrayList<Componente> componentes = new ArrayList<Componente>();
 		for(int i = 0; i < componentesPre.size();i+=Componente.COLUMNAS.length){
