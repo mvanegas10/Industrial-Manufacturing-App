@@ -57,7 +57,7 @@ public class ServletIngresar extends ServletAbstract{
 		respuesta.write( "<div></div>" );
         respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
         respuesta.write( "<tr>" );
-        respuesta.write( "<a href=\"registrarProveedor\"><button>Registrar Proveedor</button></a>" );
+        respuesta.write( "<a href=\"registrarProveedor.htm\"><button>Registrar Proveedor</button></a>" );
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
 		

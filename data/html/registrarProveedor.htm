@@ -3,7 +3,7 @@
 		<title>ProdAndes - Registro</title>
 	</head>
 	<body bgcolor="#bdc3c7">
-		<form method="POST" action="ingresar.htm">
+		<form method="POST" action="registroProveedor.htm">
 			<table bgcolor="#ecf0f1" width=100%>
 				<tr>
 					<td><FONT face="arial" size=10 color=#34495e>ProdAndes</FONT></td>
@@ -24,20 +24,7 @@
 					<td><input type="text" name="direccion" size="33" class="normal"></td>					
 					<td><input type="text" name="telefono" size="33" class="normal"></td>
 					<td><input type="text" name="idRepLegal" size="33" class="normal"></td>
-					<td>						<select>
-						  <option name="tipo" value="admin">Administrador</option>
-						  <option name="tipo" value="natural">Persona Natural</option>
-						  <option name="tipo" value="juridica">Persona Jurídica</option>
-						</select></td>
-				</tr>
-				<tr>
-					<td>Ingrese el perfil con el que desea registrarse
-						<select>
-						  <option name="tipo" value="admin">Administrador</option>
-						  <option name="tipo" value="natural">Persona Natural</option>
-						  <option name="tipo" value="juridica">Persona Jurídica</option>
-						</select>
-					</td>
+					<td><form method="POST" action="registroMateriasPrima.htm"><input type="submit" value="Registrar" name="registrar" class="normal"></form></td>
 				</tr>
 			</table>
 			<p align=center>
