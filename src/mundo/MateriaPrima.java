@@ -8,23 +8,26 @@ public class MateriaPrima {
 	// ATRIBUTOS
 	//--------------------------------------------------
 	
+	public static final String NOMBRE = "MATERIAPRIMA";
+	
+	public static final String[] COLUMNAS = {"id","unidadMedida","cantidadInicial"};
+	
+	public static final String[] TIPO = {"String","String","int"};
+	
 	private String id;
 	
 	private String unidadMedidad;
 	
 	private int cantidadInicial;
 	
-	private ArrayList<Proveedor> proveedores;
-	
 	//--------------------------------------------------
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
-	public MateriaPrima(String pId, String pUnidadMedidad, int pCantidadInicial, ArrayList<Proveedor> pProveedores) {
+	public MateriaPrima(String pId, String pUnidadMedidad, int pCantidadInicial) {
 		this.id = pId;
 		this.unidadMedidad = pUnidadMedidad;
 		this.cantidadInicial = pCantidadInicial;
-		this.proveedores = pProveedores;
 	}
 	
 	//--------------------------------------------------
@@ -53,14 +56,6 @@ public class MateriaPrima {
 
 	public void setCantidadInicial(int cantidadInicial) {
 		this.cantidadInicial = cantidadInicial;
-	}
-
-	public ArrayList<Proveedor> getProveedores() {
-		return proveedores;
-	}
-
-	public void setProveedores(ArrayList<Proveedor> proveedores) {
-		this.proveedores = proveedores;
 	}
 
 }

@@ -8,20 +8,23 @@ public class Componente {
 	// ATRIBUTOS
 	//--------------------------------------------------
 	
+	public static final String NOMBRE = "COMPONENTE";
+	
+	public static final String[] COLUMNAS = {"id","cantidadInicial"};
+	
+	public static final String[] TIPO = {"String","int"};
+	
 	private String id;
 	
 	private int cantidadInicial;
-	
-	private ArrayList<Proveedor> proveedores;
 	
 	//--------------------------------------------------
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
-	public Componente(String pId, int pCantidadInicial, ArrayList<Proveedor> pProveedores) {
+	public Componente(String pId, int pCantidadInicial) {
 		this.id = pId;
 		this.cantidadInicial = pCantidadInicial;
-		this.proveedores = pProveedores;
 	}
 	
 	//--------------------------------------------------
@@ -42,14 +45,6 @@ public class Componente {
 
 	public void setCantidadInicial(int cantidadInicial) {
 		this.cantidadInicial = cantidadInicial;
-	}
-
-	public ArrayList<Proveedor> getProveedores() {
-		return proveedores;
-	}
-
-	public void setProveedores(ArrayList<Proveedor> proveedores) {
-		this.proveedores = proveedores;
 	}
 	
 }

@@ -105,12 +105,12 @@ public class CRUD {
 		return resultado;
 	}
 	
-	public ArrayList<String> darColumnaTabla (String tabla, String nombreColumna){
+	public ArrayList<String> darSubTabla (String tabla, String listaColumnas, String condicion){
 		ArrayList<String> resultado = new ArrayList<String>();
 		try
 		{
 			Statement s = conexion.createStatement();
-			ResultSet rS = s.executeQuery ("SELECT " + nombreColumna + " FROM " + tabla);
+			ResultSet rS = s.executeQuery ("SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion);
 			int i=1;
 			while (rS.next()){
 				resultado.add(rS.getString(i));
