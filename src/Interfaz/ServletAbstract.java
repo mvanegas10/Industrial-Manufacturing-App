@@ -12,7 +12,7 @@ public abstract class ServletAbstract extends HttpServlet{
 
     /**
      * Maneja un pedido GET de un cliente
-     * @param request Pedido del cliente
+     * @param request Pedido del cliente   hhh
      * @param response Respuesta
      */
     protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
