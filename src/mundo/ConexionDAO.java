@@ -304,6 +304,29 @@ public class ConexionDAO
 			s8.close();
 			crearTabla = false;
 			
+			Statement s9 = conexion.createStatement( );
+			try
+			{
+				// Verificar si ya existe la tabla
+				s8.executeQuery( "SELECT * FROM ProveedoresComponentes" );
+			}
+			catch( SQLException se )
+			{
+				// La excepci�n se lanza si la tabla no existe
+				crearTabla = true;
+			}
+
+			// Se crea una nueva tabla vac�a
+			if( crearTabla )
+			{
+				s8.execute( "CREATE TABLE ProveedoresComponentes (id_proveedor varchar(32), id_componente varchar(32), PRIMARY KEY (id_proveedor,id_componente)))" );
+				System.out.println("Se cre� la tabla ProveedoresComponentes");
+			}
+			else
+				System.out.println("La tabla ProveedoresComponentes ya existe");
+			s8.close();
+			crearTabla = false;
+			
 		}
 		catch (Exception e)
 		{
