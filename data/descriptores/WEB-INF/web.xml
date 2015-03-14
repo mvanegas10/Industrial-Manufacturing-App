@@ -8,10 +8,18 @@
   <servlet-name>Ingresar</servlet-name>
   <servlet-class>Interfaz.ServletIngresar</servlet-class>
  </servlet>
+ <servlet>
+  <servlet-name>RegistrarProveedor</servlet-name>
+  <servlet-class>Interfaz.ServletRegistrarProveedor</servlet-class>
+ </servlet>
  <!-- MAPPING -->
  <servlet-mapping>
   <servlet-name>Ingresar</servlet-name>
   <url-pattern>/ingresar.htm</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>RegistrarProveedor</servlet-name>
+  <url-pattern>/registrarProveedor.htm</url-pattern>
  </servlet-mapping>
  <login-config>
   <auth-method>BASIC</auth-method>

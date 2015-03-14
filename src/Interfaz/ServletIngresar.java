@@ -32,7 +32,7 @@ public class ServletIngresar extends ServletAbstract{
 			try
 			{
 				tipoUsuario = AplicacionWeb.getInstancia().ingresarUsuario(usuario, constrasenia);
-				aceptarIngreso(respuesta);
+				aceptarIngreso(respuesta, usuario, tipo);
 			}
 			catch(Exception e)
 			{
@@ -47,11 +47,29 @@ public class ServletIngresar extends ServletAbstract{
 		
 	}
 
-	public void aceptarIngreso(PrintWriter respuesta){
+	public void aceptarIngreso(PrintWriter respuesta, String login, String tipo){
+		
+        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+        respuesta.write( "<tr>" );
+        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>" + tipo.toUpperCase() + ": " + login + "</FONT></td>" );
+        respuesta.write( "</tr>" );
+        respuesta.write( "</table>" );
+		respuesta.write( "<div></div>" );
+        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+        respuesta.write( "<tr>" );
+        respuesta.write( "<a href=\"registrarProveedor\"><button>Registrar Proveedor</button></a>" );
+        respuesta.write( "</tr>" );
+        respuesta.write( "</table>" );
 		
 	}
 	
 	public void denegarIngreso(PrintWriter respuesta){
+		
+        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+        respuesta.write( "<tr>" );
+        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Error: Usuario o contraseña incorrectos</FONT></td>" );
+        respuesta.write( "</tr>" );
+        respuesta.write( "</table>" );
 		
 	}
 }

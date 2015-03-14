@@ -74,7 +74,7 @@ public abstract class ServletAbstract extends HttpServlet{
         respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>" + darTituloPagina( request ) + "</FONT></td>" );
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
-        respuesta.write( "<table align= center bgcolor=\"#ecf0f1\" width=\"30%\">" );
+		respuesta.write( "<div></div>" );
     }
 
     /**
