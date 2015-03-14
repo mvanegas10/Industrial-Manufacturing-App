@@ -15,6 +15,13 @@ public class Proveedor{
 	
 	public static final String[] TIPO = {"String","String","int","String","String"};
 	
+	public static final String NOMBRERELACIONMATERIAPRIMA = "ProveedoresMateriaPrima";
+	
+	public static final String[] COLUMNASRELACIONMATERIAPRIMA = {"id_proveedor","id_materiaPrima"};
+	
+	public static final String[] TIPORELACIONMATERIAPRIMA = {"String","String"};
+	
+	
 	private String id;
 	
 	private String direccion;

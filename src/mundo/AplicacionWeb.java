@@ -10,7 +10,7 @@ public class AplicacionWeb {
 	//--------------------------------------------------
 	// ATRIBUTOS
 	//--------------------------------------------------
-	
+		
 	private static CRUD crud;
 	
 	private static ConexionDAO conexion;
@@ -18,6 +18,7 @@ public class AplicacionWeb {
 	private static AplicacionWeb instancia ;
 	
 	private int contadorId;
+	
 	
 	//--------------------------------------------------
 	// CONSTRUCTOR E INSTANCIACION
@@ -87,10 +88,13 @@ public class AplicacionWeb {
 		return "";
 	}
 	
-	public void registrarProveedor (String direccion, int telefono, String ciudad, String idRepLegal){
-		String[] datos = {Integer.toString(contadorId++),direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
+	public void registrarProveedor (String id, String direccion, int telefono, String ciudad, String idRepLegal, List<String[]> datosProveedorMateriaPrima, List<String[]> datosProveedorComponente, ArrayList<String> datosMateriasPrimas, ArrayList<String> datosComponentes){
+		String[] datos = {id,direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
 		try{
 			crud.insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO, datos);
+			for(int i = 0; i < datosProveedorMateriaPrima.size(); i += datosProveedorMateriaPrima.get(0).length){
+				crud.insertarTupla(Proveedor.NOMBRERELACIONMATERIAPRIMA, Proveedor.COLUMNASRELACIONMATERIAPRIMA, Proveedor.TIPORELACIONMATERIAPRIMA, datos);
+			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
