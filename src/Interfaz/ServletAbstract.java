@@ -12,7 +12,7 @@ public abstract class ServletAbstract extends HttpServlet{
 
     /**
      * Maneja un pedido GET de un cliente
-     * @param request Pedido del cliente   hhh
+     * @param request Pedido del cliente
      * @param response Respuesta
      */
     protected void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException
@@ -65,25 +65,16 @@ public abstract class ServletAbstract extends HttpServlet{
         // Imprime el header
         respuesta.write( "<html>" );
         respuesta.write( "<head>" );
-        respuesta.write( " <form id=\"ddlogin\" action=\"/login.forum\" method=\"post\">" );
-        respuesta.write( " <fieldset>" );
-        respuesta.write( " <dl>" );
-        respuesta.write( " <dt><label for=\"username\">Username:</label></dt>" );
-        respuesta.write( " <dd><input type=\"text\" tabindex=\"1\" name=\"username\" id=\"username\" size=\"20\" maxlength=\"40\" value=\"\" class=\"inputbox\" /></dd>" );
-        respuesta.write( " </dl>" );
-        respuesta.write( " <dl>" );
-        respuesta.write( " <dt><label for=\"password\">Password:</label></dt>" );
-        respuesta.write( " <dd><input type=\"password\" tabindex=\"2\" id=\"password\" name=\"password\" size=\"20\" maxlength=\"25\" class=\"inputbox\" /></dd>" );
-        respuesta.write( " </dl>" );
-        respuesta.write( " <dl>" );
-        respuesta.write( " <dd><label for=\"autologin\"><input type=\"checkbox\" name=\"autologin\" id=\"autologin\" tabindex=\"4\" class=\"checkbox\" checked=\"checked\" /> Remember me</label></dd>" );
-        respuesta.write( " </dl>" );
-        respuesta.write( " <dl>" );
-        respuesta.write( " <dd><input type=\"submit\" name=\"login\" tabindex=\"6\" value=\"Log In\" class=\"button2\" /></dd>" );
-        respuesta.write( " </dl>" );
-        respuesta.write( " </fieldset>" );
-        respuesta.write( " </form>" );
+        respuesta.write( "<title>ProdAndes - " + darTituloPagina( request ) + "</title>" );
         respuesta.write( "</head>" );
+        respuesta.write( "<body bgcolor=\"#bdc3c7\">" );
+        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=100%>" );
+        respuesta.write( "<tr>" );
+        respuesta.write( "<td><FONT face=\"arial\" size=10 color=#34495e>ProdAndes</FONT></td>" );
+        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>" + darTituloPagina( request ) + "</FONT></td>" );
+        respuesta.write( "</tr>" );
+        respuesta.write( "</table>" );
+        respuesta.write( "<table align= center bgcolor=\"#ecf0f1\" width=\"30%\">" );
     }
 
     /**
@@ -99,6 +90,8 @@ public abstract class ServletAbstract extends HttpServlet{
         //
         // Imprime el footer
 
+        respuesta.write( "</table>" );
+        respuesta.write( "</body>" );
         respuesta.write( "</html>" );
        
     }
@@ -157,13 +150,6 @@ public abstract class ServletAbstract extends HttpServlet{
      * @return Titulo de la pagina para el Header
      */
     public abstract String darTituloPagina( HttpServletRequest request );
-
-    /**
-     * Devuelve el nombre de la imagen para el titulo de la pagina en el Header
-     * @param request Pedido del cliente
-     * @return Nombre de la imagen para el titulo de la pagina en el Header
-     */
-    public abstract String darImagenTitulo( HttpServletRequest request );
 
     /**
      * Escribe el contenido de la pagina
