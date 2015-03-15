@@ -71,6 +71,10 @@ public class AplicacionWeb {
 	// METODOS
 	//--------------------------------------------------
 	
+	public void cargarTablas(){
+		
+	}
+	
 	public int darContadorId(){
 		return contadorId++;
 	}
