@@ -9,6 +9,10 @@
   <servlet-class>Interfaz.ServletIngresar</servlet-class>
  </servlet>
  <servlet>
+  <servlet-name>Registro</servlet-name>
+  <servlet-class>Interfaz.ServletRegistrar</servlet-class>
+ </servlet>
+ <servlet>
   <servlet-name>RegistroMateriaPrima</servlet-name>
   <servlet-class>Interfaz.ServletRegistrarMateriaPrima</servlet-class>
  </servlet>
@@ -16,6 +20,10 @@
  <servlet-mapping>
   <servlet-name>Ingreso</servlet-name>
   <url-pattern>/ingreso.htm</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>Registro</servlet-name>
+  <url-pattern>/registro.htm</url-pattern>
  </servlet-mapping>
  <servlet-mapping>
   <servlet-name>RegistroMateriaPrima</servlet-name>
