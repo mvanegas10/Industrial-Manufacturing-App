@@ -36,7 +36,7 @@ public class AplicacionWeb {
 		conexion.iniciarConexion();
 		conexion.crearTablas();
 		crud = new CRUD(conexion);
-		contadorId = 0;
+		contadorId = 1000;
 	}
 	
 	//--------------------------------------------------
