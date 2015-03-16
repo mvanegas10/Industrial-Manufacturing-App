@@ -8,7 +8,7 @@ public class Usuario {
 	
 	public static final String NOMBRE = "usuarios";
 	
-	public static final String[] COLUMNAS = {"login", "tipo", "password"};
+	public static final String[] COLUMNAS = {"login", "password", "tipo"};
 	
 	public static final String[] TIPO = {"String", "String", "String"};
 	

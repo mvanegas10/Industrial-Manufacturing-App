@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sun.security.util.Password;
 import mundo.AplicacionWeb;
 
 public class ServletRegistrar extends ServletAbstract{
@@ -23,13 +24,13 @@ public class ServletRegistrar extends ServletAbstract{
 			PrintWriter respuesta = response.getWriter( );
 				
 			String usuario = request.getParameter("usuario");
-			String constrasenia = request.getParameter("contrasenia");
+			String contrasenia = request.getParameter("contrasenia");
 			String tipo = request.getParameter("tipo");
 			String tipoUsuario;
 			
 			try
 			{
-				AplicacionWeb.getInstancia().registrarUsuario(Integer.toString(AplicacionWeb.darInstancia().darContadorId()), usuario, constrasenia, tipo);
+				AplicacionWeb.getInstancia().registrarUsuario(usuario, contrasenia, tipo);
 				aceptarIngreso(respuesta, usuario, tipo);
 			}
 			catch(Exception e)
@@ -47,7 +48,7 @@ public class ServletRegistrar extends ServletAbstract{
 
 	public void aceptarIngreso(PrintWriter respuesta, String login, String tipo){
 		
-		if (tipo == "admin")
+		if (tipo.equals("admin"))
 		{
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );

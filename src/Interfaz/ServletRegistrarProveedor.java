@@ -31,7 +31,7 @@ public class ServletRegistrarProveedor extends ServletAbstract{
 		
 		try
 		{
-			String idProveedor = Integer.toString( AplicacionWeb.darInstancia().darContadorId());
+			String idProveedor = Integer.toString( AplicacionWeb.getInstancia().darContadorId());
 			for (String id : materiasPrimas) {
 				String[] datos = {idProveedor, id};
 				datosProveedorMateriaPrima.add(datos);

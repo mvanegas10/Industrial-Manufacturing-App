@@ -25,7 +25,7 @@ public class AplicacionWeb {
 	// CONSTRUCTOR E INSTANCIACION
 	//--------------------------------------------------
 
-	public static AplicacionWeb darInstancia() throws Exception{
+	public static AplicacionWeb getInstancia() {		
 		if(instancia == null){
 			instancia = new AplicacionWeb(); 
 		}
@@ -60,10 +60,6 @@ public class AplicacionWeb {
 		AplicacionWeb.conexion = conexion;
 	}
 
-	public static AplicacionWeb getInstancia() {
-		return instancia;
-	}
-
 	public static void setInstancia(AplicacionWeb instancia) {
 		AplicacionWeb.instancia = instancia;
 	}
@@ -80,8 +76,8 @@ public class AplicacionWeb {
 		return contadorId++;
 	}
 	
-	public void registrarUsuario (String id, String login, String password, String tipo){
-		String[] datos = {id, login, password, tipo};
+	public void registrarUsuario (String login, String password, String tipo){
+		String[] datos = {login, password, tipo};
 		try{
 			crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
 		}
@@ -217,6 +213,11 @@ public class AplicacionWeb {
 			componentes.add(componente);
 		}
 		return componentes;
+	}
+	
+	public static void main(String[] args) {
+		AplicacionWeb app = getInstancia();
+		
 	}
 
 }

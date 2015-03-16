@@ -28,7 +28,7 @@ public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 		
 		try
 		{
-			ArrayList<MateriaPrima> materiasPrima = AplicacionWeb.darInstancia().darMateriasPrimas();
+			ArrayList<MateriaPrima> materiasPrima = AplicacionWeb.getInstancia().darMateriasPrimas();
 			hayMateriasPrima(respuesta, materiasPrima, ciudad, direccion, telefono, idRepLegal);;
 		}
 		catch(Exception e)
