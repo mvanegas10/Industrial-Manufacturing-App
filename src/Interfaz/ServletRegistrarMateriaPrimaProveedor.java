@@ -60,7 +60,7 @@ public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 		respuesta.write( "width: 40px;" );
 		respuesta.write( "text-align: center;" );
 		respuesta.write( "}</style>" );
-		respuesta.write( "<section name=\"materiasPrimas\" class=\"container\">" );
+		respuesta.write( "<section align=\"center\" name=\"materiasPrimas\" class=\"container\">" );
 		respuesta.write( " <div>" );
 		respuesta.write( " <select id=\"leftValues\" size=\"5\" multiple></select>" );
 		respuesta.write( " </div>" );

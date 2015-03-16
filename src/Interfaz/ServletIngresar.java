@@ -51,7 +51,7 @@ public class ServletIngresar extends ServletAbstract{
 		
 		if (tipo == "admin")
 		{
-	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>" + tipo.toUpperCase() + ": " + login + "</FONT></td>" );
 	        respuesta.write( "</tr>" );

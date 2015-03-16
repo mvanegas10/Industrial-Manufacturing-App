@@ -50,18 +50,20 @@ public class ServletRegistrar extends ServletAbstract{
 		
 		if (tipo.equals("admin"))
 		{
-	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>" + tipo.toUpperCase() + ": " + login + "</FONT></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 			respuesta.write( "<div></div>" );
-	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><input type=\"submit\" value=\"Registrar Proveedor\" name=\"registrar\" class=\"normal\"></form></td>" );
+	        respuesta.write( "<td>Registrar Proveedor</td>" );
+	        respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><input type=\"submit\" value=\"Registrar\" name=\"registrar\" class=\"normal\"></form></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write(" <td><form method=\"POST\" action=\"registroLlegadaMaterial.htm\">Registrar Llegada de Material: ");
+	        respuesta.write( "<td>Registrar Llegada de Material</td>" );
+	        respuesta.write(" <td><form method=\"POST\" action=\"registroLlegadaMaterial.htm>");
 	        respuesta.write(" <select size=\"1\" name=\"llegadaMaterial\" class=\"normal\"> ");
 	        respuesta.write(" <option value=\"materiaPrima\">Materia Prima</option> ");
 	        respuesta.write(" <option value=\"componente\">Componente</option> ");

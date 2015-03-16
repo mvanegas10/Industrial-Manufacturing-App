@@ -27,7 +27,7 @@ public class ServletRegistrarLlegadaMaterial extends ServletAbstract{
 			if (llegadaMaterial.equals("materiaPrima"))
 			{
 				respuesta.write( " <form method=\"POST\" action=\"registroLlegadaMaterial.htm\">" );
-				respuesta.write( " <table align= center bgcolor=\"#ecf0f1\" width=\"80%\">" );
+				respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
 				respuesta.write( " <tr>" );
 				respuesta.write( " <td>Nombre</td>" );
 				respuesta.write( " <td>Unidad de Medida</td>" );
