@@ -27,13 +27,6 @@ public class ServletRegistrarLlegadaMaterial extends ServletAbstract{
 			if (llegadaMaterial.equals("materiaPrima"))
 			{
 				respuesta.write( " <form method=\"POST\" action=\"registroLlegadaMaterial.htm\">" );
-				respuesta.write( " <table bgcolor=\"#ecf0f1\" width=100%>" );
-				respuesta.write( " <tr>" );
-				respuesta.write( " <td><FONT face=\"arial\" size=10 color=#34495e>ProdAndes</FONT></td>" );
-				respuesta.write( " <td><FONT face=\"arial\" size=5 color=#34495e>Registro de Proveedores al Sistema</FONT></td>" );
-				respuesta.write( " </tr>" );
-				respuesta.write( " </table>" );
-				respuesta.write( " <div></div>" );
 				respuesta.write( " <table align= center bgcolor=\"#ecf0f1\" width=\"80%\">" );
 				respuesta.write( " <tr>" );
 				respuesta.write( " <td>Nombre</td>" );

@@ -66,6 +66,7 @@ public class ServletRegistrar extends ServletAbstract{
 	        respuesta.write(" <option value=\"materiaPrima\">Materia Prima</option> ");
 	        respuesta.write(" <option value=\"componente\">Componente</option> ");
 	        respuesta.write(" </select> ");
+	        respuesta.write(" <input type=\"submit\" value=\"Registrar\" name=\"B1\" class=\"normal\">");
 	        respuesta.write(" </form></td> ");
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
@@ -80,7 +81,7 @@ public class ServletRegistrar extends ServletAbstract{
 			respuesta.write( "<div></div>" );
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td>Página en construcción, espérala.</td>" );
+	        respuesta.write( "<td>Pï¿½gina en construcciï¿½n, espï¿½rala.</td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
