@@ -18,7 +18,7 @@ public class Cliente {
 	
 	private String ciudad;
 	
-	private boolean juridico;
+	private String juridico;
 	
 	private String idRepLegal;
 	
@@ -28,7 +28,7 @@ public class Cliente {
 	// CONSTRUCTOR
 	//---------------------------------------------------
 	
-	public Cliente(String pId, String pNombre, String pDireccion, int pTelefono, String pCiudad, boolean pJuridico, String pIdRepLegal, ArrayList<Producto> pProductos) {
+	public Cliente(String pId, String pNombre, String pDireccion, int pTelefono, String pCiudad, String pJuridico, String pIdRepLegal, ArrayList<Producto> pProductos) {
 		this.id = pId;
 		this.nombre = pNombre;
 		this.direccion = pDireccion;
@@ -83,11 +83,11 @@ public class Cliente {
 		this.ciudad = ciudad;
 	}
 
-	public boolean isJuridico() {
+	public String isJuridico() {
 		return juridico;
 	}
 
-	public void setJuridico(boolean juridico) {
+	public void setJuridico(String juridico) {
 		this.juridico = juridico;
 	}
 

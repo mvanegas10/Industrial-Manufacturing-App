@@ -113,7 +113,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE clientes (id varchar(32), nombre varchar(32), direccion varchar(32), telefono int, juridico boolean, ciudad varchar(32), idRepLegal varchar(32), PRIMARY KEY (id))" );
+				s.execute( "CREATE TABLE clientes (id varchar(32), nombre varchar(32), direccion varchar(32), telefono int, juridico String, ciudad varchar(32), idRepLegal varchar(32), PRIMARY KEY (id))" );
 				System.out.println("Se cre� la tabla clientes");
 			}
 			else
@@ -272,7 +272,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s7.execute( "CREATE TABLE ProveedoresMateriasPrimas (id_proveedor varchar(32), id_materiaPrima varchar(32), volMax int, tiempoMax int, PRIMARY KEY (id_proveedor,id_materiaPrima))" );
+				s7.execute( "CREATE TABLE ProveedoresMateriasPrimas (id_proveedor varchar(32), id_materiaPrima varchar(32), volMax int, tiempoMax int, PRIMARY KEY (id_proveedor,id_materiaPrima),FOREIGN KEY (id_proveedor REFERENCES proveedores(id),id_materiaPrima REFERENCES materiasPrimas(id))" );
 				System.out.println("Se cre� la tabla ProveedoresMateriasPrimas");
 			}
 			else
@@ -295,7 +295,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s8.execute( "CREATE TABLE ProveedoresComponentes (id_proveedor varchar(32), id_componente varchar(32), volMax int, tiempoMax int, PRIMARY KEY (id_proveedor,id_componente)))" );
+				s8.execute( "CREATE TABLE ProveedoresComponentes (id_proveedor varchar(32), id_componente varchar(32), volMax int, tiempoMax int, PRIMARY KEY (id_proveedor,id_componente)FOREIGN KEY (id_proveedor REFERENCES proveedores(id),id_materiaPrima REFERENCES materiasPrimas(id))" );
 				System.out.println("Se cre� la tabla ProveedoresComponentes");
 			}
 			else
