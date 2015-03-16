@@ -21,10 +21,15 @@ public class ServletRegistrarMateriaPrima extends ServletAbstract {
 	public void escribirContenido(HttpServletRequest request,HttpServletResponse response) throws IOException {
 
 		PrintWriter respuesta = response.getWriter( );
+		String ciudad = request.getParameter("ciudad");
+		String direccion = request.getParameter("direccion");
+		int telefono = Integer.parseInt(request.getParameter("telefono"));
+		String idRepLegal = request.getParameter("idRepLegal");
+		
 		try
 		{
-			ArrayList<MateriaPrima> materiasPrima = AplicacionWeb.darInstancia().pruebita();
-			hayMateriasPrima(respuesta, materiasPrima);
+			ArrayList<MateriaPrima> materiasPrima = AplicacionWeb.darInstancia().darMateriasPrimas();
+			hayMateriasPrima(respuesta, materiasPrima, ciudad, direccion, telefono, idRepLegal);;
 		}
 		catch(Exception e)
 		{
@@ -33,7 +38,10 @@ public class ServletRegistrarMateriaPrima extends ServletAbstract {
 
 	}
 	
-	public void hayMateriasPrima (PrintWriter respuesta, ArrayList<MateriaPrima> materias){
+	public void hayMateriasPrima (PrintWriter respuesta, ArrayList<MateriaPrima> materias, String ciudad, String direccion, int telefono, String idRepLegal){
+		respuesta.write( "<body bgcolor=\"#bdc3c7\">" );
+		respuesta.write( "<form method=\"POST\" action=\"registro.htm\">" );
+		respuesta.write( "<style>" );
 		respuesta.write( "<style>" );
 		respuesta.write( "SELECT, INPUT[type=\"text\"] {" );
 		respuesta.write( "width: 160px;" );
@@ -41,7 +49,7 @@ public class ServletRegistrarMateriaPrima extends ServletAbstract {
 		respuesta.write( "}" );
 		respuesta.write( "SECTION {" );
 		respuesta.write( "padding: 8px;" );
-		respuesta.write( "background-color: #f0f0f0;" );
+		respuesta.write( "background-color: #ecf0f1;" );
 		respuesta.write( "overflow: auto;" );
 		respuesta.write( "}" );
 		respuesta.write( "SECTION > DIV {" );
@@ -65,13 +73,18 @@ public class ServletRegistrarMateriaPrima extends ServletAbstract {
 		for (MateriaPrima materiaPrima : materias) {
 			respuesta.write( " <option>" + materiaPrima.getId() + "</option>" );	
 		}
-		respuesta.write( " <option>1</option>" );
-		respuesta.write( " <option>2</option>" );
-		respuesta.write( " <option>3</option>" );
 		respuesta.write( " </select>" );
 		respuesta.write( " <div>" );
 		respuesta.write( " <input type=\"text\" id=\"txtRight\" />" );
 		respuesta.write( " </div>" );
+		respuesta.write( " <p align=center> ");
+		respuesta.write( " <input type=\"submit\" value=\"Registrar\" name=\"B1\" class=\"normal\"> ");
+		respuesta.write( " <input type=\"reset\" value=\"Borrar\" name=\"B2\" class=\"normal\"></p> ");
+		respuesta.write( " <input type=\"hidden\" name=\"ciudad\" value=" + \" ");
+		
+		respuesta.write( " </section> ");
+		respuesta.write( " </form>" );
+		respuesta.write( " </body>" );
 	}
 	
 	public void noHayMateriasPrima (PrintWriter respuesta){

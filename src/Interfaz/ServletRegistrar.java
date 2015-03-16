@@ -70,15 +70,5 @@ public class ServletRegistrar extends ServletAbstract{
         respuesta.write( "</table>" );
 		
 	}
-	
-	public void denegarIngreso(PrintWriter respuesta){
-		
-        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
-        respuesta.write( "<tr>" );
-        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Error: Usuario o contrase�a incorrectos</FONT></td>" );
-        respuesta.write( "</tr>" );
-        respuesta.write( "</table>" );
-		
-	}
 
 }
