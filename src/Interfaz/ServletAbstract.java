@@ -65,7 +65,7 @@ public abstract class ServletAbstract extends HttpServlet{
         // Imprime el header
         respuesta.write( "<html>" );
         respuesta.write( "<head>" );
-        respuesta.write( "<title>ProdAndes - " + darTituloPagina( request ) + "</title>" );
+        respuesta.write( "<a href=\"index.htm\"> <title>ProdAndes - " + darTituloPagina( request ) + "</title> </a>" );
         respuesta.write( "</head>" );
         respuesta.write( "<body bgcolor=\"#bdc3c7\">" );
         respuesta.write( "<table bgcolor=\"#ecf0f1\" width=100%>" );

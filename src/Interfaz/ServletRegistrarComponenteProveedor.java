@@ -3,14 +3,16 @@ package Interfaz;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mundo.AplicacionWeb;
+import mundo.Componente;
 import mundo.MateriaPrima;
 
-public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
+public class ServletRegistrarComponenteProveedor extends ServletAbstract {
 
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
@@ -25,22 +27,25 @@ public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 		String direccion = request.getParameter("direccion");
 		int telefono = Integer.parseInt(request.getParameter("telefono"));
 		String idRepLegal = request.getParameter("idRepLegal");
+		String[] materiasPrimas = request.getParameterValues("materiasPrimas");
+		
+		List<String[]> datosProveedorMateriaPrima = new ArrayList<String[]>() ;
 		
 		try
 		{
-			ArrayList<MateriaPrima> materiasPrima = AplicacionWeb.getInstancia().darMateriasPrimas();
-			hayMateriasPrima(respuesta, materiasPrima, ciudad, direccion, telefono, idRepLegal);
+			ArrayList<Componente> componentes = AplicacionWeb.getInstancia().darComponentes();
+			hayComponentes(respuesta, componentes, ciudad, direccion, telefono, idRepLegal, materiasPrimas);
 		}
 		catch(Exception e)
 		{
-			noHayMateriasPrima (respuesta);
+			noHayComponentes (respuesta);
 		}
 
 	}
 	
-	public void hayMateriasPrima (PrintWriter respuesta, ArrayList<MateriaPrima> materias, String ciudad, String direccion, int telefono, String idRepLegal){
+	public void hayComponentes (PrintWriter respuesta, ArrayList<Componente> componentes, String ciudad, String direccion, int telefono, String idRepLegal, String[] materiasPrimas){
 		respuesta.write( "<body bgcolor=\"#bdc3c7\">" );
-		respuesta.write( "<form method=\"POST\" action=\"registroComponenteProveedor.htm\">" );
+		respuesta.write( "<form method=\"POST\" action=\"registroProveedor.htm\">" );
 		respuesta.write( "<style>" );
 		respuesta.write( "<style>" );
 		respuesta.write( "SELECT, INPUT[type=\"text\"] {" );
@@ -60,7 +65,7 @@ public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 		respuesta.write( "width: 40px;" );
 		respuesta.write( "text-align: center;" );
 		respuesta.write( "}</style>" );
-		respuesta.write( "<section align=\"center\" name=\"materiasPrimas\" class=\"container\">" );
+		respuesta.write( "<section align=\"center\" name=\"componentes\" class=\"container\">" );
 		respuesta.write( " <div>" );
 		respuesta.write( " <select id=\"leftValues\" size=\"5\" multiple></select>" );
 		respuesta.write( " </div>" );
@@ -70,8 +75,8 @@ public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 		respuesta.write( " </div>" );
 		respuesta.write( " <div>" );
 		respuesta.write( " <select id=\"rightValues\" size=\"4\" multiple>" );
-		for (MateriaPrima materiaPrima : materias) {
-			respuesta.write( " <option>" + materiaPrima.getId() + "</option>" );	
+		for (Componente componente : componentes) {
+			respuesta.write( " <option>" + componente.getId() + "</option>" );	
 		}
 		respuesta.write( " </select>" );
 		respuesta.write( " <div>" );
@@ -84,15 +89,16 @@ public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 		respuesta.write( " <input type=\"hidden\" name=\"direccion\" value=" + direccion );
 		respuesta.write( " <input type=\"hidden\" name=\"telefono\" value=" + telefono );
 		respuesta.write( " <input type=\"hidden\" name=\"idRepLegal\" value=" + idRepLegal );
+		respuesta.write( " <input type=\"hidden\" name=\"materiasPrimas\" value=" + materiasPrimas );
 		respuesta.write( " </section> ");
 		respuesta.write( " </form>" );
 		respuesta.write( " </body>" );
 	}
 	
-	public void noHayMateriasPrima (PrintWriter respuesta){
+	public void noHayComponentes (PrintWriter respuesta){
         respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
         respuesta.write( "<tr>" );
-        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Error: No hay registrada ninguna materia prima, primero registre materias prima a ProdAndes</FONT></td>" );
+        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Error: No hay registrado ningun componente, primero registre componentes a ProdAndes</FONT></td>" );
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
 	}
