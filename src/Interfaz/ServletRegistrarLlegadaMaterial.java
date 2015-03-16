@@ -24,7 +24,7 @@ public class ServletRegistrarLlegadaMaterial extends ServletAbstract{
 				
 			String llegadaMaterial = request.getParameter("llegadaMaterial");
 			
-			respuesta.write( " <form method=\"POST\" action=\"registroLlegadaMaterial.htm\">" );
+			respuesta.write( " <form method=\"POST\" action=\"registroMaterial.htm\">" );
 			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
 			respuesta.write( " <tr>" );
 			
@@ -36,8 +36,11 @@ public class ServletRegistrarLlegadaMaterial extends ServletAbstract{
 				respuesta.write( " <td>Cantidad Inicial</td>" );
 				respuesta.write( " </tr>" );
 				respuesta.write( " <tr>" );
-				respuesta.write( " <input type=\"hidden\" id=\"date\" name=\"fecha\">" );
-				respuesta.write( " <script>document.getElementById(\"date\").value = new Date().toJSON().slice(0,10)</script>" );
+				respuesta.write( " <td><input type=\"hidden\" id=\"date\"/ name=\"fecha\"> " );
+				respuesta.write( " <script name=\"fecha\" language=\"javascript\">" );
+				respuesta.write( " var today = new Date();" );
+				respuesta.write( " document.write(today);" );
+				respuesta.write( " </script></td>" );
 				respuesta.write( " <form method=\"POST\" action=\"registroMaterial.htm\">" );
 				respuesta.write( " <td><input type=\"text\" name=\"nombre\" size=\"33\" class=\"normal\"></td>" );
 				respuesta.write( " <td><input type=\"text\" name=\"unidadMedida\" size=\"33\" class=\"normal\"></td>" );				

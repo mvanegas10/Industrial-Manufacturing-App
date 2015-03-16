@@ -60,16 +60,17 @@ public class ServletRegistrar extends ServletAbstract{
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<td>Registrar Proveedor</td>" );
 	        respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><input type=\"submit\" value=\"Registrar\" name=\"registrar\" class=\"normal\"></form></td>" );
+	        respuesta.write( "<td>.</td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<td>Registrar Llegada de Material</td>" );
-	        respuesta.write(" <td><form method=\"POST\" action=\"registroLlegadaMaterial.htm>");
-	        respuesta.write(" <select size=\"1\" name=\"llegadaMaterial\" class=\"normal\"> ");
+	        respuesta.write(" <form method=\"POST\" action=\"registroLlegadaMaterial.htm\"><td>");
+	        respuesta.write(" <select name=\"llegadaMaterial\"> class=\"normal\"");
 	        respuesta.write(" <option value=\"materiaPrima\">Materia Prima</option> ");
 	        respuesta.write(" <option value=\"componente\">Componente</option> ");
-	        respuesta.write(" </select> ");
-	        respuesta.write(" <input type=\"submit\" value=\"Registrar\" name=\"B1\" class=\"normal\">");
-	        respuesta.write(" </form></td> ");
+	        respuesta.write(" </select></td>");
+	        respuesta.write(" <td><input type=\"submit\" value=\"Registrar\" name=\"B1\" class=\"normal\">");
+	        respuesta.write(" </form>");
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}

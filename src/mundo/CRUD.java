@@ -55,7 +55,7 @@ public class CRUD {
 			int filasInsertadas = statement.executeUpdate();
 			
 			if (filasInsertadas > 0) {
-			    System.out.println("Nuevo registro fue ingresado con exito");
+			    System.out.println("Nuevo registro fue ingresado con exito a la tabla " + tabla);
 			}
 		}	
 		
@@ -89,13 +89,10 @@ public class CRUD {
 		try
 		{
 			Statement s = conexion.createStatement();
-			ResultSet rS = s.executeQuery ("SELECT * FROM " + tabla);
-			int i=1;
+			ResultSet rS = s.executeQuery ("SELECT id FROM " + tabla);
 			while (rS.next()){
-				resultado.add(rS.getString(i));
-				i++;
+				resultado.add(rS.getString(1));
 			}
-			System.out.println(resultado);
 			s.close();
 		}
 		catch (Exception e)

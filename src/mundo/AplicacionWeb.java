@@ -173,11 +173,10 @@ public class AplicacionWeb {
 	
 	public ArrayList<MateriaPrima> darMateriasPrimas( ) throws Exception {
 		ArrayList<MateriaPrima> materiasPrimas = new ArrayList<MateriaPrima>();
-		int numeroColumnas = MateriaPrima.COLUMNAS.length;
 		ArrayList<String> datosMateriasPrimas = crud.darTuplas(MateriaPrima.NOMBRE);
 		
-		for(int i = 0; i < datosMateriasPrimas.size();i+=numeroColumnas){
-			MateriaPrima materiaPrima = new MateriaPrima(datosMateriasPrimas.get(i),datosMateriasPrimas.get(i+1),Integer.parseInt(datosMateriasPrimas.get(i+2)));
+		for(int i = 0; i < datosMateriasPrimas.size();i++){
+			MateriaPrima materiaPrima = new MateriaPrima(datosMateriasPrimas.get(i),"",2);
 			materiasPrimas.add(materiaPrima);
 		}
 		return materiasPrimas;
@@ -217,7 +216,19 @@ public class AplicacionWeb {
 	
 	public static void main(String[] args) {
 		AplicacionWeb app = getInstancia();
-		
+		String[] datos = {"1", "2", "3"};
+		ArrayList<String> a = new ArrayList<String>();
+		try
+		{
+			a = crud.darTuplas(MateriaPrima.NOMBRE);
+			for (int i = 0; i < a.size(); i++) {
+				System.out.println(a.get(i));
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -23,7 +23,7 @@ public class ServletRegistrarMaterial extends ServletAbstract{
 
 		PrintWriter respuesta = response.getWriter( );
 		
-		String nombre = request.getParameter("llegadaMaterial");
+		String nombre = request.getParameter("nombre");
 		String unidadMedida = request.getParameter("unidadMedida");
 		int cantInicial = Integer.parseInt(request.getParameter("cantInicial"));
 		String fecha = "" + request.getParameter("fecha");
@@ -42,14 +42,14 @@ public class ServletRegistrarMaterial extends ServletAbstract{
 			}
 			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
 			respuesta.write( " <tr>" );
-			respuesta.write( " <td>Se agregó correctamente su material: " + tipo + " con nombre: " + nombre + " en la fecha " + fecha + "</td>" );
+			respuesta.write( " <td>Se agrego correctamente el material: " + tipo + " - " + nombre + " el " + fecha + "</td>" );
 			respuesta.write( " <tr>" );
 			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
 		}
 		catch (Exception e){
 			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
 			respuesta.write( " <tr>" );
-			respuesta.write( " <td>No se agregó correctamente su material</td>" );
+			respuesta.write( " <td>No se agrego correctamente el material</td>" );
 			respuesta.write( " <tr>" );
 			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
 		}

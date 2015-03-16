@@ -65,16 +65,20 @@ public abstract class ServletAbstract extends HttpServlet{
         // Imprime el header
         respuesta.write( "<html>" );
         respuesta.write( "<head>" );
-        respuesta.write( "<a href=\"index.htm\"> <title>ProdAndes - " + darTituloPagina( request ) + "</title> </a>" );
+        respuesta.write( "<title>ProdAndes - " + darTituloPagina( request ) + "</title>" );
         respuesta.write( "</head>" );
         respuesta.write( "<body bgcolor=\"#bdc3c7\">" );
         respuesta.write( "<table bgcolor=\"#ecf0f1\" width=100%>" );
         respuesta.write( "<tr>" );
-        respuesta.write( "<td><FONT face=\"arial\" size=10 color=#34495e>ProdAndes</FONT></td>" );
+        respuesta.write( "<td><FONT face=\"arial\" size=10 color=#34495e><a href=\"index.htm\">ProdAndes</a></FONT></td>" );
         respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>" + darTituloPagina( request ) + "</FONT></td>" );
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
-		respuesta.write( "<div></div>" );
+        respuesta.write( "<table bgcolor=\"#bdc3c7\" width=100%>" );
+        respuesta.write( "<tr>" );
+        respuesta.write( "<td></td>" );
+        respuesta.write( "</tr>" );
+        respuesta.write( "</table>" );
     }
 
     /**

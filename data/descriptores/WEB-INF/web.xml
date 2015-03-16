@@ -25,7 +25,8 @@
   <servlet-class>Interfaz.ServletRegistrarLlegadaMaterial</servlet-class>
  </servlet>
  <servlet>
-  <servlet-name>RegistroMaterial</servlet-name>  <servlet-class>Interfaz.ServletRegistrarMaterial</servlet-class>
+  <servlet-name>RegistroMaterial</servlet-name>  
+  <servlet-class>Interfaz.ServletRegistrarMaterial</servlet-class>
  </servlet>
  <servlet>
   <servlet-name>RegistroComponenteProveedor</servlet-name>
