@@ -1,5 +1,6 @@
 package mundo;
 
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +72,8 @@ public class AplicacionWeb {
 	// METODOS
 	//--------------------------------------------------
 	
-	public void cargarTablas(){
-		
+	public void poblarTablas(){
+		crud.poblarTablas();	
 	}
 	
 	public int darContadorId(){
@@ -115,10 +116,19 @@ public class AplicacionWeb {
 	public void registrarMateriaPrima (String id, String unidadMedida, int cantidadInicial) {
 		String[] datosSimples = {id, unidadMedida, Integer.toString(cantidadInicial)};
 		try{
-			crud.insertarTupla(MateriaPrima.NOMBRE, MateriaPrima.COLUMNAS, MateriaPrima.TIPO, datosSimples);
-		}
-		catch(Exception e){
-			e.printStackTrace();
+			int cantidadActual= Integer.parseInt((crud.darSubTabla(MateriaPrima.NOMBRE, "cantidadInicial", "id="+id).get(0)));
+			String[] columnas = new String[1];
+			columnas[0] = "cantidadInicial";
+			String[] cantidad = new String[1];
+			cantidad[0] = (Integer.toString(cantidadInicial + cantidadActual));
+			crud.actualizarTupla(MateriaPrima.NOMBRE,columnas,cantidad, "id="+id);	
+		}catch(Exception e){
+			try{
+				crud.insertarTupla(MateriaPrima.NOMBRE, MateriaPrima.COLUMNAS, MateriaPrima.TIPO, datosSimples);
+			}
+			catch(Exception e1){
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -174,7 +184,7 @@ public class AplicacionWeb {
 			MateriaPrima materiaPrima = new MateriaPrima(datosMateriasPrimas.get(i),datosMateriasPrimas.get(i+1),Integer.parseInt(datosMateriasPrimas.get(i+2)));
 			materiasPrimas.add(materiaPrima);
 		}
-		return (materiasPrimas);
+		return materiasPrimas;
 	}
 	
 	public ArrayList<Componente> darComponentes( ) throws Exception {
@@ -186,7 +196,7 @@ public class AplicacionWeb {
 			Componente componente = new Componente(datosComponentes.get(i),Integer.parseInt(datosComponentes.get(i+1)));
 			componentes.add(componente);
 		}
-		return (componentes);
+		return componentes;
 	}
 	
 	private ArrayList<MateriaPrima> darMateriasPrimasProveedor(String idProveedor) throws Exception{
@@ -206,7 +216,7 @@ public class AplicacionWeb {
 			Componente componente = new Componente(componentesPre.get(i),Integer.parseInt(componentesPre.get(i+1)));
 			componentes.add(componente);
 		}
-		return null;
+		return componentes;
 	}
 
 }

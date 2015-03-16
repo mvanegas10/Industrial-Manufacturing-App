@@ -61,7 +61,7 @@ public class CRUD {
 		
 	}
 	
-	public void actualizarTupla (String tabla, String[] columnas,String[] datos) throws Exception{
+	public void actualizarTupla (String tabla, String[] columnas,String[] datos, String condicion) throws Exception{
 		if (columnas.length == datos.length)
 		{
 			String consulta = columnas[0] + " = " + datos[0];
@@ -71,13 +71,13 @@ public class CRUD {
 			try 
 			{
 				Statement s = conexion.createStatement();
-				s.executeQuery ("UPDATE " + tabla + " SET " + consulta + " ");
+				s.executeQuery ("UPDATE " + tabla + " SET " + consulta + " WHERE " + condicion);
 				System.out.println("Se actualizï¿½ la tabla " + tabla);
 				s.close();
 			} 
 			catch (SQLException e) 
 			{
-				e.printStackTrace();
+				throw new Exception("La tupla con ese id no existe.");
 			}
 		}
 		else 
@@ -121,9 +121,19 @@ public class CRUD {
 		}
 		catch (Exception e)
 		{
-			throw new Exception("No se encntró el registro en la tabla " + tabla);
+			throw new Exception("No se encntrï¿½ el registro en la tabla " + tabla);
 		}
 		return resultado;
+	}
+	
+	public void poblarTablas(){
+		try{
+			Statement s = conexion.createStatement();
+			s.executeQuery ("BULK INSERT " + "clientes" + " FROM " + "'\\data\\datosTablas\\clientes.txt'" + " WITH " + "FIELDTERMINATOR = ',',ROWTERMINATOR = '\n'");
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 }

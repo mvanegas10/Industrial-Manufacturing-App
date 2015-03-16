@@ -226,7 +226,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s5.execute( "CREATE TABLE materiasPrimas (id varchar(32), unidadMedida varchar(32), cantInicial int, PRIMARY KEY (id))" );
+				s5.execute( "CREATE TABLE materiasPrimas (id varchar(32), unidadMedida varchar(32), cantidadInicial int, PRIMARY KEY (id))" );
 				System.out.println("Se cre� la tabla materiasPrima");
 			}
 			else
