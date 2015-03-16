@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import mundo.AplicacionWeb;
 import mundo.MateriaPrima;
 
-public class ServletRegistrarMateriaPrima extends ServletAbstract {
+public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
@@ -40,7 +40,7 @@ public class ServletRegistrarMateriaPrima extends ServletAbstract {
 	
 	public void hayMateriasPrima (PrintWriter respuesta, ArrayList<MateriaPrima> materias, String ciudad, String direccion, int telefono, String idRepLegal){
 		respuesta.write( "<body bgcolor=\"#bdc3c7\">" );
-		respuesta.write( "<form method=\"POST\" action=\"registro.htm\">" );
+		respuesta.write( "<form method=\"POST\" action=\"registroProveedor.htm\">" );
 		respuesta.write( "<style>" );
 		respuesta.write( "<style>" );
 		respuesta.write( "SELECT, INPUT[type=\"text\"] {" );
@@ -60,7 +60,7 @@ public class ServletRegistrarMateriaPrima extends ServletAbstract {
 		respuesta.write( "width: 40px;" );
 		respuesta.write( "text-align: center;" );
 		respuesta.write( "}</style>" );
-		respuesta.write( "<section class=\"container\">" );
+		respuesta.write( "<section name=\"materiasPrimas\" class=\"container\">" );
 		respuesta.write( " <div>" );
 		respuesta.write( " <select id=\"leftValues\" size=\"5\" multiple></select>" );
 		respuesta.write( " </div>" );
@@ -80,8 +80,10 @@ public class ServletRegistrarMateriaPrima extends ServletAbstract {
 		respuesta.write( " <p align=center> ");
 		respuesta.write( " <input type=\"submit\" value=\"Registrar\" name=\"B1\" class=\"normal\"> ");
 		respuesta.write( " <input type=\"reset\" value=\"Borrar\" name=\"B2\" class=\"normal\"></p> ");
-		respuesta.write( " <input type=\"hidden\" name=\"ciudad\" value=" + \" ");
-		
+		respuesta.write( " <input type=\"hidden\" name=\"ciudad\" value=" + ciudad );
+		respuesta.write( " <input type=\"hidden\" name=\"direccion\" value=" + direccion );
+		respuesta.write( " <input type=\"hidden\" name=\"telefono\" value=" + telefono );
+		respuesta.write( " <input type=\"hidden\" name=\"idRepLegal\" value=" + idRepLegal );
 		respuesta.write( " </section> ");
 		respuesta.write( " </form>" );
 		respuesta.write( " </body>" );

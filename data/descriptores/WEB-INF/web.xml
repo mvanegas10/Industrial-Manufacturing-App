@@ -13,8 +13,16 @@
   <servlet-class>Interfaz.ServletRegistrar</servlet-class>
  </servlet>
  <servlet>
-  <servlet-name>RegistroMateriaPrima</servlet-name>
-  <servlet-class>Interfaz.ServletRegistrarMateriaPrima</servlet-class>
+  <servlet-name>RegistroMateriaPrimaProveedor</servlet-name>
+  <servlet-class>Interfaz.ServletRegistrarMateriaPrimaProveedor</servlet-class>
+ </servlet>
+ <servlet>
+  <servlet-name>RegistroProveedor</servlet-name>
+  <servlet-class>Interfaz.ServletRegistrarProveedor</servlet-class>
+ </servlet>
+ <servlet>
+  <servlet-name>RegistroLlegadaMaterial</servlet-name>
+  <servlet-class>Interfaz.ServletRegistrarLlegadaMaterial</servlet-class>
  </servlet>
  <!-- MAPPING -->
  <servlet-mapping>
@@ -26,8 +34,16 @@
   <url-pattern>/registro.htm</url-pattern>
  </servlet-mapping>
  <servlet-mapping>
-  <servlet-name>RegistroMateriaPrima</servlet-name>
-  <url-pattern>/registroMateriaPrima.htm</url-pattern>
+  <servlet-name>RegistroMateriaPrimaProveedor</servlet-name>
+  <url-pattern>/registroMateriaPrimaProveedor.htm</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>RegistroProveedor</servlet-name>
+  <url-pattern>/registroProveedor.htm</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>RegistroLlegadaMaterial</servlet-name>
+  <url-pattern>/registroLlegadaMaterial.htm</url-pattern>
  </servlet-mapping>
  <login-config>
   <auth-method>BASIC</auth-method>

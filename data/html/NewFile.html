@@ -1,0 +1,26 @@
+<form method="POST" action="registroLlegadaMaterial.htm">
+			<table bgcolor="#ecf0f1" width=100%>
+				<tr>
+					<td><FONT face="arial" size=10 color=#34495e>ProdAndes</FONT></td>
+					<td><FONT face="arial" size=5 color=#34495e>Registro de Proveedores al Sistema</FONT></td>
+				</tr>
+			</table>
+			<div></div>	
+			<table align= center bgcolor="#ecf0f1" width="80%">
+				<tr>
+					<td>Nombre</td>
+					<td>Unidad de Medida</td>
+					<td>Cantidad Inicial</td>
+				</tr>
+				<tr>	
+					<form method="POST" action="registroMateriaPrimaProveedor.htm">
+						<td><input type="text" name="nombre" size="33" class="normal"></td>
+						<td><input type="text" name="unidadMedida" size="33" class="normal"></td>					
+						<td><input type="text" name="cantInicial" size="33" class="normal"></td>
+					</form>
+				</tr>
+			</table>
+			<p align=center>
+			<input type="submit" value="Registrar" name="B1" class="normal">
+			<input type="reset" value="Borrar" name="B2" class="normal"></p>
+		</form>
