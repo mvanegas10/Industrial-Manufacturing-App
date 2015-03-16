@@ -23,7 +23,7 @@ public class ServletRegistrarMateriaPrima extends ServletAbstract {
 		PrintWriter respuesta = response.getWriter( );
 		try
 		{
-			ArrayList<MateriaPrima> materiasPrima = AplicacionWeb.darInstancia().darMateriasPrimas();
+			ArrayList<MateriaPrima> materiasPrima = AplicacionWeb.darInstancia().pruebita();
 			hayMateriasPrima(respuesta, materiasPrima);
 		}
 		catch(Exception e)
