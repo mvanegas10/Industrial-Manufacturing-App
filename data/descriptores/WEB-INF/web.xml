@@ -24,6 +24,10 @@
   <servlet-name>RegistroLlegadaMaterial</servlet-name>
   <servlet-class>Interfaz.ServletRegistrarLlegadaMaterial</servlet-class>
  </servlet>
+ <servlet>
+  <servlet-name>RegistroMaterial</servlet-name>
+  <servlet-class>Interfaz.ServletRegistrarMaterial</servlet-class>
+ </servlet>
  <!-- MAPPING -->
  <servlet-mapping>
   <servlet-name>Ingreso</servlet-name>
@@ -44,6 +48,10 @@
  <servlet-mapping>
   <servlet-name>RegistroLlegadaMaterial</servlet-name>
   <url-pattern>/registroLlegadaMaterial.htm</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>RegistroMaterial</servlet-name>
+  <url-pattern>/registroMaterial.htm</url-pattern>
  </servlet-mapping>
  <login-config>
   <auth-method>BASIC</auth-method>
