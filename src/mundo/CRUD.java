@@ -129,7 +129,10 @@ public class CRUD {
 	public void poblarTablas(){
 		try{
 			Statement s = conexion.createStatement();
-			s.executeQuery ("BULK INSERT " + "clientes" + " FROM " + "'\\data\\datosTablas\\clientes.txt'" + " WITH " + "FIELDTERMINATOR = ',',ROWTERMINATOR = '\n'");
+			String sql = "BULK INSERT " + "clientes" + " FROM " + "'\\data\\datosTablas\\clientes.txt'" + " WITH( " + "FIELDTERMINATOR = ',',ROWTERMINATOR = '\\n')";
+			System.out.println(sql);
+			s.executeQuery (sql);
+			s.close();
 		}
 		catch(Exception e){
 			e.printStackTrace();

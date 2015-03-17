@@ -68,7 +68,7 @@ public class AplicacionWeb {
 	// METODOS
 	//--------------------------------------------------
 	
-	public void poblarTablas(){
+	public static void poblarTablas(){
 		crud.poblarTablas();	
 	}
 	
@@ -230,13 +230,10 @@ public class AplicacionWeb {
 	}
 	
 	public static void main(String[] args) {
-		AplicacionWeb app = getInstancia();
-		String[] datos = {"1", "2", "3"};
-		ArrayList<String> a = new ArrayList<String>();
+		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			crud.insertarTupla(Producto.NOMBRE, Producto.COLUMNAS, Producto.TIPO, datos);
-			System.out.println("Hola");
+			poblarTablas();
 		}
 		catch (Exception e)
 		{
