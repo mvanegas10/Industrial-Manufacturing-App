@@ -1,11 +1,14 @@
 package mundo;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CRUD {
 
@@ -128,13 +131,14 @@ public class CRUD {
 	
 	public void poblarTablas(){
 		try{
-			Statement s = conexion.createStatement();
-			String sql = "BULK INSERT " + "clientes" + " FROM " + "'\\data\\datosTablas\\clientes.txt'" + " WITH( " + "FIELDTERMINATOR = ',',ROWTERMINATOR = '\\n')";
-			System.out.println(sql);
-			s.executeQuery (sql);
-			s.close();
-		}
-		catch(Exception e){
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//clientes.csv"));
+			String linea = null;
+			while((linea = reader.readLine())!=null){
+				String[] lineaInsertar = linea.split(",");
+				insertarTupla(Cliente.NOMBRE, Cliente.COLUMNAS, Cliente.TIPO,lineaInsertar);
+			}
+			reader.close();
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}

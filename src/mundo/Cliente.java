@@ -8,6 +8,12 @@ public class Cliente {
 	// ATRIBUTOS
 	//--------------------------------------------------
 	
+	public static final String NOMBRE = "clientes";
+	
+	public static final String[] COLUMNAS = {"id","nombre","direccion","telefono","ciudad","juridico","idRepLegal"};
+	
+	public static final String[] TIPO = {"String","String","String","int","String","String","String"};
+	
 	private String id;
 	
 	private String nombre;
