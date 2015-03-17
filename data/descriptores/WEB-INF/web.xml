@@ -32,6 +32,14 @@
   <servlet-name>RegistroComponenteProveedor</servlet-name>
   <servlet-class>Interfaz.ServletRegistrarComponenteProveedor</servlet-class>
  </servlet>
+ <servlet>
+  <servlet-name>RegistroEtapasProduccion</servlet-name>
+  <servlet-class>Interfaz.ServletRegistrarEtapasProduccion</servlet-class>
+ </servlet>
+ <servlet>
+  <servlet-name>RegistroProducto</servlet-name>
+  <servlet-class>Interfaz.ServletRegistrarProducto</servlet-class>
+ </servlet>
  <!-- MAPPING -->
  <servlet-mapping>
   <servlet-name>Ingreso</servlet-name>
@@ -60,6 +68,14 @@
  <servlet-mapping>
   <servlet-name>RegistroComponenteProveedor</servlet-name>
   <url-pattern>/registroComponenteProveedor.htm</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>RegistroEtapasProduccion</servlet-name>
+  <url-pattern>/registroEtapasProduccion.htm</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>RegistroProducto</servlet-name>
+  <url-pattern>/registroProducto.htm</url-pattern>
  </servlet-mapping>
  <login-config>
   <auth-method>BASIC</auth-method>

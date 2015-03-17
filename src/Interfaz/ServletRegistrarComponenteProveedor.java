@@ -16,25 +16,29 @@ public class ServletRegistrarComponenteProveedor extends ServletAbstract {
 
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
-		return "Registro de Materia Prima";
+		return "Registro de Componente Proveedor";
 	}
 
 	@Override
 	public void escribirContenido(HttpServletRequest request,HttpServletResponse response) throws IOException {
 
 		PrintWriter respuesta = response.getWriter( );
-		String ciudad = request.getParameter("ciudad");
-		String direccion = request.getParameter("direccion");
-		int telefono = Integer.parseInt(request.getParameter("telefono"));
-		String idRepLegal = request.getParameter("idRepLegal");
-		String[] materiasPrimas = request.getParameterValues("materiasPrimas");
 		
-		List<String[]> datosProveedorMateriaPrima = new ArrayList<String[]>() ;
+		String idProveedor = request.getParameter("idProveedor");
+		String[] materiasPrimas = request.getParameterValues("materiasPrimas");		
+		
+		List<String[]> datosProveedorMateriaPrima = new ArrayList<String[]>();
+		
+		for (int i = 0; i < materiasPrimas.length; i++) {
+			String[] datos = {idProveedor, materiasPrimas[i]};
+			datosProveedorMateriaPrima.add(datos);
+		}
 		
 		try
 		{
+			AplicacionWeb.getInstancia().registrarProveedorMateriaPrima(datosProveedorMateriaPrima);
 			ArrayList<Componente> componentes = AplicacionWeb.getInstancia().darComponentes();
-			hayComponentes(respuesta, componentes, ciudad, direccion, telefono, idRepLegal, materiasPrimas);
+			hayComponentes(respuesta, componentes, idProveedor);
 		}
 		catch(Exception e)
 		{
@@ -43,7 +47,7 @@ public class ServletRegistrarComponenteProveedor extends ServletAbstract {
 
 	}
 	
-	public void hayComponentes (PrintWriter respuesta, ArrayList<Componente> componentes, String ciudad, String direccion, int telefono, String idRepLegal, String[] materiasPrimas){
+	public void hayComponentes (PrintWriter respuesta, ArrayList<Componente> componentes, String idProveedor){
 		respuesta.write( "<body bgcolor=\"#bdc3c7\">" );
 		respuesta.write( "<form method=\"POST\" action=\"registroProveedor.htm\">" );
 		respuesta.write( "<style>" );
@@ -83,13 +87,9 @@ public class ServletRegistrarComponenteProveedor extends ServletAbstract {
 		respuesta.write( " <input type=\"text\" id=\"txtRight\" />" );
 		respuesta.write( " </div>" );
 		respuesta.write( " <p align=center> ");
+		respuesta.write( " <input type=\"hidden\" id=\"idProveedor\" value=" + idProveedor + ">" );
 		respuesta.write( " <input type=\"submit\" value=\"Registrar\" name=\"B1\" class=\"normal\"> ");
 		respuesta.write( " <input type=\"reset\" value=\"Borrar\" name=\"B2\" class=\"normal\"></p> ");
-		respuesta.write( " <input type=\"hidden\" name=\"ciudad\" value=" + ciudad );
-		respuesta.write( " <input type=\"hidden\" name=\"direccion\" value=" + direccion );
-		respuesta.write( " <input type=\"hidden\" name=\"telefono\" value=" + telefono );
-		respuesta.write( " <input type=\"hidden\" name=\"idRepLegal\" value=" + idRepLegal );
-		respuesta.write( " <input type=\"hidden\" name=\"materiasPrimas\" value=" + materiasPrimas );
 		respuesta.write( " </section> ");
 		respuesta.write( " </form>" );
 		respuesta.write( " </body>" );

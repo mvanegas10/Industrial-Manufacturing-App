@@ -42,7 +42,7 @@ public class ServletRegistrarMaterial extends ServletAbstract{
 			}
 			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
 			respuesta.write( " <tr>" );
-			respuesta.write( " <td>Se agrego correctamente el material: " + tipo + " - " + nombre + " el " + fecha + "</td>" );
+			respuesta.write( " <td>Se agrego correctamente el material: " + tipo + " - " + nombre + "</td>" );
 			respuesta.write( " <tr>" );
 			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
 		}

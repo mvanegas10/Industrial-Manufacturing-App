@@ -67,7 +67,12 @@ public class ServletIngresar extends ServletAbstract{
 	        respuesta.write(" <option value=\"materiaPrima\">Materia Prima</option> ");
 	        respuesta.write(" <option value=\"componente\">Componente</option> ");
 	        respuesta.write(" </select> ");
-	        respuesta.write(" </form></td> ");
+	        respuesta.write(" </form>");
+	        respuesta.write( "</tr>" );
+	        respuesta.write( "<tr>" );
+	        respuesta.write( "<td>Registrar Producto</td>" );
+	        respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><input type=\"submit\" value=\"Registrar Producto\" name=\"regProd\" class=\"normal\"></form></td>" );
+	        respuesta.write( "<td>.</td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
@@ -81,7 +86,7 @@ public class ServletIngresar extends ServletAbstract{
 			respuesta.write( "<div></div>" );
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td>Página en construcción, espérala.</td>" );
+	        respuesta.write( "<td>Pagina en construccion, esperala.</td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
@@ -91,7 +96,7 @@ public class ServletIngresar extends ServletAbstract{
 		
         respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
         respuesta.write( "<tr>" );
-        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Error: Usuario o contraseña incorrectos</FONT></td>" );
+        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Error: Usuario o contraseï¿½a incorrectos</FONT></td>" );
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
 		

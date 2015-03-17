@@ -193,7 +193,7 @@ public class ConexionDAO
 			try
 			{
 				// Verificar si ya existe la tabla
-				s4.executeQuery( "SELECT * FROM productos" );
+				s4.executeQuery( "SELECT * FROM productosEtapasProduccion" );
 			}
 			catch( SQLException se )
 			{
@@ -203,11 +203,11 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s4.execute( "CREATE TABLE productos (id varchar(32), nombre varchar(32), precio int, disponibles int, PRIMARY KEY (id))" );
-				System.out.println("Se cre� la tabla productos");
+				s4.execute( "CREATE TABLE productosEtapasProduccion (id_producto varchar(32), numSecuencia int, descripcion varchar(32), PRIMARY KEY (id_producto, numSecuencia), CONSTRAINT fk_idProdEtapa FOREIGN KEY (id_producto) REFERENCES productos(id))" );
+				System.out.println("Se cre� la tabla productosEtapasProduccion");
 			}
 			else
-				System.out.println("La tabla productos ya existe");
+				System.out.println("La tabla productosEtapasProduccion ya existe");
 			s4.close();
 			crearTabla = false;
 

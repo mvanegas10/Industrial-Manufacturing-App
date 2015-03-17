@@ -72,6 +72,11 @@ public class ServletRegistrar extends ServletAbstract{
 	        respuesta.write(" <td><input type=\"submit\" value=\"Registrar\" name=\"B1\" class=\"normal\">");
 	        respuesta.write(" </form>");
 	        respuesta.write( "</tr>" );
+	        respuesta.write( "<tr>" );
+	        respuesta.write( "<td>Registrar Producto</td>" );
+	        respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><input type=\"submit\" value=\"Registrar Producto\" name=\"regProd\" class=\"normal\"></form></td>" );
+	        respuesta.write( "<td>.</td>" );
+	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
 		else
@@ -84,7 +89,7 @@ public class ServletRegistrar extends ServletAbstract{
 			respuesta.write( "<div></div>" );
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td>P�gina en construcci�n, esp�rala.</td>" );
+	        respuesta.write( "<td>Pagina en construccion, esperala.</td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}

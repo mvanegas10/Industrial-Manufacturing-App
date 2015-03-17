@@ -14,7 +14,7 @@ public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
-		return "Registro de Materia Prima";
+		return "Registro de Materia Prima Proveedor";
 	}
 
 	@Override
@@ -25,11 +25,13 @@ public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 		String direccion = request.getParameter("direccion");
 		int telefono = Integer.parseInt(request.getParameter("telefono"));
 		String idRepLegal = request.getParameter("idRepLegal");
+		String idProveedor = Integer.toString(AplicacionWeb.getInstancia().darContadorId());
 		
 		try
 		{
+			AplicacionWeb.getInstancia().registrarProveedor(idProveedor, direccion, telefono, ciudad, idRepLegal);
 			ArrayList<MateriaPrima> materiasPrima = AplicacionWeb.getInstancia().darMateriasPrimas();
-			hayMateriasPrima(respuesta, materiasPrima, ciudad, direccion, telefono, idRepLegal);
+			hayMateriasPrima(respuesta, materiasPrima, idProveedor);
 		}
 		catch(Exception e)
 		{
@@ -38,7 +40,7 @@ public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 
 	}
 	
-	public void hayMateriasPrima (PrintWriter respuesta, ArrayList<MateriaPrima> materias, String ciudad, String direccion, int telefono, String idRepLegal){
+	public void hayMateriasPrima (PrintWriter respuesta, ArrayList<MateriaPrima> materias, String idProveedor){
 		respuesta.write( "<body bgcolor=\"#bdc3c7\">" );
 		respuesta.write( "<form method=\"POST\" action=\"registroComponenteProveedor.htm\">" );
 		respuesta.write( "<style>" );
@@ -78,12 +80,9 @@ public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 		respuesta.write( " <input type=\"text\" id=\"txtRight\" />" );
 		respuesta.write( " </div>" );
 		respuesta.write( " <p align=center> ");
+		respuesta.write( " <input type=\"hidden\" value=" + idProveedor + " name=\"idProveedor\" class=\"normal\"> ");
 		respuesta.write( " <input type=\"submit\" value=\"Registrar\" name=\"B1\" class=\"normal\"> ");
 		respuesta.write( " <input type=\"reset\" value=\"Borrar\" name=\"B2\" class=\"normal\"></p> ");
-		respuesta.write( " <input type=\"hidden\" name=\"ciudad\" value=" + ciudad );
-		respuesta.write( " <input type=\"hidden\" name=\"direccion\" value=" + direccion );
-		respuesta.write( " <input type=\"hidden\" name=\"telefono\" value=" + telefono );
-		respuesta.write( " <input type=\"hidden\" name=\"idRepLegal\" value=" + idRepLegal );
 		respuesta.write( " </section> ");
 		respuesta.write( " </form>" );
 		respuesta.write( " </body>" );

@@ -8,6 +8,18 @@ public class Producto {
 	// ATRIBUTOS
 	//--------------------------------------------------
 
+	public static final String NOMBRE = "productos";
+	
+	public final static String[] COLUMNAS = {"id", "nombre", "precio"};
+	
+	public final static String[] TIPO = {"String", "String", "int"};
+	
+	public final static String NOMBRE_RELACION_ETAPA_PRODUCCION = "productosEtapasProduccion";
+	
+	public final static String[] COLUMNA_RELACION_ETAPA_PRODUCCION = {"id_producto", "numSecuencia", "descripcion"};
+	
+	public final static String[] TIPO_RELACION_ETAPA_PRODUCCION = {"String", "int", "String"};
+	
 	private String id;
 
 	private String nombre;
@@ -16,7 +28,7 @@ public class Producto {
 	
 	private int numeroEtapas;
 	
-	private Inventario inventario;
+	private int cantidad;
 	
 	private ArrayList<Cliente> clientes;
 	
@@ -26,12 +38,12 @@ public class Producto {
 	// CONSTRUCTOR
 	//---------------------------------------------------
 
-	public Producto(String id, String nombre, int precio, int pNumeroEtapas, int disponibles,ArrayList<Cliente> pClientes, Inventario pInventario,ArrayList<EtapaProduccion> pEtapasProduccion) {
+	public Producto(String id, String nombre, int precio, int pNumeroEtapas, int disponibles,ArrayList<Cliente> pClientes, int cantidad,ArrayList<EtapaProduccion> pEtapasProduccion) {
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
 		this.clientes = pClientes;
-		this.inventario = pInventario;
+		this.cantidad = cantidad;
 		this.etapasProduccion = pEtapasProduccion;
 		this.numeroEtapas = pNumeroEtapas;
 	}
@@ -64,12 +76,12 @@ public class Producto {
 		this.precio = precio;
 	}
 
-	public Inventario getInventario() {
-		return inventario;
+	public int getCantidad() {
+		return cantidad;
 	}
 
-	public void setInventario(Inventario inventario) {
-		this.inventario = inventario;
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
 	}
 
 	public ArrayList<Cliente> getClientes() {

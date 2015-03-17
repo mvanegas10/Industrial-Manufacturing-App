@@ -41,12 +41,15 @@ public class CRUD {
 			for(int i =0; i<columnas.length; i++){
 				if(tipos[i]=="String"){
 					statement.setString(i+1, datos[i]);
+					System.out.println(i+1 + datos[i]);
 				}
 				if(tipos[i]=="int"){
 					statement.setBoolean(i+1, Boolean.parseBoolean(datos[i]));
+					System.out.println(i+1 + datos[i]);
 				}
 				if(tipos[i]=="boolean"){
 					statement.setInt(i+1, Integer.parseInt(datos[i]));
+					System.out.println(i+1 + datos[i]);
 				}
 			}
 			

@@ -93,19 +93,22 @@ public class AplicacionWeb {
 		return "";
 	}
 	
-	public void registrarProveedor (String id, String direccion, int telefono, String ciudad, String idRepLegal, List<String[]> datosProveedorMateriaPrima, List<String[]> datosProveedorComponente) {
+	public void registrarProveedor (String id, String direccion, int telefono, String ciudad, String idRepLegal) throws Exception{
 		String[] datosSimples = {id,direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
-		try{
-			crud.insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO, datosSimples);
-			for(int i = 0; i < datosProveedorMateriaPrima.size(); i++){
-				String[] datosCompuestosMateria = datosProveedorMateriaPrima.get(i);
-				String[] datosCompuestosComponente = datosProveedorComponente.get(i);
-				crud.insertarTupla(Proveedor.NOMBRERELACIONMATERIAPRIMA, Proveedor.COLUMNASRELACIONMATERIAPRIMA, Proveedor.TIPORELACIONMATERIAPRIMA, datosCompuestosMateria);
-				crud.insertarTupla(Proveedor.NOMBRERELACIONCOMPONENTE, Proveedor.COLUMNASRELACIONCOMPONENTE, Proveedor.TIPORELACIONCOMPONENTE, datosCompuestosComponente);
-			}
+		crud.insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO, datosSimples);
+	}
+	
+	public void registrarProveedorMateriaPrima (List<String[]> datosProveedorMateriaPrima ) throws Exception{
+		for(int i = 0; i < datosProveedorMateriaPrima.size(); i++){
+			String[] datosCompuestosMateria = datosProveedorMateriaPrima.get(i);
+			crud.insertarTupla(Proveedor.NOMBRERELACIONMATERIAPRIMA, Proveedor.COLUMNASRELACIONMATERIAPRIMA, Proveedor.TIPORELACIONMATERIAPRIMA, datosCompuestosMateria);
 		}
-		catch(Exception e){
-			e.printStackTrace();
+	}
+	
+	public void registrarProveedorComponente (List<String[]> datosProveedorComponente) throws Exception{
+		for (int i = 0; i < datosProveedorComponente.size(); i++) {
+			String[] datosCompuestosComponente = datosProveedorComponente.get(i);
+			crud.insertarTupla(Proveedor.NOMBRERELACIONCOMPONENTE, Proveedor.COLUMNASRELACIONCOMPONENTE, Proveedor.TIPORELACIONCOMPONENTE, datosCompuestosComponente);
 		}
 	}
 	
@@ -136,6 +139,18 @@ public class AplicacionWeb {
 		}
 		catch(Exception e){
 			crud.insertarTupla(Componente.NOMBRE, Componente.COLUMNAS, Componente.TIPO, datosSimples);		}
+	}
+	
+	public void registrarProducto (String id, String nombre, int precio) throws Exception{
+		String[] datos = {id, nombre, Integer.toString(precio)};
+		crud.insertarTupla(Producto.NOMBRE, Producto.COLUMNAS, Producto.TIPO, datos);
+		System.out.println("Se registro " + datos);
+	}
+	
+	public void registrarProductoEtapasProduccion  (List<String[]> etapasProduccion) throws Exception{
+		for (int i = 0; i < etapasProduccion.size(); i++) {
+			crud.insertarTupla(Producto.NOMBRE_RELACION_ETAPA_PRODUCCION, Producto.COLUMNA_RELACION_ETAPA_PRODUCCION, Producto.TIPO_RELACION_ETAPA_PRODUCCION, etapasProduccion.get(i));
+		}
 	}
 	
 	public ArrayList<Proveedor> darProveedores( ) throws Exception {
@@ -220,10 +235,8 @@ public class AplicacionWeb {
 		ArrayList<String> a = new ArrayList<String>();
 		try
 		{
-			a = crud.darTuplas(MateriaPrima.NOMBRE);
-			for (int i = 0; i < a.size(); i++) {
-				System.out.println(a.get(i));
-			}
+			crud.insertarTupla(Producto.NOMBRE, Producto.COLUMNAS, Producto.TIPO, datos);
+			System.out.println("Hola");
 		}
 		catch (Exception e)
 		{
