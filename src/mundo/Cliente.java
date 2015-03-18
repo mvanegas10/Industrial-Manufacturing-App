@@ -12,7 +12,7 @@ public class Cliente {
 	
 	public static final String[] COLUMNAS = {"id","nombre","direccion","telefono","ciudad","juridico","idRepLegal"};
 	
-	public static final String[] TIPO = {"String","String","String","int","String","String","String"};
+	public static final String[] TIPO = {"String","String","String","String","String","String","String"};
 	
 	private String id;
 	
@@ -20,7 +20,7 @@ public class Cliente {
 	
 	private String direccion;
 	
-	private int telefono;
+	private String telefono;
 	
 	private String ciudad;
 	
@@ -34,7 +34,7 @@ public class Cliente {
 	// CONSTRUCTOR
 	//---------------------------------------------------
 	
-	public Cliente(String pId, String pNombre, String pDireccion, int pTelefono, String pCiudad, String pJuridico, String pIdRepLegal, ArrayList<Producto> pProductos) {
+	public Cliente(String pId, String pNombre, String pDireccion, String pTelefono, String pCiudad, String pJuridico, String pIdRepLegal, ArrayList<Producto> pProductos) {
 		this.id = pId;
 		this.nombre = pNombre;
 		this.direccion = pDireccion;
@@ -73,11 +73,11 @@ public class Cliente {
 		this.direccion = direccion;
 	}
 
-	public int getTelefono() {
+	public String getTelefono() {
 		return telefono;
 	}
 
-	public void setTelefono(int telefono) {
+	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
 

@@ -30,7 +30,11 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			String nombre = request.getParameter("nombre");
 			try
 			{
+<<<<<<< Updated upstream
 				ArrayList<Producto> productos = AplicacionWeb.getInstancia().buscarProducto(nombre);
+=======
+				AplicacionWeb.getInstancia();
+>>>>>>> Stashed changes
 			}
 			catch (Exception e){
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
@@ -85,7 +89,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			String materialABuscar = request.getParameter("material");
 			try
 			{
-				AplicacionWeb.getInstancia().
+				AplicacionWeb.getInstancia();
 			}
 			catch (Exception e){
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );

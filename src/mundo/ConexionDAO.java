@@ -113,7 +113,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE clientes (id varchar(32), nombre varchar(32), direccion varchar(32), telefono int, juridico varchar(32), ciudad varchar(32), idRepLegal varchar(32), PRIMARY KEY (id))" );
+				s.execute( "CREATE TABLE clientes (id varchar(32), nombre varchar(32), direccion varchar(32), telefono varchar(32), juridico varchar(32), ciudad varchar(32), idRepLegal varchar(32), PRIMARY KEY (id))" );
 				System.out.println("Se cre� la tabla clientes");
 			}
 			else
@@ -158,7 +158,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s2.execute( "CREATE TABLE proveedores (id varchar(32), direccion varchar(32), telefono int, ciudad varchar(32), idRepLegal varchar(32), PRIMARY KEY (id))" );
+				s2.execute( "CREATE TABLE proveedores (id varchar(32), direccion varchar(32), telefono varchar(32), ciudad varchar(32), idRepLegal varchar(32), PRIMARY KEY (id))" );
 				System.out.println("Se cre� la tabla proveedores");
 			}
 			else

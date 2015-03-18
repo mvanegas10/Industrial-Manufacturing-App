@@ -13,7 +13,7 @@ public class Proveedor{
 	
 	public static final String[] COLUMNAS = {"id","direccion","telefono","ciudad","idRepLegal"};
 	
-	public static final String[] TIPO = {"String","String","int","String","String"};
+	public static final String[] TIPO = {"String","String","String","String","String"};
 	
 	public static final String NOMBRERELACIONMATERIAPRIMA = "ProveedoresMateriaPrima";
 	
