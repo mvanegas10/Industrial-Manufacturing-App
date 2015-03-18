@@ -164,6 +164,10 @@ public class AplicacionWeb {
 		crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datos);
 	}
 	
+	public ArrayList<String> darIdPedido (String producto) throws Exception{
+		return crud.darSubTabla(Pedido.NOMBRE, "id", "idCliente = " + usuarioActual + "idProducto = " + producto);
+	}
+	
 	public ArrayList<Producto> buscarProducto (String nombre) throws Exception{
 		ArrayList<String> precios = crud.darSubTabla(Producto.NOMBRE, "precio", "nombre = " + nombre);
 		ArrayList<Producto> rta = new ArrayList<Producto>();
