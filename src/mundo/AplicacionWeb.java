@@ -19,6 +19,8 @@ public class AplicacionWeb {
 	
 	private static AplicacionWeb instancia ;
 	
+	private String usuarioActual;
+	
 	private int contadorId;
 	
 	
@@ -39,6 +41,7 @@ public class AplicacionWeb {
 		conexion.crearTablas();
 		crud = new CRUD(conexion);
 		contadorId = 1000;
+		usuarioActual = "";
 	}
 	
 	//--------------------------------------------------
@@ -81,6 +84,7 @@ public class AplicacionWeb {
 		String[] datos = {login, password, tipo};
 		try{
 			crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
+			usuarioActual = login;
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -89,6 +93,7 @@ public class AplicacionWeb {
 	
 	public String ingresarUsuario (String login, String password) throws Exception{
 		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "login, password", login + ", " + password);
+		usuarioActual = login;
 		if ( usuario.get(0) != null )
 			return usuario.get(0);
 		return "";
@@ -154,6 +159,11 @@ public class AplicacionWeb {
 		}
 	}
 	
+	public void registrarPedidoCliente (String producto, int cantidad, Date pedido, Date entrega) throws Exception{
+		String[] datos = {Integer.toString(darContadorId()), producto, usuarioActual, Integer.toString(cantidad), pedido.toString(), entrega.toString()};
+		crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datos);
+	}
+	
 	public ArrayList<Producto> buscarProducto (String nombre) throws Exception{
 		ArrayList<String> precios = crud.darSubTabla(Producto.NOMBRE, "precio", "nombre = " + nombre);
 		ArrayList<Producto> rta = new ArrayList<Producto>();
@@ -164,23 +174,23 @@ public class AplicacionWeb {
 		return rta;
 	}
 
-	public ArrayList<Pedido> buscarPedidosCliente (String idCliente, Date pedido, boolean pedido1, Date entrega, boolean entrega1) throws Exception{
+	public ArrayList<Pedido> buscarPedidosCliente (Date pedido, boolean pedido1, Date entrega, boolean entrega1) throws Exception{
 		ArrayList<String> prod;
 		ArrayList<Pedido> rta = new ArrayList<Pedido>();
 		if (pedido1 && entrega1)
 		{
-			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "fechaPedido = " + pedido + "fechaEntrega = " + entrega1);
+			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "fechaPedido = " + pedido + "fechaEntrega = " + entrega1);
 		}
 		else if (pedido1)
 		{
-			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "fechaPedido = " + pedido);
+			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "fechaPedido = " + pedido);
 		}
 		else
 		{
-			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "fechaEntrega = " + entrega1);
+			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "fechaEntrega = " + entrega1);
 		}
 		for (int i = 0; i < prod.size(); i++) {
-			Pedido p = new Pedido(prod.get(i), 2, pedido, entrega);
+			Pedido p = new Pedido(usuarioActual, prod.get(i), 2, pedido, entrega);
 			rta.add(p);
 		}
 		return rta;

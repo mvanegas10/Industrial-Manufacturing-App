@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mundo.AplicacionWeb;
+import mundo.Pedido;
 import mundo.Producto;
 
 public class ServletResultadoBusqueda extends ServletAbstract{
@@ -30,11 +31,29 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			String nombre = request.getParameter("nombre");
 			try
 			{
-<<<<<<< Updated upstream
+
 				ArrayList<Producto> productos = AplicacionWeb.getInstancia().buscarProducto(nombre);
-=======
-				AplicacionWeb.getInstancia();
->>>>>>> Stashed changes
+		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+		        respuesta.write( "<tr>" );
+		        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Los productos encontrados son los siguientes:</FONT></td>" );
+		        respuesta.write( "</tr>" );
+		        respuesta.write( "</table>" );
+		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+		        respuesta.write( "<tr>" );
+		        respuesta.write( "<td>Producto</td>" );
+		        respuesta.write( "<td>Precio</td>" );
+		        respuesta.write( "<td>Unidades Disponibles</td>" );
+		        respuesta.write( "<td>Acciones</td>" );
+		        respuesta.write( "</tr>" );
+		        for (Producto producto : productos) {
+			        respuesta.write( "<tr>" );
+			        respuesta.write( "<td>" + producto.getNombre() + "</td>" );
+			        respuesta.write( "<td>" + producto.getPrecio() + "</td>" );
+			        respuesta.write( "<form method=\"POST\" action=\"regristroPedido.htm\"><td>Cantidad a pedir: <input type=\"text\" name=\"cantidad\"><input type=\"submit\" name=\"pedir\" value=\"Pedir\"><input type=\"hidden\" name=\"productoPedido\" value=" + producto.getNombre() + "></td></form>" );
+			        respuesta.write( "</tr>" );
+				}
+		        respuesta.write( "</table>" );
+
 			}
 			catch (Exception e){
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
@@ -48,15 +67,20 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		
 		else if (criterio.equals("buscarPedido"))
 		{
+			boolean pedido1 = false;
+			boolean entrega1 = false;
+			Date diaSolicitud = new Date();
+			Date diaEntrega = new Date();
 			try
 			{
 				int dia1 = Integer.parseInt(request.getParameter("dia1"));
 				int mes1 = Integer.parseInt(request.getParameter("mes1"));
 				int anio1 = Integer.parseInt(request.getParameter("anio1"));
-				Date diaSolicitud = new Date();
+				diaSolicitud = new Date();
 				diaSolicitud.setDate(dia1);
 				diaSolicitud.setMonth(mes1);
 				diaSolicitud.setYear(anio1);
+				pedido1 = true;
 			}
 			catch(Exception e){
 			}
@@ -64,17 +88,38 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				int dia2 = Integer.parseInt(request.getParameter("dia2"));
 				int mes2 = Integer.parseInt(request.getParameter("mes2"));
 				int anio2 = Integer.parseInt(request.getParameter("anio2"));
-				Date diaEntrega = new Date();
+				diaEntrega = new Date();
 				diaEntrega.setDate(dia2);
 				diaEntrega.setMonth(mes2);
 				diaEntrega.setYear(anio2);
+				entrega1 = true;
 			}
 			catch(Exception e){
 				
 			}
 			try
 			{
-				AplicacionWeb.getInstancia().
+				ArrayList<Pedido> pedidos = AplicacionWeb.getInstancia().buscarPedidosCliente(diaSolicitud, pedido1, diaEntrega, entrega1);
+		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+		        respuesta.write( "<tr>" );
+		        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Los pedidos encontrados son los siguientes:</FONT></td>" );
+		        respuesta.write( "</tr>" );
+		        respuesta.write( "</table>" );
+		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+		        respuesta.write( "<tr>" );
+		        respuesta.write( "<td>Producto</td>" );
+		        respuesta.write( "<td>Cantidad</td>" );
+		        respuesta.write( "<td>Unidades Disponibles</td>" );
+		        respuesta.write( "<td>Acciones</td>" );
+		        respuesta.write( "</tr>" );
+		        for (Pedido pedido : pedidos) {
+			        respuesta.write( "<tr>" );
+			        respuesta.write( "<td>" + pedido.getProducto() + "</td>" );
+			        respuesta.write( "<td>" + pedido.getCantidad() + "</td>" );
+			        respuesta.write( "<td>Cantidad a pedir: <input type=\"text\" name=\"cantidad\"><input type=\"submit\" name=\"pedir\" value=\"Pedir\"><input type=\"hidden\" name=\"productoPedido\" value=" + producto.getNombre() + "></td></form>" );
+			        respuesta.write( "</tr>" );
+				}
+		        respuesta.write( "</table>" );
 			}
 			catch (Exception e){
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );

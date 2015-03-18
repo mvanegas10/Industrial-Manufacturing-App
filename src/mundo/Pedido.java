@@ -6,13 +6,15 @@ public class Pedido {
 	
 	public static final String NOMBRE = "pedidos";
 	
-	public static final String[] COLUMNAS = {"id", "idProducto", "cantidad", "fechaPedido", "fechaEntrega"};
+	public static final String[] COLUMNAS = {"id", "idProducto", "idCliente", "cantidad", "diaPedido", "mesPedido", "diaEntrega", "mesEntrega"};
 	
-	public static final String[] TIPO = {"String", "String", "int", "Date", "Date"};
+	public static final String[] TIPO = {"String", "String", "String","int", "int", "int", "int", "int"};
 	
 	private String id;
 
 	private String idProducto;
+	
+	private String idCliente;
 	
 	private int cantidad;
 	
@@ -26,8 +28,9 @@ public class Pedido {
 	 * @param fechaPedido
 	 * @param fechaEntrega
 	 */
-	public Pedido(String producto, int cantidad, Date fechaPedido, Date fechaEntrega) {
+	public Pedido(String producto, String idCliente, int cantidad, Date fechaPedido, Date fechaEntrega) {
 		this.idProducto = producto;
+		this.idCliente = idCliente;
 		this.cantidad = cantidad;
 		this.fechaPedido = fechaPedido;
 		this.fechaEntrega = fechaEntrega;
@@ -35,6 +38,10 @@ public class Pedido {
 
 	public String getProducto() {
 		return idProducto;
+	}
+	
+	public String getIdCliente() {
+		return idCliente;
 	}
 
 	public int getCantidad() {
@@ -49,6 +56,10 @@ public class Pedido {
 		return fechaEntrega;
 	}
 
+	public void setIdCliente(String idCliente) {
+		this.idCliente = idCliente;
+	}
+	
 	public void setProducto(String producto) {
 		this.idProducto = producto;
 	}

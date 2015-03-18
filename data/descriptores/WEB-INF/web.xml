@@ -44,6 +44,10 @@
   <servlet-name>ResultadoBusqueda</servlet-name>
   <servlet-class>Interfaz.ServletResultadoBusqueda</servlet-class>
  </servlet>
+ <servlet>
+  <servlet-name>RegistroPedido</servlet-name>
+  <servlet-class>Interfaz.ServletRegistroPedido</servlet-class>
+ </servlet>
  <!-- MAPPING -->
  <servlet-mapping>
   <servlet-name>Ingreso</servlet-name>
@@ -84,6 +88,10 @@
  <servlet-mapping>
   <servlet-name>ResultadoBusqueda</servlet-name>
   <url-pattern>/resultadoBusqueda.htm</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>RegistroPedido</servlet-name>
+  <url-pattern>/registroPedido.htm</url-pattern>
  </servlet-mapping>
  <login-config>
   <auth-method>BASIC</auth-method>
