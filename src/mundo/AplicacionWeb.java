@@ -160,7 +160,7 @@ public class AplicacionWeb {
 	}
 	
 	public void registrarPedidoCliente (String producto, int cantidad, Date pedido, Date entrega) throws Exception{
-		String[] datos = {Integer.toString(darContadorId()), producto, usuarioActual, Integer.toString(cantidad), pedido.toString(), entrega.toString()};
+		String[] datos = {Integer.toString(darContadorId()), producto, usuarioActual, Integer.toString(cantidad), Integer.toString(34), entrega.toString()};
 		crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datos);
 	}
 	
@@ -280,6 +280,10 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
+			ArrayList<String> tuplas = crud.darSubTabla(MateriaPrima.NOMBRE, "id", "id = 263");
+			for (String string : tuplas) {
+				System.out.println(string);
+			}
 			conexion.crearTablas();
 		}
 		catch (Exception e)

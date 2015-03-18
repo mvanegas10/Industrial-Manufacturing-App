@@ -127,8 +127,11 @@ public class CRUD {
 		ArrayList<String> resultado = new ArrayList<String>();
 		try
 		{
+			System.err.println("SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion);
 			Statement s = conexion.createStatement();
-			ResultSet rS = s.executeQuery ("SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion);
+			ResultSet rS = s.executeQuery("Select id from materiasPrimas where unidadMedida = gramos");
+//			ResultSet rS = s.executeQuery ("SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion + ";");
+
 			int i=1;
 			while (rS.next()){
 				resultado.add(rS.getString(i));
