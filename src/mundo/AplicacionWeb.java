@@ -280,11 +280,10 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			ArrayList<String> tuplas = crud.darSubTabla(MateriaPrima.NOMBRE, "id", "id = 263");
+			ArrayList<String> tuplas = crud.darSubTabla(MateriaPrima.NOMBRE, "id", "unidadMedida = gramos");
 			for (String string : tuplas) {
 				System.out.println(string);
 			}
-			conexion.crearTablas();
 		}
 		catch (Exception e)
 		{

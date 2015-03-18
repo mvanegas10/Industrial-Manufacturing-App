@@ -127,17 +127,15 @@ public class CRUD {
 		ArrayList<String> resultado = new ArrayList<String>();
 		try
 		{
-			System.err.println("SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion);
 			Statement s = conexion.createStatement();
-			ResultSet rS = s.executeQuery("Select id from materiasPrimas where unidadMedida = gramos");
-//			ResultSet rS = s.executeQuery ("SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion + ";");
-
-			int i=1;
+			String sql = "SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion ;
+			System.out.println(sql);
+			ResultSet rS = s.executeQuery (sql);
+			System.out.println(rS.getString("id"));
 			while (rS.next()){
-				resultado.add(rS.getString(i));
-				i++;
+				System.out.println(rS.getString("id"));
+				resultado.add(rS.getString("id"));	
 			}
-			System.out.println(resultado);
 			s.close();
 		}
 		catch (Exception e)
