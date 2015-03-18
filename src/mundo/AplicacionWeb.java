@@ -170,42 +170,42 @@ public class AplicacionWeb {
 	
 	public ArrayList<String> buscarExistenciasMateriaPrima (boolean id, String idDeseado, boolean rango, int mayorA, int menorA) throws Exception{
 		if(id && rango){
-			return crud.darSubTabla (MateriaPrima.Nombre, "cantidadInicial", "id = " + idDeseado + " AND cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
+			return crud.darSubTabla (MateriaPrima.NOMBRE, "cantidadInicial", "id = " + idDeseado + " AND cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
 		}
 		else if(id){
-			return crud.darSubTabla (MateriaPrima.Nombre, "cantidadInicial", "id = " + idDeseado);				
+			return crud.darSubTabla (MateriaPrima.NOMBRE, "cantidadInicial", "id = " + idDeseado);				
 		}
 		else if(rango){
-			return crud.darSubTabla (MateriaPrima.Nombre, "cantidadInicial", "cantidadInicial BETWEEN " + mayorA + " AND " + menorA");				
+			return crud.darSubTabla (MateriaPrima.NOMBRE, "cantidadInicial", "cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
 		}
 		return null;
 	}
 	
 	public ArrayList<String> buscarExistenciasProducto (boolean nombre, String nombreDeseado, boolean rango, int mayorA, int menorA, boolean etapa) throws Exception{
 		if(nombre && rango && etapa){
-			return crud.darSubTabla (Producto.Nombre, "cantidad", "nombre = " + nombre + " AND cantidad BETWEEN " + mayorA + " AND " + menorA);				
+			return crud.darSubTabla (Producto.NOMBRE, "cantidad", "nombre = " + nombre + " AND cantidad BETWEEN " + mayorA + " AND " + menorA);				
 		}
 		else if(nombre && rango){
-			return crud.darSubTabla (Producto.Nombre, "cantidad", "nombre = " + nombre + " AND cantidad BETWEEN " + mayorA + " AND " + menorA);				
+			return crud.darSubTabla (Producto.NOMBRE, "cantidad", "nombre = " + nombre + " AND cantidad BETWEEN " + mayorA + " AND " + menorA);				
 		}
 		else if(nombre){
-			return crud.darSubTabla (Producto.Nombre, "cantidad", "nombre = " + nombre);				
+			return crud.darSubTabla (Producto.NOMBRE, "cantidad", "nombre = " + nombre);				
 		}
 		else if(rango){
-			return crud.darSubTabla (Producto.Nombre, "cantidad", "cantidad BETWEEN " + mayorA + " AND " + menorA");				
+			return crud.darSubTabla (Producto.NOMBRE, "cantidad", "cantidad BETWEEN " + mayorA + " AND " + menorA);				
 		}
 		return null;
 	}
 	
 	public ArrayList<String> buscarExistenciasComponente (boolean id, String idDeseado, boolean rango, int mayorA, int menorA) throws Exception{
 		if(id && rango){
-			return crud.darSubTabla (Componente.Nombre, "cantidadInicial", "id = " + idDeseado + " AND cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
+			return crud.darSubTabla (Componente.NOMBRE, "cantidadInicial", "id = " + idDeseado + " AND cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
 		}
 		else if(id){
-			return crud.darSubTabla (Componente.Nombre, "cantidadInicial", "id = " + idDeseado);				
+			return crud.darSubTabla (Componente.NOMBRE, "cantidadInicial", "id = " + idDeseado);				
 		}
 		else if(rango){
-			return crud.darSubTabla (Componente.Nombre, "cantidadInicial", "cantidadInicial BETWEEN " + mayorA + " AND " + menorA");				
+			return crud.darSubTabla (Componente.NOMBRE, "cantidadInicial", "cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
 		}
 		return null;
 	}
