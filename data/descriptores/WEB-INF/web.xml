@@ -40,6 +40,10 @@
   <servlet-name>RegistroProducto</servlet-name>
   <servlet-class>Interfaz.ServletRegistrarProducto</servlet-class>
  </servlet>
+ <servlet>
+  <servlet-name>ResultadoBusqueda</servlet-name>
+  <servlet-class>Interfaz.ServletResultadoBusqueda</servlet-class>
+ </servlet>
  <!-- MAPPING -->
  <servlet-mapping>
   <servlet-name>Ingreso</servlet-name>
@@ -76,6 +80,10 @@
  <servlet-mapping>
   <servlet-name>RegistroProducto</servlet-name>
   <url-pattern>/registroProducto.htm</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>ResultadoBusqueda</servlet-name>
+  <url-pattern>/resultadoBusqueda.htm</url-pattern>
  </servlet-mapping>
  <login-config>
   <auth-method>BASIC</auth-method>

@@ -77,19 +77,28 @@ public class ServletRegistrar extends ServletAbstract{
 	        respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><input type=\"submit\" value=\"Registrar Producto\" name=\"regProd\" class=\"normal\"></form></td>" );
 	        respuesta.write( "<td>.</td>" );
 	        respuesta.write( "</tr>" );
+	        respuesta.write( "<tr>" );
+	        respuesta.write( "<td><a href=\"buscarExistencias.htm\">Buscar Existencias de Materiales</a></td>" );
+	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
 		else
 		{
-	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>" + tipo.toUpperCase() + ": " + login + "</FONT></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 			respuesta.write( "<div></div>" );
-	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td>Pagina en construccion, esperala.</td>" );
+	        respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\">Encuentra el producto que estas buscando</td>" );
+	        respuesta.write( "<td><input type=\"text\" name=\"nombre\" class=\"normal\"></td>" );
+	        respuesta.write( "<input type=\"hidden\" value=\"buscarProductoCliente\" name=\"criterio\" class=\"normal\">" );
+	        respuesta.write( "<td><input type=\"submit\" value=\"Buscar Productos\" name=\"bus\" class=\"normal\"></form></td>" );
+	        respuesta.write( "</tr>" );
+	        respuesta.write( "<tr>" );
+	        respuesta.write( "<td><a href=\"buscarPedido.htm\">Consulta los detalles de tus pedidos</a></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
