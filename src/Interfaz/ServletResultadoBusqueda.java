@@ -138,42 +138,85 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			boolean tipo = false;
 			boolean rango = false;
 			boolean etapa = false;
+			String nombreMaterial = "";
+			int menorA = 0;
+			int mayorA = 0;
+			String etapaProd = "";
+			ArrayList<String> rta = new ArrayList<String>();
+			
 			try
 			{
-				String nombreMaterial = request.getParameter("nombreMaterial");
+				nombreMaterial = request.getParameter("nombreMaterial");
 				tipo = true;
 			}
 			catch (Exception e){
 				
 			}
 			try{
-				int mayorA = Integer.parseInt(request.getParameter("mayorA"));
-				int menorA = Integer.parseInt(request.getParameter("menorA"));
+				mayorA = Integer.parseInt(request.getParameter("mayorA"));
+				menorA = Integer.parseInt(request.getParameter("menorA"));
 				rango = true;
 			}
 			catch (Exception e){
 				
 			}
 			try{
-				String etapaProd = request.getParameter("etapaProd");
+				etapaProd = request.getParameter("etapaProd");
 				etapa = true;
 			}
 			catch (Exception e){
 				
 			}
-			if (materialABuscartipo && rango && etapa){
-				
+			if (materialABuscar.equals("producto")){
+				try{
+					rta = AplicacionWeb.getInstancia().buscarExistenciasProducto(tipo, nombreMaterial, rango, mayorA, menorA, etapa);	
+				}
+				catch (Exception e){
+			        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+			        respuesta.write( "<tr>" );
+			        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El producto buscado no existe</FONT></td>" );
+			        respuesta.write( "</tr>" );
+			        respuesta.write( "</table>" );
+				}
+			}
+			else if (materialABuscar.equals("materiaPrima")){
+				try{
+					rta = AplicacionWeb.getInstancia().buscarExistenciasMateriaPrima(tipo, nombreMaterial, rango, mayorA, menorA);	
+				}
+				catch (Exception e){
+			        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+			        respuesta.write( "<tr>" );
+			        respuesta.write( "<td>Nombre " + materialABuscar + "</td>" );
+			        respuesta.write( "<td>Cantidad en inventario</td>" );
+			        respuesta.write( "</tr>" );
+			        for (String string : rta) {
+				        respuesta.write( "<tr>" );
+				        respuesta.write( "<td>" + nombreMaterial + "</td>" );
+				        respuesta.write( "<td>" + string + "</td>" );
+				        respuesta.write( "</tr>" );
+
+					}
+			        respuesta.write( "</table>" );
+				}
+			}
+			else if (materialABuscar.equals("componente")){
+				try{
+					rta = AplicacionWeb.getInstancia().buscarExistenciasComponente(tipo, nombreMaterial, rango, mayorA, menorA);	
+				}
+				catch (Exception e){
+			        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+			        respuesta.write( "<tr>" );
+			        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El producto buscado no existe</FONT></td>" );
+			        respuesta.write( "</tr>" );
+			        respuesta.write( "</table>" );
+				}
 			}
 			
-
-
-			catch (Exception e){
-		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
-		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El pedido buscado no existe</FONT></td>" );
-		        respuesta.write( "</tr>" );
-		        respuesta.write( "</table>" );
-			}
+	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+	        respuesta.write( "<tr>" );
+	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El producto buscado no existe</FONT></td>" );
+	        respuesta.write( "</tr>" );
+	        respuesta.write( "</table>" );
 		}
 	}
 
