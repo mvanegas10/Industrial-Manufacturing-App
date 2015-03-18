@@ -2,6 +2,7 @@ package mundo;
 
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import Interfaz.Principal;
@@ -163,7 +164,27 @@ public class AplicacionWeb {
 		return rta;
 	}
 
-	public 
+	public ArrayList<Pedido> buscarPedidosCliente (String idCliente, Date pedido, boolean pedido1, Date entrega, boolean entrega1) throws Exception{
+		ArrayList<String> prod;
+		ArrayList<Pedido> rta = new ArrayList<Pedido>();
+		if (pedido1 && entrega1)
+		{
+			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "fechaPedido = " + pedido + "fechaEntrega = " + entrega1);
+		}
+		else if (pedido1)
+		{
+			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "fechaPedido = " + pedido);
+		}
+		else
+		{
+			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "fechaEntrega = " + entrega1);
+		}
+		for (int i = 0; i < prod.size(); i++) {
+			Pedido p = new Pedido(prod.get(i), 2, pedido, entrega);
+			rta.add(p);
+		}
+		return rta;
+	}
 	
 	public ArrayList<Proveedor> darProveedores( ) throws Exception {
 		ArrayList<Proveedor> proveedores = new ArrayList<Proveedor>();

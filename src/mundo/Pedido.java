@@ -12,7 +12,7 @@ public class Pedido {
 	
 	private String id;
 
-	private Producto idProducto;
+	private String idProducto;
 	
 	private int cantidad;
 	
@@ -26,14 +26,14 @@ public class Pedido {
 	 * @param fechaPedido
 	 * @param fechaEntrega
 	 */
-	public Pedido(Producto producto, int cantidad, Date fechaPedido, Date fechaEntrega) {
+	public Pedido(String producto, int cantidad, Date fechaPedido, Date fechaEntrega) {
 		this.idProducto = producto;
 		this.cantidad = cantidad;
 		this.fechaPedido = fechaPedido;
 		this.fechaEntrega = fechaEntrega;
 	}
 
-	public Producto getProducto() {
+	public String getProducto() {
 		return idProducto;
 	}
 
@@ -49,7 +49,7 @@ public class Pedido {
 		return fechaEntrega;
 	}
 
-	public void setProducto(Producto producto) {
+	public void setProducto(String producto) {
 		this.idProducto = producto;
 	}
 
