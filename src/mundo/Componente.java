@@ -8,7 +8,7 @@ public class Componente {
 	// ATRIBUTOS
 	//--------------------------------------------------
 	
-	public static final String NOMBRE = "COMPONENTE";
+	public static final String NOMBRE = "COMPONENTES";
 	
 	public static final String[] COLUMNAS = {"id","cantidadInicial"};
 	

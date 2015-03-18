@@ -141,6 +141,17 @@ public class CRUD {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//componentes.csv"));
+			String linea = null;
+			while((linea = reader.readLine())!=null){
+				String[] lineaInsertar = linea.split(",");
+				insertarTupla(Componente.NOMBRE, Componente.COLUMNAS, Componente.TIPO,lineaInsertar);
+			}
+			reader.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 }
