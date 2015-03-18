@@ -2,12 +2,14 @@ package Interfaz;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mundo.AplicacionWeb;
+import mundo.Producto;
 
 public class ServletResultadoBusqueda extends ServletAbstract{
 
@@ -28,7 +30,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			String nombre = request.getParameter("nombre");
 			try
 			{
-				AplicacionWeb.getInstancia().
+				ArrayList<Producto> productos = AplicacionWeb.getInstancia().buscarProducto(nombre);
 			}
 			catch (Exception e){
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
