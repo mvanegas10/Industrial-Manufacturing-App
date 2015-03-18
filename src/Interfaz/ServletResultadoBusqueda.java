@@ -2,6 +2,7 @@ package Interfaz;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,7 +42,30 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		
 		else if (criterio.equals("buscarPedido"))
 		{
-			String nombre = request.getParameter("nombre");
+			try
+			{
+				int dia1 = Integer.parseInt(request.getParameter("dia1"));
+				int mes1 = Integer.parseInt(request.getParameter("mes1"));
+				int anio1 = Integer.parseInt(request.getParameter("anio1"));
+				Date diaSolicitud = new Date();
+				diaSolicitud.setDate(dia1);
+				diaSolicitud.setMonth(mes1);
+				diaSolicitud.setYear(anio1);
+			}
+			catch(Exception e){
+			}
+			try{
+				int dia2 = Integer.parseInt(request.getParameter("dia2"));
+				int mes2 = Integer.parseInt(request.getParameter("mes2"));
+				int anio2 = Integer.parseInt(request.getParameter("anio2"));
+				Date diaEntrega = new Date();
+				diaEntrega.setDate(dia2);
+				diaEntrega.setMonth(mes2);
+				diaEntrega.setYear(anio2);
+			}
+			catch(Exception e){
+				
+			}
 			try
 			{
 				AplicacionWeb.getInstancia().
@@ -54,7 +78,21 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		        respuesta.write( "</table>" );
 			}
 		}
-		
+		else if (criterio.equals("buscarAdmin"))
+		{
+			String materialABuscar = request.getParameter("material");
+			try
+			{
+				AplicacionWeb.getInstancia().
+			}
+			catch (Exception e){
+		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+		        respuesta.write( "<tr>" );
+		        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El pedido buscado no existe</FONT></td>" );
+		        respuesta.write( "</tr>" );
+		        respuesta.write( "</table>" );
+			}
+		}
 	}
 
 }

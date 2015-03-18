@@ -14,12 +14,22 @@
 				<tr>
 					<td></td>
 				</tr>
-			</table>	
+			</table>
+			<table align= center bgcolor="#ecf0f1" width=100%>
+				<tr>
+					<td><FONT face="arial" size=3 color=#34495e>Especificaciones de búsqueda</FONT></td>
+				</tr>
+			</table>
+			<table bgcolor="#bdc3c7" width=100%>
+				<tr>
+					<td></td>
+				</tr>
+			</table>
 			<table align= center bgcolor="#ecf0f1" width="80%">
 				<tr>
 					<td>Fecha solicitud:</td>
 					<td>Dia:</td>
-					<td><select size="1" name="dia" class="normal">
+					<td><select size="1" name="dia1" class="normal">
 						  <option value="1">1</option>
 						  <option value="2">2</option>
 						  <option value="3">3</option>
@@ -54,7 +64,7 @@
 						</select>
 					</td>
 					<td>Mes:</td>
-					<td><select size="1" name="mes" class="normal">
+					<td><select size="1" name="mes1" class="normal">
 						  <option value="enero">enero</option>
 						  <option value="febrero">febrero</option>
 						  <option value="marzo">marzo</option>
@@ -70,7 +80,7 @@
 						</select>
 					</td>
 					<td>Año:</td>
-					<td><select size="1" name="anio" class="normal">
+					<td><select size="1" name="anio1" class="normal">
 						  <option value="2004">2004</option>
 						  <option value="2005">2005</option>
 						  <option value="2006">2006</option>
@@ -85,10 +95,10 @@
 						  <option value="2015">2015</option>
 						  </select></td>
 				</tr>
-<tr>
+				<tr>
 					<td>Fecha entrega:</td>
 					<td>Dia:</td>
-					<td><select size="1" name="dia" class="normal">
+					<td><select size="1" name="dia2" class="normal">
 						  <option value="1">1</option>
 						  <option value="2">2</option>
 						  <option value="3">3</option>
@@ -123,7 +133,7 @@
 						</select>
 					</td>
 					<td>Mes:</td>
-					<td><select size="1" name="mes" class="normal">
+					<td><select size="1" name="mes2" class="normal">
 						  <option value="enero">enero</option>
 						  <option value="febrero">febrero</option>
 						  <option value="marzo">marzo</option>
@@ -139,7 +149,7 @@
 						</select>
 					</td>
 					<td>Año:</td>
-					<td><select size="1" name="anio" class="normal">
+					<td><select size="1" name="anio2" class="normal">
 						  <option value="2004">2004</option>
 						  <option value="2005">2005</option>
 						  <option value="2006">2006</option>
@@ -155,6 +165,39 @@
 						  </select></td>
 				</tr>
 			</table>
+			<table align= center bgcolor="#ecf0f1" width="80%"><tr><td size=1>*Puede dejar espacios en blanco, segun el tipo de busqueda que desea hacer</td></tr></table>
+			<table bgcolor="#bdc3c7" width=100%>
+				<tr>
+					<td></td>
+				</tr>
+			</table>
+			
+			<table align= center bgcolor="#ecf0f1" width=100%>
+				<tr>
+					<td><FONT face="arial" size=3 color=#34495e>Detalles de búsqueda</FONT></td>
+				</tr>
+			</table>
+			<table bgcolor="#bdc3c7" width=100%>
+				<tr>
+					<td></td>
+				</tr>
+			</table>
+			<table align= center bgcolor="#ecf0f1" width="80%">
+				<tr>
+					<td>Ordenar Por: </td>
+					<td><input type="text" name="criterioOrdenamiento" class="normal"></td>
+					<td><select size="1" name="tipo" class="normal">
+						  <option value="asc">Ascendentemente</option>
+						  <option value="dsc">Descendentemente</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>Criterio para agrupar respuestas:</td>
+					<td><input type="text" name="agrupar" class="normal"></td>
+				</tr>
+			</table>
+			<table align= center bgcolor="#ecf0f1" width="80%"><tr><td size=1>*Puede dejar espacios en blanco, segun el tipo de busqueda que desea hacer</td></tr></table>
 			<p align=center>
 			<input type="hidden" value="buscarPedido" name="criterio" class="normal">
 			<input type="submit" value="Buscar" name="bus" class="normal">
