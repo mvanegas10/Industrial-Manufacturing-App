@@ -135,10 +135,38 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		else if (criterio.equals("buscarAdmin"))
 		{
 			String materialABuscar = request.getParameter("material");
+			boolean tipo = false;
+			boolean rango = false;
+			boolean etapa = false;
 			try
 			{
-				AplicacionWeb.getInstancia();
+				String nombreMaterial = request.getParameter("nombreMaterial");
+				tipo = true;
 			}
+			catch (Exception e){
+				
+			}
+			try{
+				int mayorA = Integer.parseInt(request.getParameter("mayorA"));
+				int menorA = Integer.parseInt(request.getParameter("menorA"));
+				rango = true;
+			}
+			catch (Exception e){
+				
+			}
+			try{
+				String etapaProd = request.getParameter("etapaProd");
+				etapa = true;
+			}
+			catch (Exception e){
+				
+			}
+			if (materialABuscartipo && rango && etapa){
+				
+			}
+			
+
+
 			catch (Exception e){
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 		        respuesta.write( "<tr>" );

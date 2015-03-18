@@ -168,6 +168,48 @@ public class AplicacionWeb {
 		return crud.darSubTabla(Pedido.NOMBRE, "id", "idCliente = " + usuarioActual + "idProducto = " + producto);
 	}
 	
+	public ArrayList<String> buscarExistenciasMateriaPrima (boolean id, String idDeseado, boolean rango, int mayorA, int menorA) throws Exception{
+		if(id && rango){
+			return crud.darSubTabla (MateriaPrima.Nombre, "cantidadInicial", "id = " + idDeseado + " AND cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
+		}
+		else if(id){
+			return crud.darSubTabla (MateriaPrima.Nombre, "cantidadInicial", "id = " + idDeseado);				
+		}
+		else if(rango){
+			return crud.darSubTabla (MateriaPrima.Nombre, "cantidadInicial", "cantidadInicial BETWEEN " + mayorA + " AND " + menorA");				
+		}
+		return null;
+	}
+	
+	public ArrayList<String> buscarExistenciasProducto (boolean nombre, String nombreDeseado, boolean rango, int mayorA, int menorA, boolean etapa) throws Exception{
+		if(nombre && rango && etapa){
+			return crud.darSubTabla (Producto.Nombre, "cantidad", "nombre = " + nombre + " AND cantidad BETWEEN " + mayorA + " AND " + menorA);				
+		}
+		else if(nombre && rango){
+			return crud.darSubTabla (Producto.Nombre, "cantidad", "nombre = " + nombre + " AND cantidad BETWEEN " + mayorA + " AND " + menorA);				
+		}
+		else if(nombre){
+			return crud.darSubTabla (Producto.Nombre, "cantidad", "nombre = " + nombre);				
+		}
+		else if(rango){
+			return crud.darSubTabla (Producto.Nombre, "cantidad", "cantidad BETWEEN " + mayorA + " AND " + menorA");				
+		}
+		return null;
+	}
+	
+	public ArrayList<String> buscarExistenciasComponente (boolean id, String idDeseado, boolean rango, int mayorA, int menorA) throws Exception{
+		if(id && rango){
+			return crud.darSubTabla (Componente.Nombre, "cantidadInicial", "id = " + idDeseado + " AND cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
+		}
+		else if(id){
+			return crud.darSubTabla (Componente.Nombre, "cantidadInicial", "id = " + idDeseado);				
+		}
+		else if(rango){
+			return crud.darSubTabla (Componente.Nombre, "cantidadInicial", "cantidadInicial BETWEEN " + mayorA + " AND " + menorA");				
+		}
+		return null;
+	}
+	
 	public ArrayList<Producto> buscarProducto (String nombre) throws Exception{
 		ArrayList<String> precios = crud.darSubTabla(Producto.NOMBRE, "precio", "nombre = " + nombre);
 		ArrayList<Producto> rta = new ArrayList<Producto>();
