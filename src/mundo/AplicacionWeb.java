@@ -153,6 +153,18 @@ public class AplicacionWeb {
 		}
 	}
 	
+	public ArrayList<Producto> buscarProducto (String nombre) throws Exception{
+		ArrayList<String> precios = crud.darSubTabla(Producto.NOMBRE, "precio", "nombre = " + nombre);
+		ArrayList<Producto> rta = new ArrayList<Producto>();
+		for (int i = 0; i < precios.size(); i++) {
+			Producto pro = new Producto("" + i, nombre, Double.parseDouble(precios.get(i)), 5, i+1, new ArrayList<Cliente>(), i + 14, new ArrayList<EtapaProduccion>());
+			rta.add(pro);
+		}
+		return rta;
+	}
+
+	public 
+	
 	public ArrayList<Proveedor> darProveedores( ) throws Exception {
 		ArrayList<Proveedor> proveedores = new ArrayList<Proveedor>();
 		int numeroColumnas = Proveedor.COLUMNAS.length;
