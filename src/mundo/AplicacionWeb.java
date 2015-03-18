@@ -280,7 +280,7 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			
+			conexion.crearTablas();
 		}
 		catch (Exception e)
 		{

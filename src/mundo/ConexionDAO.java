@@ -318,7 +318,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s9.execute( "CREATE TABLE Pedidos (id varchar(32), idproducto varchar(32), idCliente varchar(32), cantidad int, diaPedido int, mesPedido int, diaEntrega int, mesEntrega int PRIMARY KEY (id), CONSTRAINT fk_idProducto FOREIGN KEY (idproducto) REFERENCES productos(id)");
+				s9.execute( "CREATE TABLE Pedidos (id varchar(32), idproducto varchar(32), idCliente varchar(32), cantidad int, diaPedido int, mesPedido int, diaEntrega int, mesEntrega int, PRIMARY KEY (id), CONSTRAINT fk_idProducto FOREIGN KEY (idproducto) REFERENCES productos(id))");
 				System.out.println("Se cre� la tabla Pedidos");
 			}
 			else

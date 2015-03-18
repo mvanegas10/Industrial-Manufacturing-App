@@ -69,6 +69,19 @@ public class CRUD {
 		
 	}
 	
+	public void eliminarTuplaPorId(String tabla,String id){
+		try 
+		{
+			Statement s = conexion.createStatement();
+			s.executeQuery ("DELETE FROM " + tabla + " WHERE " + "id="+id);
+			s.close();
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void actualizarTupla (String tabla, String[] columnas,String[] datos, String condicion) throws Exception{
 		if (columnas.length == datos.length)
 		{
@@ -130,6 +143,7 @@ public class CRUD {
 		}
 		return resultado;
 	}
+	
 	
 	public void poblarTablas(){
 		
