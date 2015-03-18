@@ -160,7 +160,7 @@ public class AplicacionWeb {
 	}
 	
 	public void registrarPedidoCliente (String producto, int cantidad, Date pedido, Date entrega) throws Exception{
-		String[] datos = {Integer.toString(darContadorId()), producto, usuarioActual, Integer.toString(cantidad), Integer.toString(34), entrega.toString()};
+		String[] datos = {Integer.toString(darContadorId()), producto, usuarioActual, Integer.toString(cantidad), Integer.toString(pedido.getDate()), Integer.toString(pedido.getMonth()), Integer.toString(entrega.getDate()), Integer.toString(entrega.getMonth())};
 		crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datos);
 	}
 	
@@ -183,15 +183,15 @@ public class AplicacionWeb {
 		ArrayList<Pedido> rta = new ArrayList<Pedido>();
 		if (pedido1 && entrega1)
 		{
-			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "fechaPedido = " + pedido + "fechaEntrega = " + entrega1);
+			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaPedido = " + pedido.getDate() +  "mesPedido = " + pedido.getMonth() + "diaEntrega = " + entrega.getDate() +  "mesEntrega = " + pedido.getMonth());
 		}
 		else if (pedido1)
 		{
-			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "fechaPedido = " + pedido);
+			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaPedido = " + pedido.getDate() +  "mesPedido = " + pedido.getMonth());
 		}
 		else
 		{
-			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "fechaEntrega = " + entrega1);
+			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaEntrega = " + entrega.getDate() +  "mesEntrega = " + pedido.getMonth());
 		}
 		for (int i = 0; i < prod.size(); i++) {
 			Pedido p = new Pedido(usuarioActual, prod.get(i), 2, pedido, entrega);
