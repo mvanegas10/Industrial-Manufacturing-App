@@ -48,6 +48,10 @@
   <servlet-name>RegistroPedido</servlet-name>
   <servlet-class>Interfaz.ServletRegistroPedido</servlet-class>
  </servlet>
+ <servlet>
+  <servlet-name>EliminarPedido</servlet-name>
+  <servlet-class>Interfaz.ServletEliminarPedido</servlet-class>
+ </servlet>
  <!-- MAPPING -->
  <servlet-mapping>
   <servlet-name>Ingreso</servlet-name>
@@ -92,6 +96,10 @@
  <servlet-mapping>
   <servlet-name>RegistroPedido</servlet-name>
   <url-pattern>/registroPedido.htm</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>EliminarPedido</servlet-name>
+  <url-pattern>/eliminarPedido.htm</url-pattern>
  </servlet-mapping>
  <login-config>
   <auth-method>BASIC</auth-method>

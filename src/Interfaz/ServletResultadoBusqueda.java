@@ -109,14 +109,17 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		        respuesta.write( "<tr>" );
 		        respuesta.write( "<td>Producto</td>" );
 		        respuesta.write( "<td>Cantidad</td>" );
-		        respuesta.write( "<td>Unidades Disponibles</td>" );
+		        respuesta.write( "<td>Fecha Pedido</td>" );
+		        respuesta.write( "<td>Fecha Entrega</td>" );
 		        respuesta.write( "<td>Acciones</td>" );
 		        respuesta.write( "</tr>" );
 		        for (Pedido pedido : pedidos) {
 			        respuesta.write( "<tr>" );
 			        respuesta.write( "<td>" + pedido.getProducto() + "</td>" );
 			        respuesta.write( "<td>" + pedido.getCantidad() + "</td>" );
-			        respuesta.write( "<td>Cantidad a pedir: <input type=\"text\" name=\"cantidad\"><input type=\"submit\" name=\"pedir\" value=\"Pedir\"><input type=\"hidden\" name=\"productoPedido\" value=" + producto.getNombre() + "></td></form>" );
+			        respuesta.write( "<td>" + pedido.getFechaEntrega() + "</td>" );
+			        respuesta.write( "<td>" + pedido.getFechaPedido() + "</td>" );
+			        respuesta.write( "<form method=\"POST\" action=\"eliminarPedido.htm\"><td><input type=\"submit\" name=\"eliminar\" value=\"Eliminar Pedido\"><input type=\"hidden\" name=\"pedidoEliminado\" value=" + pedido.getProducto() + "></td></form>" );
 			        respuesta.write( "</tr>" );
 				}
 		        respuesta.write( "</table>" );
