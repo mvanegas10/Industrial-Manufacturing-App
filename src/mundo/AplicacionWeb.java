@@ -276,7 +276,7 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			poblarTablas();
+			
 		}
 		catch (Exception e)
 		{

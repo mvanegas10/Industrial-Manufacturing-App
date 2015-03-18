@@ -182,7 +182,7 @@ public class CRUD {
 		}
 		
 		try{
-			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//productosEtapaProduccion.csv"));
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//productosEtapasProduccion.csv"));
 			String linea = null;
 			while((linea = reader.readLine())!=null){
 				String[] lineaInsertar = linea.split(",");

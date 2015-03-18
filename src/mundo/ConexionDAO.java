@@ -303,6 +303,29 @@ public class ConexionDAO
 			s8.close();
 			crearTabla = false;
 			
+			Statement s9 = conexion.createStatement( );
+			try
+			{
+				// Verificar si ya existe la tabla
+				s9.executeQuery( "SELECT * FROM Pedidos" );
+			}
+			catch( SQLException se )
+			{
+				// La excepci�n se lanza si la tabla no existe
+				crearTabla = true;
+			}
+
+			// Se crea una nueva tabla vac�a
+			if( crearTabla )
+			{
+				s9.execute( "CREATE TABLE Pedidos (id varchar(32), idproducto varchar(32), idCliente varchar(32), cantidad int, diaPedido int, mesPedido int, diaEntrega int, mesEntrega int PRIMARY KEY (id), CONSTRAINT fk_idProducto FOREIGN KEY (idproducto) REFERENCES productos(id)");
+				System.out.println("Se cre� la tabla Pedidos");
+			}
+			else
+				System.out.println("La tabla Pedidos ya existe");
+			s9.close();
+			crearTabla = false;
+			
 		}
 		catch (Exception e)
 		{
