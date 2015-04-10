@@ -5,15 +5,21 @@ import java.util.List;
 
 public class EstacionProduccion {
 	
+	public static final String NOMBRE = "estacionProduccion";
+	
+	public static final String[] COLUMNAS = {"id", "idSiguiente"};
+	
+	public static final String[] TIPO = {"String", "String"};
+	
 	//--------------------------------------------------
 	// ATRIBUTOS
 	//--------------------------------------------------
 	
 	private String id;
 	
-	private EstacionProduccion siguiente;
+	private String idSiguiente;
 	
-	private ArrayList<EtapaProduccion> etapasProduccion;
+	private ArrayList<EstacionProduccion> etapasProduccion;
 	
 	private List<String[]> matrizReglasProduccion;
 	
@@ -21,9 +27,9 @@ public class EstacionProduccion {
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
-	public EstacionProduccion(String pId, EstacionProduccion pSiguiente, ArrayList<EtapaProduccion> pEtapasProduccion, List<String[]> pMatrizReglasProduccion) {
+	public EstacionProduccion(String pId, String pSiguiente, ArrayList<EstacionProduccion> pEtapasProduccion, List<String[]> pMatrizReglasProduccion) {
 		this.id = pId;
-		this.siguiente = pSiguiente;
+		this.idSiguiente = pSiguiente;
 		this.etapasProduccion = pEtapasProduccion;
 		this.matrizReglasProduccion = pMatrizReglasProduccion;
 	}
@@ -40,19 +46,19 @@ public class EstacionProduccion {
 		this.id = id;
 	}
 
-	public EstacionProduccion getSiguiente() {
-		return siguiente;
+	public String getSiguiente() {
+		return idSiguiente;
 	}
 
-	public void setSiguiente(EstacionProduccion siguiente) {
-		this.siguiente = siguiente;
+	public void setSiguiente(String idSiguiente) {
+		this.idSiguiente = idSiguiente;
 	}
 
-	public ArrayList<EtapaProduccion> getEtapasProduccion() {
+	public ArrayList<EstacionProduccion> getEtapasProduccion() {
 		return etapasProduccion;
 	}
 
-	public void setEtapasProduccion(ArrayList<EtapaProduccion> etapasProduccion) {
+	public void setEtapasProduccion(ArrayList<EstacionProduccion> etapasProduccion) {
 		this.etapasProduccion = etapasProduccion;
 	}
 

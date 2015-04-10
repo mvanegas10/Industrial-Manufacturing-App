@@ -26,12 +26,11 @@ public class ServletIngresar extends ServletAbstract{
 				
 			String usuario = request.getParameter("usuario");
 			String constrasenia = request.getParameter("contrasenia");
-			String tipo = request.getParameter("tipo");
-			String tipoUsuario;
+			String tipo;
 			
 			try
 			{
-				tipoUsuario = AplicacionWeb.getInstancia().ingresarUsuario(usuario, constrasenia);
+				tipo = AplicacionWeb.getInstancia().ingresarUsuario(usuario, constrasenia);
 				aceptarIngreso(respuesta, usuario, tipo);
 			}
 			catch(Exception e)
@@ -53,7 +52,7 @@ public class ServletIngresar extends ServletAbstract{
 		{
 	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>" + tipo.toUpperCase() + ": " + login + "</FONT></td>" );
+	        respuesta.write( "<td><h3> BIENVENIDO " + tipo.toUpperCase() + ": " + login + "</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 			respuesta.write( "<div></div>" );
@@ -80,7 +79,7 @@ public class ServletIngresar extends ServletAbstract{
 		{
 	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>" + tipo.toUpperCase() + ": " + login + "</FONT></td>" );
+	        respuesta.write( "<td><h3> BIENVENIDO " + tipo.toUpperCase() + ": " + login + "</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 			respuesta.write( "<div></div>" );
@@ -101,7 +100,7 @@ public class ServletIngresar extends ServletAbstract{
 		
         respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
         respuesta.write( "<tr>" );
-        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Error: Usuario o contrase�a incorrectos</FONT></td>" );
+        respuesta.write( "<td><h3>Error: Usuario o contrasenia incorrectos</FONT></td>" );
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
 		

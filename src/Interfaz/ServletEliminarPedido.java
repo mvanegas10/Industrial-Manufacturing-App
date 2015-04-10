@@ -30,14 +30,14 @@ public class ServletEliminarPedido extends ServletAbstract {
 			}
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Su pedido se ha eliminado de manera correcta.</FONT></td>" );
+	        respuesta.write( "<td><h3>Su pedido se ha eliminado de manera correcta.</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
 		catch(Exception e){
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Hubo un error en el proceso</FONT></td>" );
+	        respuesta.write( "<td><h3>Hubo un error en el proceso</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}

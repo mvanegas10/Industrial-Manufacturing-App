@@ -32,14 +32,14 @@ public class ServletRegistrarPedido extends ServletAbstract{
 			AplicacionWeb.getInstancia().registrarPedidoCliente(productoPedido, cantidad, pedido, entrega);
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El pedido se ha diligenciado de manera satisfactoria, la fecha de entrega es el " + entrega + "</FONT></td>" );
+	        respuesta.write( "<td><h3>El pedido se ha diligenciado de manera satisfactoria, la fecha de entrega es el " + entrega + "</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
 		catch (Exception e){
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El producto no tiene las unidades disponibles que desea.</FONT></td>" );
+	        respuesta.write( "<td><h3>El producto no tiene las unidades disponibles que desea.</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}

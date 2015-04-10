@@ -39,7 +39,7 @@ public class ServletRegistrarProducto extends ServletAbstract{
 		catch(Exception e){
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Ingrese por lo menos una etapa</FONT></td>" );
+	        respuesta.write( "<td><h3>Ingrese por lo menos una etapa</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
@@ -129,7 +129,7 @@ public class ServletRegistrarProducto extends ServletAbstract{
 			AplicacionWeb.getInstancia().registrarProductoEtapasProduccion(datosEtapaProduccion);
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Su producto y las etapas de produccion se han registrado de manera exitosa</FONT></td>" );
+	        respuesta.write( "<td><h3>Su producto y las etapas de produccion se han registrado de manera exitosa</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
@@ -137,7 +137,7 @@ public class ServletRegistrarProducto extends ServletAbstract{
 		{
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Hubo un error al registrar el producto y sus etapas de produccion</FONT></td>" );
+	        respuesta.write( "<td><h3>Hubo un error al registrar el producto y sus etapas de produccion</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}

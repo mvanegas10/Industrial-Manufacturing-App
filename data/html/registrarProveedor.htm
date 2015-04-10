@@ -1,15 +1,17 @@
 <html>
 	<head>
 		<a href="index.htm"><title>ProdAndes - Ingresar</title></a>
+		<link rel="stylesheet" href="bootstrap.min.css">
 	</head>
-	<body bgcolor="#bdc3c7">
+	<body>
 		<form method="POST" action="registroMateriaPrimaProveedor.htm">
 			<table bgcolor="#ecf0f1" width=100%>
 				<tr>
-					<td><FONT face="arial" size=10 color=#34495e><a href=\"index.htm\">ProdAndes</a></FONT></td>
-					<td><FONT face="arial" size=5 color=#34495e>Registro de Proveedores al Sistema</FONT></td>
+					<td><h1><a href=\"index.htm\">ProdAndes</a></h1></td>
+					<td><h2 style="text-align:right">Registro de Proveedores al Sistema</h2></td>
 				</tr>
 			</table>
+			<hr>
 			<table bgcolor="#bdc3c7" width=100%>
 				<tr>
 					<td></td>
@@ -18,20 +20,34 @@
 			<table align= center bgcolor="#ecf0f1" width="80%">
 				<tr>
 					<td>Ciudad</td>
-					<td>Direccion</td>
-					<td>Tel�fono</td>
-					<td>Id Rep Legal</td>
-					<td>Materias Primas</td>
-					<td>Componentes</td>
+					<td><input type="text" name="ciudad" size="23" class="normal"></td>
 				</tr>
+				<tr></tr>
+				<tr>
+					<td>Direccion</td>
+					<td><input type="text" name="direccion" size="23" class="normal"></td>
+				</tr>
+				<tr></tr>
+				<tr>
+					<td>Telefono</td>
+					<td><input type="text" name="telefono" size="23" class="normal"></td>
+				</tr>
+				<tr></tr>
+				<tr>
+					<td>Id Rep Legal</td>
+					<td><input type="text" name="idRepLegal" size="23" class="normal"></td>
+				</tr>
+				<tr></tr>
 				<tr>	
-					<td><input type="text" name="ciudad" size="33" class="normal"></td>
-					<td><input type="text" name="direccion" size="33" class="normal"></td>					
-					<td><input type="text" name="telefono" size="33" class="normal"></td>
-					<td><input type="text" name="idRepLegal" size="33" class="normal"></td>
+					<td>Materias Primas</td>
 					<td><input type="submit" value="Registrar" name="registrarMP" class="normal"></td>
+				</tr>
+				<tr></tr>
+				<tr>
+					<td>Componentes</td>
 					<td><input type="submit" value="Registrar" name="registrarC" class="normal"></td>
 				</tr>
+				<tr></tr>
 			</table>
 			<p align=center>
 			<input type="submit" value="Registrar" name="B1" class="normal">

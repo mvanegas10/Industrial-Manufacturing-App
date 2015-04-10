@@ -92,7 +92,7 @@ public class ServletRegistrarEtapasProduccion extends ServletAbstract{
 		{
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El producto ya se encuentra registrado</FONT></td>" );
+	        respuesta.write( "<td><h3>El producto ya se encuentra registrado</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}

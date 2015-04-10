@@ -128,17 +128,32 @@ public class CRUD {
 		try
 		{
 			Statement s = conexion.createStatement();
-			String sql = "SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion ;
+			String sql = "SELECT tipo FROM usuario WHERE login = 'meili' and password = 'meili'";
 			System.out.println(sql);
 			ResultSet rS = s.executeQuery (sql);
-			System.out.println(rS.getString("id"));
 			while (rS.next()){
-				System.out.println(rS.getString("id"));
-				resultado.add(rS.getString("id"));	
+				System.out.println("Hola");
+				resultado.add(rS.getString(1));	
 			}
 			s.close();
 		}
 		catch (Exception e)
+		{
+			throw new Exception("No se encntr� el registro en la tabla " + tabla);
+		}
+		try
+		{
+			Statement s = conexion.createStatement();
+			String sql = "SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion ;
+			System.out.println(sql);
+			ResultSet rS = s.executeQuery (sql);
+			while (rS.next()){
+				System.out.println("Hola");
+				resultado.add(rS.getString(1));	
+			}
+			s.close();
+		}
+		catch (Exception e1)
 		{
 			throw new Exception("No se encntr� el registro en la tabla " + tabla);
 		}

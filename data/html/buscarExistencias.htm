@@ -1,15 +1,17 @@
 <html>
 	<head>
 		<a href="index.htm"><title>ProdAndes - Busqueda</title></a>
+		<link rel="stylesheet" href="bootstrap.min.css">
 	</head>
 	<body bgcolor="#bdc3c7">
 		<form method="POST" action="resultadoBusqueda.htm">
 			<table bgcolor="#ecf0f1" width=100%>
 				<tr>
-					<td><FONT face="arial" size=10 color=#34495e><a href=index.htm>ProdAndes</a></FONT></td>
-					<td><FONT face="arial" size=5 color=#34495e>Busqueda de Existencias</FONT></td>
+					<td><h1><a href=index.htm>ProdAndes</a></h1></td>
+					<td><h2 style="text-align:right">Busqueda de Existencias</h2></td>
 				</tr>
 			</table>
+			<hr>
 			<table bgcolor="#bdc3c7" width=100%>
 				<tr>
 					<td></td>
@@ -18,9 +20,25 @@
 
 			<table bgcolor="#ecf0f1" width=100%>
 				<tr>
-					<td><FONT face="arial" size=3 color=#34495e>Criterios de búsqueda</FONT></td>
+					<td><h3>Criterio de búsqueda</h3></td>
 				</tr>
 			</table>
+			<table align="center" bgcolor="#ecf0f1" width=20%>
+				<select size="1" name="criterio" id="criterio" class="normal">
+					<option value="tipo">Tipo Material</option>
+					<option value="nombre">Nombre Material</option>
+					<option value="cantidad">Cantidad Inventario</option>
+					<option value="etapa">Etapa Produccion</option>
+				</select>
+			</table>
+			<script type="text/javascript">
+				jQuery(document).ready(function(){
+					jQuery("#criterio").change(function(){
+						jQuery(".toggle").hide();
+						jQuery("#" + jQuery(this).val()).show();
+					});
+				});
+			</script>
 			<table bgcolor="#bdc3c7" width=100%>
 				<tr>
 					<td></td>
@@ -52,7 +70,7 @@
 					<td><input type="text" name="etapaProd" class="normal"></td>
 				</tr>
 			</table>
-			<table align= center bgcolor="#ecf0f1" width="80%"><tr><td size=1>*Puede dejar espacios en blanco, segun el tipo de busqueda que desea hacer</td></tr></table>
+			<table align= center bgcolor="#ecf0f1" width="80%"><tr><small>*Puede dejar espacios en blanco, segun el tipo de busqueda que desea hacer</small></tr><tr></tr></table>
 			<table bgcolor="#bdc3c7" width=100%>
 				<tr>
 					<td></td>
@@ -60,7 +78,7 @@
 			</table>
 			<table align= center bgcolor="#ecf0f1" width=100%>
 				<tr>
-					<td><FONT face="arial" size=3 color=#34495e>Detalles de búsqueda</FONT></td>
+					<td><h3>Detalles de búsqueda</h3></td>
 				</tr>
 			</table>
 			<table bgcolor="#bdc3c7" width=100%>
@@ -83,7 +101,7 @@
 					<td><input type="text" name="agrupar" class="normal"></td>
 				</tr>
 			</table>
-			<table align= center bgcolor="#ecf0f1" width="80%"><tr><td size=1>*Puede dejar espacios en blanco, segun el tipo de busqueda que desea hacer</td></tr></table>
+			<table align= center bgcolor="#ecf0f1" width="80%"><tr><small>*Puede dejar espacios en blanco, segun el tipo de busqueda que desea hacer</small></tr><tr></tr></table>
 			<p align=center>
 			<input type="hidden" value="buscarAdmin" name="criterio" class="normal">
 			<input type="submit" value="Buscar" name="bus" class="normal">

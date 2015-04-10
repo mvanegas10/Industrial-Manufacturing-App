@@ -2,6 +2,12 @@ package mundo;
 
 public class EtapaProduccion {
 	
+	public static final String NOMBRE = "etapaProduccion";
+	
+	public static final String[] COLUMNAS = {"id", "numSecuencia", "idProducto", "idSiguiente"};
+	
+	public static final String[] TIPO = {"String", "int", "String", "String"};
+	
 	//--------------------------------------------------
 	// ATRIBUTOS
 	//--------------------------------------------------
@@ -10,19 +16,19 @@ public class EtapaProduccion {
 	
 	private int numeroSecuencia;
 	
-	private Producto producto;
+	private String idProducto;
 	
-	private EtapaProduccion siguiente;
+	private String idSiguiente;
 
 	//--------------------------------------------------
 	// CONSTRUCTOR
 	//--------------------------------------------------
 	
-	public EtapaProduccion(String pId, int pNumeroSecuencia, Producto pProducto, EtapaProduccion pSiguiente) {
+	public EtapaProduccion(String pId, int pNumeroSecuencia, String pProducto, String pSiguiente) {
 		this.id = pId;
 		this.numeroSecuencia = pNumeroSecuencia;
-		this.producto = pProducto;
-		this.siguiente = pSiguiente;
+		this.idProducto = pProducto;
+		this.idSiguiente = pSiguiente;
 	}
 	
 	//--------------------------------------------------
@@ -45,20 +51,20 @@ public class EtapaProduccion {
 		this.numeroSecuencia = numeroSecuencia;
 	}
 
-	public Producto getProducto() {
-		return producto;
+	public String getProducto() {
+		return idProducto;
 	}
 
-	public void setProducto(Producto producto) {
-		this.producto = producto;
+	public void setProducto(String idProducto) {
+		this.idProducto = idProducto;
 	}
 
-	public EtapaProduccion getSiguiente() {
-		return siguiente;
+	public String getSiguiente() {
+		return idSiguiente;
 	}
 
-	public void setSiguiente(EtapaProduccion siguiente) {
-		this.siguiente = siguiente;
+	public void setSiguiente(String idSiguiente) {
+		this.idSiguiente = idSiguiente;
 	}
 	
 	//--------------------------------------------------

@@ -1,30 +1,34 @@
 <html>
 	<head>
 		<a href="index.htm"><title>ProdAndes - Ingresar</title></a>
+		<link rel="stylesheet" href="bootstrap.min.css">
 	</head>
 	<body bgcolor="#bdc3c7">
 		<form method="POST" action="ingreso.htm">
-			<table bgcolor="#ecf0f1" width=100%>
+			<table bgcolor="#ecf0f1" width=100% cellpadding="40">
 				<tr>
-					<td><FONT face="arial" size=10 color=#34495e><a href=index.htm>ProdAndes</a></FONT></td>
-					<td><FONT face="arial" size=5 color=#34495e>Ingreso de Usuarios</FONT></td>
+					<td><h1><a href=index.htm>ProdAndes</a></h1></td>
+					<td><h2 style="text-align:right">Ingreso de Usuarios</h2></td>
 				</tr>
 			</table>
+			<hr>
 			<table bgcolor="#bdc3c7" width=100%>
 				<tr>
 					<td></td>
 				</tr>
 			</table>	
 			<table align= center bgcolor="#ecf0f1" width="30%">
+				<tr></tr>
 				<tr>
-					<p align=center><td width="64" align="center" height="30"><b>Usuario:</b></td></p>
+					<td width="64" align="left" height="30">Usuario:</td>
 					<td height="30"><input type="text" name="usuario" size="33" class="normal"></td>
 				</tr>
+				<tr></tr>
 				<tr>
-					<p align=center><td width="64" align="right" height="30"><b>Constrasenia:</b></td></p>
-					<td height="30"><input type="password" name="contrasenia" size="33" class="normal"></td>
+					<td width="64" align="left" height="30">Contrasenia:</td>
+					<td width="100" height="30"><input type="password" name="contrasenia" size="33" class="normal"></td>
 				</tr>
-				<input type="hidden" name="tipo" value="ninguno">
+				<tr></tr>
 			</table>
 			<p align=center>
 			<input type="submit" value="Ingresar" name="Ingresar" class="normal">

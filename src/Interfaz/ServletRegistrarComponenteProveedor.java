@@ -51,7 +51,6 @@ public class ServletRegistrarComponenteProveedor extends ServletAbstract {
 		respuesta.write( "<body bgcolor=\"#bdc3c7\">" );
 		respuesta.write( "<form method=\"POST\" action=\"registroProveedor.htm\">" );
 		respuesta.write( "<style>" );
-		respuesta.write( "<style>" );
 		respuesta.write( "SELECT, INPUT[type=\"text\"] {" );
 		respuesta.write( "width: 160px;" );
 		respuesta.write( "box-sizing: border-box;" );
@@ -98,7 +97,7 @@ public class ServletRegistrarComponenteProveedor extends ServletAbstract {
 	public void noHayComponentes (PrintWriter respuesta){
         respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
         respuesta.write( "<tr>" );
-        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Error: No hay registrado ningun componente, primero registre componentes a ProdAndes</FONT></td>" );
+        respuesta.write( "<td><h3>Error: No hay registrado ningun componente, primero registre componentes a ProdAndes</h3></td>" );
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
 	}

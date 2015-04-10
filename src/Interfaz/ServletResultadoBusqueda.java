@@ -35,7 +35,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				ArrayList<Producto> productos = AplicacionWeb.getInstancia().buscarProducto(nombre);
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Los productos encontrados son los siguientes:</FONT></td>" );
+		        respuesta.write( "<td><h3>Los productos encontrados son los siguientes:</h3></td>" );
 		        respuesta.write( "</tr>" );
 		        respuesta.write( "</table>" );
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
@@ -58,7 +58,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			catch (Exception e){
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El producto buscado no esta disponible</FONT></td>" );
+		        respuesta.write( "<td><h3>El producto buscado no esta disponible</h3></td>" );
 		        respuesta.write( "</tr>" );
 		        respuesta.write( "</table>" );
 				
@@ -102,7 +102,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				ArrayList<Pedido> pedidos = AplicacionWeb.getInstancia().buscarPedidosCliente(diaSolicitud, pedido1, diaEntrega, entrega1);
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Los pedidos encontrados son los siguientes:</FONT></td>" );
+		        respuesta.write( "<td><h3>Los pedidos encontrados son los siguientes:</h3></td>" );
 		        respuesta.write( "</tr>" );
 		        respuesta.write( "</table>" );
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
@@ -127,7 +127,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			catch (Exception e){
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El pedido buscado no existe</FONT></td>" );
+		        respuesta.write( "<td><h3>El pedido buscado no existe</h3></td>" );
 		        respuesta.write( "</tr>" );
 		        respuesta.write( "</table>" );
 			}
@@ -174,7 +174,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				catch (Exception e){
 			        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 			        respuesta.write( "<tr>" );
-			        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El producto buscado no existe</FONT></td>" );
+			        respuesta.write( "<td><h3>El producto buscado no existe</h3></td>" );
 			        respuesta.write( "</tr>" );
 			        respuesta.write( "</table>" );
 				}
@@ -206,7 +206,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				catch (Exception e){
 			        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 			        respuesta.write( "<tr>" );
-			        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El producto buscado no existe</FONT></td>" );
+			        respuesta.write( "<td><h3>El producto buscado no existe</h3></td>" );
 			        respuesta.write( "</tr>" );
 			        respuesta.write( "</table>" );
 				}
@@ -214,7 +214,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>El producto buscado no existe</FONT></td>" );
+	        respuesta.write( "<td><h3>El producto buscado no existe</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}

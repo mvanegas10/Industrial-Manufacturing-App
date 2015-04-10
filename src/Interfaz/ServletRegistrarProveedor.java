@@ -36,7 +36,7 @@ public class ServletRegistrarProveedor extends ServletAbstract{
 			AplicacionWeb.getInstancia().registrarProveedorComponente(datosProveedorComponente);
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Se pudo agregar el proveedor con el id " + idProveedor + " de manera correcta</FONT></td>" );
+	        respuesta.write( "<td><h3>Se pudo agregar el proveedor con el id " + idProveedor + " de manera correcta</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
@@ -44,7 +44,7 @@ public class ServletRegistrarProveedor extends ServletAbstract{
 		{
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>No se pudo registrar el proveedor</FONT></td>" );
+	        respuesta.write( "<td><h3>No se pudo registrar el proveedor</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}

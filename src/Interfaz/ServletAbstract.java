@@ -65,20 +65,18 @@ public abstract class ServletAbstract extends HttpServlet{
         // Imprime el header
         respuesta.write( "<html>" );
         respuesta.write( "<head>" );
-        respuesta.write( "<title>ProdAndes - " + darTituloPagina( request ) + "</title>" );
+        respuesta.write( "<a href=\"index.htm\"><title>ProdAndes - Ingresar</title></a>" );
+        respuesta.write( "<link rel=\"stylesheet\" href=\"bootstrap.min.css\">" );
         respuesta.write( "</head>" );
         respuesta.write( "<body bgcolor=\"#bdc3c7\">" );
-        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=100%>" );
+        respuesta.write( "<form method=\"POST\" action=\"ingreso.htm\">" );
+        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=100% cellpadding=\"40\">" );
         respuesta.write( "<tr>" );
-        respuesta.write( "<td><FONT face=\"arial\" size=10 color=#34495e><a href=\"index.htm\">ProdAndes</a></FONT></td>" );
-        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>" + darTituloPagina( request ) + "</FONT></td>" );
+        respuesta.write( "<td><h1><a href=index.htm>ProdAndes</a></h1></td>" );
+        respuesta.write( "<td><h2 style=\"text-align:right\">Ingreso de Usuarios</h2></td>" );
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
-        respuesta.write( "<table bgcolor=\"#bdc3c7\" width=100%>" );
-        respuesta.write( "<tr>" );
-        respuesta.write( "<td></td>" );
-        respuesta.write( "</tr>" );
-        respuesta.write( "</table>" );
+        respuesta.write( "<hr>" );
     }
 
     /**
@@ -94,7 +92,6 @@ public abstract class ServletAbstract extends HttpServlet{
         //
         // Imprime el footer
 
-        respuesta.write( "</table>" );
         respuesta.write( "</body>" );
         respuesta.write( "</html>" );
        

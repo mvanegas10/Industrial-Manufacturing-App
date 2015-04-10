@@ -52,14 +52,14 @@ public class ServletRegistrar extends ServletAbstract{
 		{
 	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>" + tipo.toUpperCase() + ": " + login + "</FONT></td>" );
+	        respuesta.write( "<td><h3> BIENVENIDO " + tipo.toUpperCase() + ": " + login + "</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 			respuesta.write( "<div></div>" );
 	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<td>Registrar Proveedor</td>" );
-	        respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><input type=\"submit\" value=\"Registrar\" name=\"registrar\" class=\"normal\"></form></td>" );
+	        respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><input type=\"submit\" value=\"Registrar\" name=\"regProve\" class=\"normal\"></form></td>" );
 	        respuesta.write( "<td>.</td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "<tr>" );
@@ -86,7 +86,7 @@ public class ServletRegistrar extends ServletAbstract{
 		{
 	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>" + tipo.toUpperCase() + ": " + login + "</FONT></td>" );
+	        respuesta.write( "<td><h3> BIENVENIDO " + tipo.toUpperCase() + ": " + login + "</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 			respuesta.write( "<div></div>" );
@@ -109,7 +109,7 @@ public class ServletRegistrar extends ServletAbstract{
 		
         respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
         respuesta.write( "<tr>" );
-        respuesta.write( "<td><FONT face=\"arial\" size=5 color=#34495e>Error: Ya existe un usuario con ese login</FONT></td>" );
+        respuesta.write( "<td><h3>Error: Ya existe un usuario con ese login</h3></td>" );
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
 		

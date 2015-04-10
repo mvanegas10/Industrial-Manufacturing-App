@@ -1,13 +1,20 @@
 <html>
 	<head>
 		<a href="index.htm"><title>ProdAndes - Ingresar</title></a>
+		<link rel="stylesheet" href="bootstrap.min.css">
 	</head>
 	<body bgcolor="#bdc3c7">
 		<form method="POST" action="registroMateriaPrimaProveedor.htm">
 			<table bgcolor="#ecf0f1" width=100%>
 				<tr>
-					<td><FONT face="arial" size=10 color=#34495e><a href=index.htm>ProdAndes</a></FONT></td>
-					<td><FONT face="arial" size=5 color=#34495e>Registro de Productos en el Sistema</FONT></td>
+					<td><h1><a href=index.htm>ProdAndes</a></h1></td>
+					<td><h2 style="text-align:right">Registro de Productos en el Sistema</h2></td>
+				</tr>
+			</table>
+			<hr>
+			<table bgcolor="#bdc3c7" width=100%>
+				<tr>
+					<td></td>
 				</tr>
 			</table>
 			<table bgcolor="#bdc3c7" width=100%>
@@ -17,15 +24,25 @@
 			</table>
 			<table align= center bgcolor="#ecf0f1" width="80%">
 				<tr>
-					<td>Nombre</td>
-					<td>Precio</td>
-                    <td>Etapas de Produccion</td>
+					<td>Numero Secuencia</td>
+					<td><input type="text" name="numSecuencia" size="33" class="normal"></td>
 				</tr>
+				<tr></tr>
+				<tr>
+					<td>Descripcion</td>
+					<td><input type="text" name="descripcion" size="33" class="normal"></td>		    
+				</tr>
+				<tr></tr>
 				<tr>	
-					<td><input type="text" name="ciudad" size="33" class="normal"></td>
-					<td><input type="text" name="direccion" size="33" class="normal"></td>					
-					<td><input type="submit" value="Registrar" name="registrarMP" class="normal"></td>
+					<td>Siguiente etapa</td>			
+					<td><input type="submit" value="RegistrarSiguiente" name="registrarS" class="normal"></td>
 				</tr>
+				<tr></tr>
+				<tr>	
+					<td>Finalizar Etapas</td>			
+					<td><input type="submit" value="RegistrarFinal" name="registrarF" class="normal"></td>
+				</tr>
+				<tr></tr>
 			</table>
 			<p align=center>
 			<input type="submit" value="Registrar" name="B1" class="normal">

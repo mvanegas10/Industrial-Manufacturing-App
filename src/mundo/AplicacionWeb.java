@@ -1,11 +1,8 @@
 package mundo;
 
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import Interfaz.Principal;
 
 public class AplicacionWeb {
 	
@@ -92,7 +89,7 @@ public class AplicacionWeb {
 	}
 	
 	public String ingresarUsuario (String login, String password) throws Exception{
-		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "login, password", login + ", " + password);
+		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "tipo", "login = " + login + " AND password = " + password);
 		usuarioActual = login;
 		if ( usuario.get(0) != null )
 			return usuario.get(0);
@@ -320,8 +317,10 @@ public class AplicacionWeb {
 	
 	public static void main(String[] args) {
 		AplicacionWeb aplicacionWeb = getInstancia();
+		
 		try
 		{
+			crud.darSubTabla("usuarios", "tipo", "login = 'meili'");
 			ArrayList<String> tuplas = crud.darSubTabla(MateriaPrima.NOMBRE, "id", "unidadMedida = gramos");
 			for (String string : tuplas) {
 				System.out.println(string);
@@ -331,6 +330,23 @@ public class AplicacionWeb {
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean registrarRegistro (String idProducto, int cantidad) throws Exception{
+		try
+		{
+			ArrayList<String> tuplas = crud.darSubTabla(Registro.NOMBRE, "idProducto", "idProducto = " + idProducto);
+			for (String string : tuplas) {
+				System.out.println(string);
+			}
+		}
+		catch (Exception e)
+		{
+			ArrayList<String> etapas = crud.darSubTabla(Producto.NOMBRE_RELACION_ETAPA_PRODUCCION, "idEtapa", "id_Producto = '" + idProducto + "'");
+			String[] datos =  {Integer.toString(darContadorId()),};
+			crud.insertarTupla(Registro.NOMBRE, Registro.COLUMNAS, Registro.TIPO, datos);
+		}
+		return true;
 	}
 
 }

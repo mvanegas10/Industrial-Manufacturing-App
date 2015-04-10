@@ -16,9 +16,9 @@ public class Producto {
 	
 	public final static String NOMBRE_RELACION_ETAPA_PRODUCCION = "productosEtapasProduccion";
 	
-	public final static String[] COLUMNA_RELACION_ETAPA_PRODUCCION = {"id_producto", "numSecuencia", "descripcion"};
+	public final static String[] COLUMNA_RELACION_ETAPA_PRODUCCION = {"id_producto", "idEtapa", "descripcion"};
 	
-	public final static String[] TIPO_RELACION_ETAPA_PRODUCCION = {"String", "int", "String"};
+	public final static String[] TIPO_RELACION_ETAPA_PRODUCCION = {"String", "String", "String"};
 	
 	private String id;
 
