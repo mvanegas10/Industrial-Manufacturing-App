@@ -113,7 +113,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE clientes (id varchar(32), nombre varchar(32), direccion varchar(32), telefono varchar(32), juridico varchar(32), ciudad varchar(32), idRepLegal varchar(32), PRIMARY KEY (id))" );
+				s.execute( "CREATE TABLE clientes (id varchar(32), nombre varchar(32), direccion varchar(32), telefono varchar(32), juridico varchar(32), ciudad varchar(32), idRepLegal varchar(32), PRIMARY KEY (id), CONSTRAINT fk_ClienUser FOREIGN KEY (id) REFERENCES usuarios(login))" );
 				System.out.println("Se cre� la tabla clientes");
 			}
 			else
@@ -307,7 +307,7 @@ public class ConexionDAO
 			try
 			{
 				// Verificar si ya existe la tabla
-				s9.executeQuery( "SELECT * FROM Pedidos" );
+				s9.executeQuery( "SELECT * FROM pedidos" );
 			}
 			catch( SQLException se )
 			{
@@ -318,7 +318,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s9.execute( "CREATE TABLE Pedidos (id varchar(32), idproducto varchar(32), idCliente varchar(32), cantidad int, diaPedido int, mesPedido int, diaEntrega int, mesEntrega int, PRIMARY KEY (id), CONSTRAINT fk_idProducto FOREIGN KEY (idproducto) REFERENCES productos(id))");
+				s9.execute( "CREATE TABLE pedidos (id varchar(32), idProducto varchar(32), idCliente varchar(32), cantidad int, diaPedido int, mesPedido int, diaEntrega int, mesEntrega int, PRIMARY KEY (id), CONSTRAINT fk_idProdPed FOREIGN KEY (idProducto) REFERENCES productos(id), CONSTRAINT fk_idCliPed FOREIGN KEY (idCliente) REFERENCES usuarios(login))");
 				System.out.println("Se cre� la tabla Pedidos");
 			}
 			else
@@ -347,6 +347,28 @@ public class ConexionDAO
 			else
 				System.out.println("La tabla etapasProduccion ya existe");
 			s10.close();
+			crearTabla = false;
+			Statement s11 = conexion.createStatement( );
+			try
+			{
+				// Verificar si ya existe la tabla
+				s11.executeQuery( "SELECT * FROM generadorId" );
+			}
+			catch( SQLException se )
+			{
+				// La excepci�n se lanza si la tabla no existe
+				crearTabla = true;
+			}
+
+			// Se crea una nueva tabla vac�a
+			if( crearTabla )
+			{
+				s11.execute( "CREATE TABLE generadorId (id varchar(32), PRIMARY KEY (id))" );
+				System.out.println("Se cre� la tabla generadorId");
+			}
+			else
+				System.out.println("La tabla generadorId ya existe");
+			s11.close();
 			crearTabla = false;
 		}
 		catch (Exception e)

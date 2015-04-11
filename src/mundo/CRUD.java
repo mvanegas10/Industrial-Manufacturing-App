@@ -44,25 +44,18 @@ public class CRUD {
 		    	}
 		    }
 			String sql = "INSERT INTO " + tabla + " " + atributos + " VALUES " + values;
-			
 			PreparedStatement statement = conexion.prepareStatement(sql); 
 			for(int i =0; i<columnas.length; i++){
 				if(tipos[i].equals("String")){
-					statement.setString(i+1, datos[i]);
-					System.out.println(i+1 + datos[i]);
+					statement.setString(i+1, "'" +  datos[i] + "'");
+					System.err.println( "'" +  datos[i] + "'");
 				}
-				if(tipos[i].equals("int")){
+				else if(tipos[i].equals("int")){
 					statement.setInt(i+1, Integer.parseInt(datos[i]));
-					System.out.println(i+1 + datos[i]);
-				}
-				if(tipos[i].equals("Date")){
-					statement.setDate(0, Date.valueOf(datos[i]));
-					System.out.println(i+1 + datos[i]);
-				}
-				
+					System.err.println(Integer.parseInt(datos[i]));
+				}	
 			}
-			
-			System.out.println(sql);
+			System.err.println(sql);
 			
 			int filasInsertadas = statement.executeUpdate();
 			

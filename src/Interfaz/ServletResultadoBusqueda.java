@@ -49,8 +49,8 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				respuesta.write( "<tr>" );
 	        	respuesta.write( "<tr><td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\"></td>" );
 	        	respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=10%>" );
-		        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto: \" name=\"producto\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + producto + "</td></tr>" );
-		        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Precio: \" name=\"precio\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + rta.get(i) + "</td></tr>" );
+		        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><input value=\"" + producto + "\" name=\"producto\" type=\"hidden\"\"><td align=\"right\">" + producto + "</td></tr>" );
+		        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Precio: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + rta.get(i) + "</td></tr>" );
 		        respuesta.write( "<tr><td><table bgcolor=\"#ecf0f1\" width=10%>" );
 		        respuesta.write( "<tr><td align=\"left\"><h4>Unidades: </h4></td>" );
 		        respuesta.write( "<td align=\"right\">" );

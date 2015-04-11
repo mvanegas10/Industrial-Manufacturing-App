@@ -12,6 +12,12 @@ public class AplicacionWeb {
 	// ATRIBUTOS
 	//--------------------------------------------------
 		
+	public static final String ID = "generadorId";
+	
+	public static final String[] COLUMNAS = {"id"};
+	
+	public static final String[] TIPO = {"String"};
+	
 	private static CRUD crud;
 	
 	private static ConexionDAO conexion;
@@ -39,7 +45,15 @@ public class AplicacionWeb {
 		conexion.iniciarConexion();
 		conexion.crearTablas();
 		crud = new CRUD(conexion);
-		contadorId = 1000;
+		try
+		{
+			Statement s = crud.darConexion().createStatement();
+			ResultSet rs = s.executeQuery("SELECT MAX(id) FROM generadorId");
+			contadorId = rs.getInt(0);
+		}
+		catch (Exception e){
+			contadorId = 1000;
+		}
 		usuarioActual = "";
 	}
 	
@@ -76,15 +90,13 @@ public class AplicacionWeb {
 	}
 	
 	public int darContadorId(){
-		return contadorId++;
+		return ++contadorId;
 	}
 	
 	public void registrarUsuario (String login, String password, String tipo) throws Exception{
 		String[] datos = {login, password, tipo};
-		
 		crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
 		usuarioActual = login;
-		
 	}
 	
 	public String ingresarUsuario (String login, String password) throws Exception{
@@ -162,7 +174,9 @@ public class AplicacionWeb {
 	}
 	
 	public void registrarPedidoCliente (String login, String producto, int cantidad, Date pedido, Date entrega) throws Exception{
-		String[] datos = {Integer.toString(darContadorId()), producto, login, Integer.toString(cantidad), Integer.toString(pedido.getDate()), Integer.toString(pedido.getMonth()), Integer.toString(entrega.getDate()), Integer.toString(entrega.getMonth())};
+		ArrayList<String> idProducto = new ArrayList<String>();
+		idProducto = crud.darSubTabla(Producto.NOMBRE, "id", " nombre = '" + producto + "' ");
+		String[] datos = {Integer.toString(darContadorId()), idProducto.get(0), login, Integer.toString(cantidad), Integer.toString(pedido.getDate()), Integer.toString(pedido.getMonth()), Integer.toString(entrega.getDate()), Integer.toString(entrega.getMonth())};
 		crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datos);
 	}
 	
@@ -334,22 +348,7 @@ public class AplicacionWeb {
 		return componentes;
 	}
 	
-	public static void main(String[] args) {
-		AplicacionWeb aplicacionWeb = getInstancia();
-		
-		try
-		{
-			crud.darSubTabla("usuarios", "tipo", "login = 'meili'");
-			ArrayList<String> tuplas = crud.darSubTabla(MateriaPrima.NOMBRE, "id", "unidadMedida = gramos");
-			for (String string : tuplas) {
-				System.out.println(string);
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+	
 	
 	public boolean registrarRegistro (String idProducto, int cantidad) throws Exception{
 		try
@@ -366,6 +365,18 @@ public class AplicacionWeb {
 			crud.insertarTupla(Registro.NOMBRE, Registro.COLUMNAS, Registro.TIPO, datos);
 		}
 		return true;
+	}
+	
+	public static void main(String[] args) {
+		AplicacionWeb aplicacionWeb = getInstancia();
+		try
+		{
+			aplicacionWeb.registrarPedidoCliente("clara", "at", 1, new Date(), new Date());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 }

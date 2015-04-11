@@ -14,7 +14,7 @@ public class ServletRegistrarPedido extends ServletAbstract{
 
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
-		return "Registro de Pedido Cliente";
+		return "Registro de Pedido";
 	}
 
 	@Override
@@ -24,7 +24,6 @@ public class ServletRegistrarPedido extends ServletAbstract{
 		int cantidad = Integer.parseInt(request.getParameter("cantidad"));
 		String productoPedido = request.getParameter("producto");
 		String login = request.getParameter("login");
-		int precio = Integer.parseInt(request.getParameter("precio"));
 		Calendar temp = Calendar.getInstance();
 		temp.setTime(new Date());
 		Calendar pedido = Calendar.getInstance();
