@@ -10,9 +10,9 @@ public class Producto {
 
 	public static final String NOMBRE = "productos";
 	
-	public final static String[] COLUMNAS = {"id", "nombre", "precio"};
+	public final static String[] COLUMNAS = {"id", "nombre", "precio", "cantidad"};
 	
-	public final static String[] TIPO = {"String", "String", "int"};
+	public final static String[] TIPO = {"String", "String", "int", "int"};
 	
 	public final static String NOMBRE_RELACION_ETAPA_PRODUCCION = "productosEtapasProduccion";
 	

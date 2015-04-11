@@ -1,13 +1,14 @@
 <html>
 	<head>
 		<a href="index.htm"><title>ProdAndes - Busqueda</title></a>
+		<link rel="stylesheet" href="bootstrap.min.css">
 	</head>
 	<body bgcolor="#bdc3c7">
 		<form method="POST" action="resultadoBusqueda.htm">
 			<table bgcolor="#ecf0f1" width=100%>
 				<tr>
-					<td><FONT face="arial" size=10 color=#34495e><a href=index.htm>ProdAndes</a></FONT></td>
-					<td><FONT face="arial" size=5 color=#34495e>Busqueda de Pedidos</FONT></td>
+					<td><h1><a href=index.htm>ProdAndes</a></h1></td>
+					<td><h2>Busqueda de Pedidos</h2></td>
 				</tr>
 			</table>
 			<table bgcolor="#bdc3c7" width=100%>
@@ -17,7 +18,7 @@
 			</table>
 			<table align= center bgcolor="#ecf0f1" width=100%>
 				<tr>
-					<td><FONT face="arial" size=3 color=#34495e>Especificaciones de búsqueda</FONT></td>
+					<td><h3>Especificaciones de búsqueda</h3></td>
 				</tr>
 			</table>
 			<table bgcolor="#bdc3c7" width=100%>
@@ -95,6 +96,7 @@
 						  <option value="2015">2015</option>
 						  </select></td>
 				</tr>
+				<tr></tr>
 				<tr>
 					<td>Fecha entrega:</td>
 					<td>Dia:</td>
@@ -164,8 +166,9 @@
 						  <option value="2015">2015</option>
 						  </select></td>
 				</tr>
+				<tr></tr>
 			</table>
-			<table align= center bgcolor="#ecf0f1" width="80%"><tr><td size=1>*Puede dejar espacios en blanco, segun el tipo de busqueda que desea hacer</td></tr></table>
+			<table align= center bgcolor="#ecf0f1" width="80%"><tr><td size=1><small>*Puede dejar espacios en blanco, segun el tipo de busqueda que desea hacer</small></td></tr></table>
 			<table bgcolor="#bdc3c7" width=100%>
 				<tr>
 					<td></td>
@@ -174,7 +177,7 @@
 			
 			<table align= center bgcolor="#ecf0f1" width=100%>
 				<tr>
-					<td><FONT face="arial" size=3 color=#34495e>Detalles de búsqueda</FONT></td>
+					<td><h3>Detalles de búsqueda</h3></td>
 				</tr>
 			</table>
 			<table bgcolor="#bdc3c7" width=100%>
@@ -192,12 +195,14 @@
 						</select>
 					</td>
 				</tr>
+				<tr></tr>
 				<tr>
 					<td>Criterio para agrupar respuestas:</td>
 					<td><input type="text" name="agrupar" class="normal"></td>
 				</tr>
+				<tr></tr>
 			</table>
-			<table align= center bgcolor="#ecf0f1" width="80%"><tr><td size=1>*Puede dejar espacios en blanco, segun el tipo de busqueda que desea hacer</td></tr></table>
+			<table align= center bgcolor="#ecf0f1" width="80%"><tr><td size=1><small>*Puede dejar espacios en blanco, segun el tipo de busqueda que desea hacer</small></td></tr></table>
 			<p align=center>
 			<input type="hidden" value="buscarPedido" name="criterio" class="normal">
 			<input type="submit" value="Buscar" name="bus" class="normal">

@@ -1,5 +1,7 @@
 package mundo;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -77,23 +79,26 @@ public class AplicacionWeb {
 		return contadorId++;
 	}
 	
-	public void registrarUsuario (String login, String password, String tipo){
+	public void registrarUsuario (String login, String password, String tipo) throws Exception{
 		String[] datos = {login, password, tipo};
-		try{
-			crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
-			usuarioActual = login;
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
+		
+		crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
+		usuarioActual = login;
+		
 	}
 	
 	public String ingresarUsuario (String login, String password) throws Exception{
-		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "tipo", "login = " + login + " AND password = " + password);
+		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "tipo", "login = '" + login + "' AND password = '" + password + "'");
 		usuarioActual = login;
 		if ( usuario.get(0) != null )
 			return usuario.get(0);
 		return "";
+	}
+	
+	public ArrayList<String> darCantidadProductos (int cantidad) throws Exception{
+		ArrayList<String> rta = new ArrayList<String>();
+		rta = crud.darSubTabla(Producto.NOMBRE, "nombre", "precio > 0");
+		return rta;
 	}
 	
 	public void registrarProveedor (String id, String direccion, int telefono, String ciudad, String idRepLegal) throws Exception{
@@ -156,9 +161,29 @@ public class AplicacionWeb {
 		}
 	}
 	
-	public void registrarPedidoCliente (String producto, int cantidad, Date pedido, Date entrega) throws Exception{
-		String[] datos = {Integer.toString(darContadorId()), producto, usuarioActual, Integer.toString(cantidad), Integer.toString(pedido.getDate()), Integer.toString(pedido.getMonth()), Integer.toString(entrega.getDate()), Integer.toString(entrega.getMonth())};
+	public void registrarPedidoCliente (String login, String producto, int cantidad, Date pedido, Date entrega) throws Exception{
+		String[] datos = {Integer.toString(darContadorId()), producto, login, Integer.toString(cantidad), Integer.toString(pedido.getDate()), Integer.toString(pedido.getMonth()), Integer.toString(entrega.getDate()), Integer.toString(entrega.getMonth())};
 		crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datos);
+	}
+	
+	public ArrayList<Pedido> darPedidosCliente(String login) throws Exception{
+		ArrayList<Pedido> rta = new ArrayList<Pedido>();
+		Statement s = crud.darConexion().createStatement();
+		ResultSet rs = s.executeQuery("SELECT * FROM " + Pedido.NOMBRE + " WHERE idCliente = '" + login + "'");
+		while(rs.next()){
+			String id = rs.getString(1);
+			String idProducto = rs.getString(2);
+			int cantidad = rs.getInt(4);
+			int diaPedido = rs.getInt(5);
+			int mesPedido = rs.getInt(6);
+			int diaEntrega = rs.getInt(7);
+			int mesEntrega = rs.getInt(8);
+			Date fechaPedido = new Date(2015, mesPedido, diaPedido);
+			Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
+			Pedido pedido = new Pedido(idProducto, login, cantidad, fechaPedido, fechaEntrega);
+			rta.add(pedido);
+		}
+		return rta;
 	}
 	
 	public ArrayList<String> darIdPedido (String producto) throws Exception{
@@ -207,14 +232,8 @@ public class AplicacionWeb {
 		return null;
 	}
 	
-	public ArrayList<Producto> buscarProducto (String nombre) throws Exception{
-		ArrayList<String> precios = crud.darSubTabla(Producto.NOMBRE, "precio", "nombre = " + nombre);
-		ArrayList<Producto> rta = new ArrayList<Producto>();
-		for (int i = 0; i < precios.size(); i++) {
-			Producto pro = new Producto("" + i, nombre, Double.parseDouble(precios.get(i)), 5, i+1, new ArrayList<Cliente>(), i + 14, new ArrayList<EtapaProduccion>());
-			rta.add(pro);
-		}
-		return rta;
+	public ArrayList<String> buscarProducto (String nombre) throws Exception{
+		return crud.darSubTabla(Producto.NOMBRE, "precio", "nombre = '" + nombre + "'");
 	}
 
 	public ArrayList<Pedido> buscarPedidosCliente (Date pedido, boolean pedido1, Date entrega, boolean entrega1) throws Exception{

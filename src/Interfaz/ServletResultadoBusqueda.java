@@ -25,44 +25,54 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		PrintWriter respuesta = response.getWriter( );
 		
 		String criterio = request.getParameter("criterio");
-		
+				
 		if (criterio.equals("buscarProductoCliente"))
 		{
-			String nombre = request.getParameter("nombre");
+			String producto = request.getParameter("nombre");
+			if (producto == null)
+			{
+				producto = request.getParameter("producto");
+			}
+			String login = request.getParameter("login");
+			ArrayList<String> rta = new ArrayList<String>();
 			try
 			{
-
-				ArrayList<Producto> productos = AplicacionWeb.getInstancia().buscarProducto(nombre);
-		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
-		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td><h3>Los productos encontrados son los siguientes:</h3></td>" );
-		        respuesta.write( "</tr>" );
-		        respuesta.write( "</table>" );
-		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
-		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td>Producto</td>" );
-		        respuesta.write( "<td>Precio</td>" );
-		        respuesta.write( "<td>Unidades Disponibles</td>" );
-		        respuesta.write( "<td>Acciones</td>" );
-		        respuesta.write( "</tr>" );
-		        for (Producto producto : productos) {
-			        respuesta.write( "<tr>" );
-			        respuesta.write( "<td>" + producto.getNombre() + "</td>" );
-			        respuesta.write( "<td>" + producto.getPrecio() + "</td>" );
-			        respuesta.write( "<form method=\"POST\" action=\"regristroPedido.htm\"><td>Cantidad a pedir: <input type=\"text\" name=\"cantidad\"><input type=\"submit\" name=\"pedir\" value=\"Pedir\"><input type=\"hidden\" name=\"productoPedido\" value=" + producto.getNombre() + "></td></form>" );
-			        respuesta.write( "</tr>" );
-				}
-		        respuesta.write( "</table>" );
-
+				rta = AplicacionWeb.getInstancia().buscarProducto(producto);
 			}
 			catch (Exception e){
-		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
-		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td><h3>El producto buscado no esta disponible</h3></td>" );
-		        respuesta.write( "</tr>" );
-		        respuesta.write( "</table>" );
-				
+				error(respuesta);
 			}
+			
+			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
+			for (int i = 0; i < rta.size(); i++) {
+				respuesta.write( "<form method=\"POST\" action=\"registroPedido.htm\">" );
+				respuesta.write( "<tr>" );
+	        	respuesta.write( "<tr><td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\"></td>" );
+	        	respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=10%>" );
+		        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto: \" name=\"producto\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + producto + "</td></tr>" );
+		        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Precio: \" name=\"precio\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + rta.get(i) + "</td></tr>" );
+		        respuesta.write( "<tr><td><table bgcolor=\"#ecf0f1\" width=10%>" );
+		        respuesta.write( "<tr><td align=\"left\"><h4>Unidades: </h4></td>" );
+		        respuesta.write( "<td align=\"right\">" );
+		        respuesta.write( "<select size=\"1\" name=\"cantidad\" class=\"normal\" style=\"border: none;\">" );
+		        respuesta.write( "<option value=\"1\">1</option>" );
+		        respuesta.write( "<option value=\"2\">2</option>" );
+		        respuesta.write( "<option value=\"3\">3</option>" );
+		        respuesta.write( "</select>" );
+		        respuesta.write( "</td></tr>" );
+		        respuesta.write( "</table></td></tr>" );
+		        respuesta.write( "<tr><td align=\"right\"><input value=\"Pedir\" size=\"33\" name=\"pedir\" type=\"submit\"\"></td></tr>" );
+		        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
+		        respuesta.write( "</table></td>" );
+		        respuesta.write( "</tr>" );
+		        respuesta.write( "</form>" );
+	        }
+			respuesta.write( "</table>" );
+		}
+		
+		else if (criterio.equals("darPedidos"))
+		{
+			
 		}
 		
 		else if (criterio.equals("buscarPedido"))
@@ -220,4 +230,13 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		}
 	}
 
+		public void error(PrintWriter respuesta){
+			
+	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+	        respuesta.write( "<tr>" );
+	        respuesta.write( "<td><h3>Oops! Hubo un error, lo sentimos, vuelve a intentarlo nuevamente.</FONT></td>" );
+	        respuesta.write( "</tr>" );
+	        respuesta.write( "</table>" );
+			
+		}
 }

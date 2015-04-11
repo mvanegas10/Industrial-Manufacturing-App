@@ -30,40 +30,39 @@ public class ServletRegistrarLlegadaMaterial extends ServletAbstract{
 			
 			if (llegadaMaterial.equals("materiaPrima"))
 			{
-				respuesta.write( " <td>Fecha a Registrar</td>" );
-				respuesta.write( " <td>Nombre</td>" );
-				respuesta.write( " <td>Unidad de Medida</td>" );
-				respuesta.write( " <td>Cantidad Inicial</td>" );
+				respuesta.write( " <td><h3>Fecha</h3></td>" );
+				respuesta.write( " <td><h3>Nombre</h3></td>" );
+				respuesta.write( " <td><h3>Unidad de Medida</h3></td>" );
+				respuesta.write( " <td><h3>Cantidad Inicial</h3></td>" );
 				respuesta.write( " </tr>" );
 				respuesta.write( " <tr>" );
-				respuesta.write( " <td><input type=\"hidden\" id=\"date\"/ name=\"fecha\"> " );
+				respuesta.write( " <td><h4><input size=\"23\" type=\"hidden\" id=\"date\"/ name=\"fecha\"> " );
 				respuesta.write( " <script name=\"fecha\" language=\"javascript\">" );
 				respuesta.write( " var today = new Date();" );
-				respuesta.write( " document.write(today);" );
-				respuesta.write( " </script></td>" );
+				respuesta.write( " document.write(today.toDateString());" );
+				respuesta.write( " </script></h4></td>" );
 				respuesta.write( " <form method=\"POST\" action=\"registroMaterial.htm\">" );
-				respuesta.write( " <td><input type=\"text\" name=\"nombre\" size=\"33\" class=\"normal\"></td>" );
-				respuesta.write( " <td><input type=\"text\" name=\"unidadMedida\" size=\"33\" class=\"normal\"></td>" );				
-				respuesta.write( " <td><input type=\"text\" name=\"cantInicial\" size=\"33\" class=\"normal\"></td>" );
+				respuesta.write( " <td><input type=\"text\" name=\"nombre\" size=\"23\" class=\"normal\"></td>" );
+				respuesta.write( " <td><input type=\"text\" name=\"unidadMedida\" size=\"23\" class=\"normal\"></td>" );				
+				respuesta.write( " <td><input type=\"text\" name=\"cantInicial\" size=\"23\" class=\"normal\"></td>" );
 
 
 			}
 			else
 			{
-				respuesta.write( " <td>Fecha a Registrar</td>" );
-				respuesta.write( " <td>Nombre</td>" );
-				respuesta.write( " <td>Cantidad Inicial</td>" );
+				respuesta.write( " <td><h3>Fecha a Registrar</h3></td>" );
+				respuesta.write( " <td><h3>Nombre</h3></td>" );
+				respuesta.write( " <td><h3>Cantidad Inicial</h3></td>" );
 				respuesta.write( " </tr>" );
 				respuesta.write( " <tr>" );
-				respuesta.write( " <td><input type=\"hidden\" id=\"date\"/ name=\"fecha\"> " );
+				respuesta.write( " <td><h4><input size=\"23\" type=\"hidden\" id=\"date\"/ name=\"fecha\"> " );
 				respuesta.write( " <script name=\"fecha\" language=\"javascript\">" );
 				respuesta.write( " var today = new Date();" );
-				respuesta.write( " document.write(today);" );
-				respuesta.write( " </script></td>" );
+				respuesta.write( " document.write(today.toDateString());" );
+				respuesta.write( " </script></h4></td>" );
 				respuesta.write( " <form method=\"POST\" action=\"registroMaterial.htm\">" );
-				respuesta.write( " <td><input type=\"text\" name=\"nombre\" size=\"33\" class=\"normal\"></td>" );
-				respuesta.write( " <td><input type=\"text\" name=\"unidadMedida\" size=\"33\" class=\"normal\"></td>" );				
-				respuesta.write( " <td><input type=\"text\" name=\"cantInicial\" size=\"33\" class=\"normal\"></td>" );
+				respuesta.write( " <td><input type=\"text\" name=\"nombre\" size=\"23\" class=\"normal\"></td>" );		
+				respuesta.write( " <td><input type=\"text\" name=\"cantInicial\" size=\"23\" class=\"normal\"></td>" );
 
 			}
 			

@@ -19,6 +19,10 @@ public class CRUD {
 		conexion = dao.darConexion();
 	}
 	
+	public Connection darConexion(){
+		return conexion;
+	}
+	
 	/**
 	 * @param tabla
 	 * @param columnas
@@ -128,27 +132,11 @@ public class CRUD {
 		try
 		{
 			Statement s = conexion.createStatement();
-			String sql = "SELECT tipo FROM usuario WHERE login = 'meili' and password = 'meili'";
-			System.out.println(sql);
-			ResultSet rS = s.executeQuery (sql);
-			while (rS.next()){
-				System.out.println("Hola");
-				resultado.add(rS.getString(1));	
-			}
-			s.close();
-		}
-		catch (Exception e)
-		{
-			throw new Exception("No se encntr� el registro en la tabla " + tabla);
-		}
-		try
-		{
-			Statement s = conexion.createStatement();
 			String sql = "SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion ;
 			System.out.println(sql);
 			ResultSet rS = s.executeQuery (sql);
 			while (rS.next()){
-				System.out.println("Hola");
+				System.out.println(rS.getString(1));
 				resultado.add(rS.getString(1));	
 			}
 			s.close();

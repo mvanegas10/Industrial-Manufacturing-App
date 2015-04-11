@@ -2,6 +2,7 @@ package Interfaz;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,18 +22,27 @@ public class ServletRegistrarPedido extends ServletAbstract{
 		PrintWriter respuesta = response.getWriter( );
 		
 		int cantidad = Integer.parseInt(request.getParameter("cantidad"));
-		String productoPedido = request.getParameter("productoPedido");
-		Date pedido = new Date();
-		Date entrega = new Date();
-		entrega.setDate(pedido.getDate() + 3);
-		entrega.setMonth(pedido.getMonth());
-		entrega.setYear(pedido.getYear());
+		String productoPedido = request.getParameter("producto");
+		String login = request.getParameter("login");
+		int precio = Integer.parseInt(request.getParameter("precio"));
+		Calendar temp = Calendar.getInstance();
+		temp.setTime(new Date());
+		Calendar pedido = Calendar.getInstance();
+		Calendar entrega = Calendar.getInstance();
+		pedido.setTime(new Date());
+		temp.add(Calendar.DATE, 5);
+		entrega.setTime(temp.getTime());
 		try
 		{
-			AplicacionWeb.getInstancia().registrarPedidoCliente(productoPedido, cantidad, pedido, entrega);
+			AplicacionWeb.getInstancia().registrarPedidoCliente(login, productoPedido, cantidad, pedido.getTime(), entrega.getTime());
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><h3>El pedido se ha diligenciado de manera satisfactoria, la fecha de entrega es el " + entrega + "</h3></td>" );
+	        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+	        respuesta.write( "<td><h3>Gracias " + login + " por confiar en nosotros, tu pedido se ha diligenciado de manera satisfactoria y la fecha de entrega es el " + entrega.toString() + "</h3></td>" );
+	        respuesta.write( "<input value=\"darPedidos\" name=\"criterio\" type=\"hidden\"\">" );
+	        respuesta.write( "<input value=\"" + login + "\" name=\"login\" type=\"hidden\"\">" );
+	        respuesta.write( "<td><h3><input value=\"Si quieres consultar tus pedidos, haz click aquí\" name=\"darPedidos\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></h3></td>" );
+	        respuesta.write( "</form>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}

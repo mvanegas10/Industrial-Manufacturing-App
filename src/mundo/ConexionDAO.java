@@ -135,7 +135,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s1.execute( "CREATE TABLE productos (id varchar(32), nombre varchar(32), precio int, PRIMARY KEY (id))" );
+				s1.execute( "CREATE TABLE productos (id varchar(32), nombre varchar(32), precio int, cantidad int, PRIMARY KEY (id))" );
 				System.out.println("Se cre� la tabla productos");
 			}
 			else
