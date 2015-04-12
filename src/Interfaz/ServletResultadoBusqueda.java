@@ -73,6 +73,86 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		
 		else if (criterio.equals("darPedidos"))
 		{
+			String login = request.getParameter("login");
+			
+			ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+	        try 
+	        {
+	        	pedidos = AplicacionWeb.getInstancia().darPedidosCliente(login);
+	        	if (pedidos.size() != 0)
+		        {
+	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
+			        for (Pedido ped : pedidos) {
+			        	String producto = AplicacionWeb.getInstancia().buscarNombreProducto(ped.getProducto());
+			        	respuesta.write( "<form method=\"POST\" action=\"registroPedido.htm\">" );
+			        	respuesta.write( "<tr>" );
+				        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
+				        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto Pedido: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + producto + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Unidades Pedidas: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + ped.getCantidad() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (ped.getFechaPedido().toLocaleString()).substring(0, 10) + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (ped.getFechaEntrega().toLocaleString()).substring(0, 10) + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"right\"><input value=" + login + " size=\"53\" name=\"login\" type=\"hidden\"><input value=" + ped.getProducto() + " size=\"53\" name=\"producto\" type=\"hidden\"><input value=\"eliminarPedido\" size=\"53\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
+				        respuesta.write( "</table></td>" );
+				        respuesta.write( "</tr>" );
+				        respuesta.write( "<tr></tr>" );
+				        respuesta.write( "</form>" );
+					}
+			        respuesta.write( "</table>" );
+		        }
+	        	else
+	        		noHayPedidos(login, respuesta);
+	        }
+	        catch (Exception e)
+	        {
+	        	noHayPedidos(login, respuesta);
+	        }
+		}
+		
+		else if(criterio.equals("eliminarPedido"))
+		{
+			String login = request.getParameter("login");
+			String prodEliminar = request.getParameter("producto");
+			ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+			try
+			{
+				AplicacionWeb.getInstancia().eliminarPedidoCliente(login, prodEliminar);
+			}
+			catch (Exception e)
+			{
+				
+			}
+			try 
+	        {
+	        	pedidos = AplicacionWeb.getInstancia().darPedidosCliente(login);
+	        	if (pedidos.size() != 0)
+		        {
+	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
+			        for (Pedido ped : pedidos) {
+			        	String producto = AplicacionWeb.getInstancia().buscarNombreProducto(ped.getProducto());
+			        	respuesta.write( "<form method=\"POST\" action=\"registroPedido.htm\">" );
+			        	respuesta.write( "<tr>" );
+				        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
+				        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto Pedido: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + producto + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Unidades Pedidas: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + ped.getCantidad() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (ped.getFechaPedido().toLocaleString()).substring(0, 10) + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (ped.getFechaEntrega().toLocaleString()).substring(0, 10) + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"right\"><input value=" + login + " size=\"53\" name=\"login\" type=\"hidden\"><input value=" + ped.getProducto() + " size=\"53\" name=\"producto\" type=\"hidden\"><input value=\"eliminarPedido\" size=\"53\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
+				        respuesta.write( "</table></td>" );
+				        respuesta.write( "</tr>" );
+				        respuesta.write( "<tr></tr>" );
+				        respuesta.write( "</form>" );
+					}
+			        respuesta.write( "</table>" );
+		        }
+	        	else
+	        		noHayPedidos(login, respuesta);
+	        }
+			catch (Exception e)
+	        {
+	        	noHayPedidos(login, respuesta);
+	        }
 			
 		}
 		
@@ -230,14 +310,71 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 	        respuesta.write( "</table>" );
 		}
 	}
-
-		public void error(PrintWriter respuesta){
-			
-	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
-	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><h3>Oops! Hubo un error, lo sentimos, vuelve a intentarlo nuevamente.</FONT></td>" );
-	        respuesta.write( "</tr>" );
+	
+	public void noHayPedidos(String login, PrintWriter respuesta){
+		respuesta.write( "<h4 align=\"center\">No has registrado ningún pedido con nosotros, creemos que estos productos que podrían interesarte.</h4>" );
+    	ArrayList<String> productos = new ArrayList<String>();
+    	try
+		{
+			productos = AplicacionWeb.getInstancia().darCantidadProductos(100);
+			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
+	        for (int i = 0; i < productos.size(); i++) {
+	        	respuesta.write( "<tr>" );
+	        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+		        respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
+		        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
+	        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i) + "></td>" );
+		        respuesta.write( "<td><input value=" + productos.get(i) + " name=\"nombre\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
+		        respuesta.write( "</form>" );
+		        try
+		        {
+		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+		        	respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
+			        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
+		        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 1) + "></td>" );
+			        respuesta.write( "<td><input value=" + productos.get(i+1) + " name=\"nombre\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
+			        respuesta.write( "</form>" );
+		        }
+		        catch(Exception e2){	
+		        }
+		        try
+		        {
+		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+		        	respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
+			        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
+		        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 2) + "></td>" );
+			        respuesta.write( "<td><input value=" + productos.get(i+2) + " name=\"nombre\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
+			        respuesta.write( "</form>" );
+		        }
+		        catch(Exception e3){	
+		        }
+		        try
+		        {
+		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+		        	respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
+			        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
+		        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 3) + "></td>" );
+		        	respuesta.write( "<td><input value=" + productos.get(i+3) + " name=\"nombre\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
+			        respuesta.write( "</form>" );
+		        }
+		        catch(Exception e4){	
+		        }
+		        respuesta.write( "</tr>" );
+		        i+=4;
+	        }
 	        respuesta.write( "</table>" );
-			
 		}
+		catch (Exception e1){
+		}
+	}
+
+	public void error(PrintWriter respuesta){
+		
+		respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+	    respuesta.write( "<tr>" );
+	    respuesta.write( "<td><h3>Oops! Hubo un error, lo sentimos, vuelve a intentarlo nuevamente.</FONT></td>" );
+	    respuesta.write( "</tr>" );
+	    respuesta.write( "</table>" );
+			
+	}
 }

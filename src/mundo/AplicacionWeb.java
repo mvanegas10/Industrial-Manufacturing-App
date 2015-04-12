@@ -51,11 +51,13 @@ public class AplicacionWeb {
 			String sql = "SELECT MAX(id) FROM generadorId";
 			System.out.println(sql);
 			ResultSet rs = s.executeQuery(sql);
-			contadorId = Integer.parseInt(rs.getString(1));
-			System.out.println("El id actual es: " + contadorId);
+			while(rs.next())
+			{
+				contadorId = Integer.parseInt(rs.getString(1));
+				System.out.println("El id actual es: " + contadorId);
+			}
 		}
 		catch (Exception e){
-			System.err.println("error");
 			contadorId = 1004;
 		}
 		usuarioActual = "";
@@ -139,9 +141,7 @@ public class AplicacionWeb {
 	}
 	
 	public void registrarMateriaPrima (String id, String unidadMedida, int cantidadInicial) throws Exception{
-		String[] id1 = {id};
 		String[] datosSimples = {id, unidadMedida, Integer.toString(cantidadInicial)};
-		crud.insertarTupla(ID, COLUMNAS, TIPO, id1);
 		try{
 			int cantidadActual= Integer.parseInt((crud.darSubTabla(MateriaPrima.NOMBRE, "cantidadInicial", "id="+id).get(0)));
 			String[] columnas = new String[1];
@@ -156,9 +156,7 @@ public class AplicacionWeb {
 	}
 	
 	public void registrarComponente (String id, int cantidadInicial) throws Exception {
-		String[] id1 = {id};
 		String[] datosSimples = {id, Integer.toString(cantidadInicial)};
-		crud.insertarTupla(ID, COLUMNAS, TIPO, id1);
 		try{
 			int cantidadActual= Integer.parseInt((crud.darSubTabla(Componente.NOMBRE, "cantidadInicial", "id="+id).get(0)));
 			String[] columnas = new String[1];
@@ -264,6 +262,10 @@ public class AplicacionWeb {
 	
 	public ArrayList<String> buscarProducto (String nombre) throws Exception{
 		return crud.darSubTabla(Producto.NOMBRE, "precio", "nombre = '" + nombre + "'");
+	}
+	
+	public String buscarNombreProducto (String id) throws Exception{
+		return (crud.darSubTabla(Producto.NOMBRE, "nombre", "id = '" + id + "'")).get(0);
 	}
 
 	public ArrayList<Pedido> buscarPedidosCliente (Date pedido, boolean pedido1, Date entrega, boolean entrega1) throws Exception{
@@ -379,6 +381,11 @@ public class AplicacionWeb {
 			crud.insertarTupla(Registro.NOMBRE, Registro.COLUMNAS, Registro.TIPO, datos);
 		}
 		return true;
+	}
+	
+	public void eliminarPedidoCliente(String login, String idPedido){
+		
+		
 	}
 	
 	public static void main(String[] args) {

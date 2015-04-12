@@ -126,7 +126,7 @@ public class ServletIngresar extends ServletAbstract{
 			respuesta.write( "<div></div>" );
 			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><a href=\"buscarPedido.htm\">Consulta los detalles de tus pedidos</a></td>" );
+	        respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input type=\"hidden\" value=" + login + " name=\"login\" class=\"normal\"><input type=\"hidden\" value=\"darPedidos\" name=\"criterio\" class=\"normal\"><h4 align=\"left\"><input type=\"submit\" value=\"Consulta los detalles de tus pedidos\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 	        respuesta.write( "<hr>" );
