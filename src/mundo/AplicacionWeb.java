@@ -100,9 +100,11 @@ public class AplicacionWeb {
 	}
 	
 	public void registrarUsuario (String login, String password, String tipo) throws Exception{
-		String[] datos = {login, password, tipo};
+//		columnas de Usuario: login, password, tipo, nombre, direccion, telefono, ciudad, idRepLegal
+		String[] datos = {login, password, tipo, "", "", Integer.toString(0), "", ""}; 
 		crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
 		usuarioActual = login;
+		
 	}
 	
 	public String ingresarUsuario (String login, String password) throws Exception{
@@ -381,6 +383,61 @@ public class AplicacionWeb {
 			crud.insertarTupla(Registro.NOMBRE, Registro.COLUMNAS, Registro.TIPO, datos);
 		}
 		return true;
+	}
+	
+	public ArrayList<Usuario> darClientes() throws Exception{
+		ArrayList<Usuario> rta = new ArrayList<Usuario>();
+		ArrayList<String> datos = new ArrayList<String>();
+		int contador = 0;
+		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Usuario.NOMBRE + " WHERE tipo = 'natural' AND tipo = 'juridica'");
+		while(rs.next() && contador < 30)
+		{
+			String login = rs.getString(1);
+			String tipo = rs.getString(3);
+			String nombre = rs.getString(4);
+			String direccion = rs.getString(5);
+			int telefono = Integer.parseInt(rs.getString(6));
+			String ciudad = rs.getString(7);
+			String idRepLegal = rs.getString(8);
+			Usuario user = new Usuario(login, tipo, "", nombre, direccion, telefono, ciudad, idRepLegal);
+			rta.add(user);
+			contador++;
+		}
+		return rta;
+	}
+	
+	public ArrayList<Proveedor> darProveedor() throws Exception {
+		ArrayList<Proveedor> rta = new ArrayList<Proveedor>();
+		ArrayList<String> datos = new ArrayList<String>();
+		int contador = 0;
+		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Proveedor.NOMBRE );
+		while(rs.next() && contador < 30)
+		{
+			String pId = rs.getString(1);
+			String pDireccion = rs.getString(2);
+			int pTelefono = Integer.parseInt(rs.getString(3));
+			String pCiudad = rs.getString(4);
+			String pIdRepLegal = rs.getString(5);
+			List<String[]> pMatrizVolTiempoMat = new ArrayList<>();
+			List<String[]> pMatrizVolTiempoComp = new ArrayList<>();
+			ArrayList<String> idMateriaPrima = new ArrayList<String>();
+			ArrayList<String> idComponente = new ArrayList<String>();
+			ArrayList<MateriaPrima> pMateriasPrimas = new ArrayList<MateriaPrima>();
+			ArrayList<Componente> pComponentes = new ArrayList<Componente>();
+			idMateriaPrima = crud.darTuplas(Proveedor.NOMBRERELACIONMATERIAPRIMA);
+			idComponente = crud.darTuplas(Proveedor.NOMBRERELACIONCOMPONENTE);
+			for (String materiaPrima : idMateriaPrima) {
+				ResultSet rs_1 = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + MateriaPrima.NOMBRE + " WHERE id = '" + materiaPrima + "'");
+				
+			}
+			for (String componente : idComponente) {
+				
+			}
+			Proveedor prov = new Proveedor(pId, pDireccion, pTelefono, pCiudad, pIdRepLegal, pMatrizVolTiempoMat, pMatrizVolTiempoComp, pMateriasPrimas, pComponentes);
+			rta.add(prov);
+			contador++;
+		}
+		return rta;
 	}
 	
 	public void eliminarPedidoCliente(String login, String idPedido) throws Exception{

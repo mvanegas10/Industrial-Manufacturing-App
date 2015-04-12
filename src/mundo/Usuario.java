@@ -8,9 +8,9 @@ public class Usuario {
 	
 	public static final String NOMBRE = "usuarios";
 	
-	public static final String[] COLUMNAS = {"login", "password", "tipo"};
+	public static final String[] COLUMNAS = {"login", "password", "tipo", "nombre", "direccion", "telefono", "ciudad", "idRepLegal"};
 	
-	public static final String[] TIPO = {"String", "String", "String"};
+	public static final String[] TIPO = {"String", "String", "String", "String", "String", "int", "String", "String"};
 	
 	private String login;
 	
@@ -18,16 +18,38 @@ public class Usuario {
 	
 	private String password;
 	
+	private String nombre;
+	
+	private String direccion;
+	
+	private int telefono;
+	
+	private String ciudad;
+	
+	private String idRepLegal;
+	
 	//--------------------------------------------------
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
 	public Usuario(String login, String tipo, String password) {
-		super();
 		this.tipo = tipo;
 		this.login = login;
 		this.password = password;
 	}
+	
+	public Usuario(String login, String tipo, String password, String nombre,
+			String direccion, int telefono, String ciudad, String idRepLegal) {
+		this.login = login;
+		this.tipo = tipo;
+		this.password = password;
+		this.nombre = nombre;
+		this.direccion = direccion;
+		this.telefono = telefono;
+		this.ciudad = ciudad;
+		this.idRepLegal = idRepLegal;
+	}
+
 	
 	//--------------------------------------------------
 	// SETTERS AND GETTERS
@@ -55,6 +77,48 @@ public class Usuario {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public int getTelefono() {
+		return telefono;
+	}
+
+	public String getCiudad() {
+		return ciudad;
+	}
+
+	public String getIdRepLegal() {
+		return idRepLegal;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public void setTelefono(int telefono) {
+		this.telefono = telefono;
+	}
+
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}
+
+	public void setIdRepLegal(String idRepLegal) {
+		this.idRepLegal = idRepLegal;
 	}	
+	
+	
 
 }

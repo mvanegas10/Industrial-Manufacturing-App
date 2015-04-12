@@ -110,6 +110,16 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 	        }
 		}
 		
+		else if (criterio.equals("darClientes"))
+		{
+			
+		}
+		
+		else if (criterio.equals("darPedidos"))
+		{
+			
+		}
+		
 		else if(criterio.equals("eliminarPedido"))
 		{
 			String login = request.getParameter("login");
