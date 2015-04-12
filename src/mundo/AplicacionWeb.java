@@ -48,14 +48,10 @@ public class AplicacionWeb {
 		try
 		{
 			Statement s = crud.darConexion().createStatement();
-			String sql = "SELECT MAX(id) FROM generadorId";
-			System.out.println(sql);
-			ResultSet rs = s.executeQuery(sql);
-			contadorId = Integer.parseInt(rs.getString(1));
-			System.out.println("El id actual es: " + contadorId);
+			ResultSet rs = s.executeQuery("SELECT MAX(id) FROM generadorId");
+			contadorId = rs.getInt(0);
 		}
 		catch (Exception e){
-			System.err.println("error");
 			contadorId = 1004;
 		}
 		usuarioActual = "";
@@ -385,7 +381,8 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			
+			Statement s = crud.darConexion().createStatement();
+			s.execute("INSERT INTO pedidos (id, idProducto, idCliente, cantidad, diaPedido, mesPedido, diaEntrega, mesEntrega) VALUES ('10','225','meili',1,1,2,1,2)");
 		}
 		catch (Exception e)
 		{
