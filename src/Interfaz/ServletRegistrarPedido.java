@@ -37,7 +37,7 @@ public class ServletRegistrarPedido extends ServletAbstract{
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-	        respuesta.write( "<td><h3>Gracias " + login + " por confiar en nosotros, tu pedido se ha diligenciado de manera satisfactoria y la fecha de entrega es el " + entrega.toString() + "</h3></td>" );
+	        respuesta.write( "<td><h4>Gracias " + login + " por confiar en nosotros, tu pedido se ha diligenciado de manera satisfactoria y la fecha de entrega es el " + entrega.getTime().toLocaleString() + "</h4></td>" );
 	        respuesta.write( "<input value=\"darPedidos\" name=\"criterio\" type=\"hidden\"\">" );
 	        respuesta.write( "<input value=\"" + login + "\" name=\"login\" type=\"hidden\"\">" );
 	        respuesta.write( "<td><h3><input value=\"Si quieres consultar tus pedidos, haz click aquí\" name=\"darPedidos\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></h3></td>" );

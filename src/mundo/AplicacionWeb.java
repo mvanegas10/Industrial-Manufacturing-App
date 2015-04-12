@@ -176,7 +176,7 @@ public class AplicacionWeb {
 	public void registrarPedidoCliente (String login, String producto, int cantidad, Date pedido, Date entrega) throws Exception{
 		ArrayList<String> idProducto = new ArrayList<String>();
 		idProducto = crud.darSubTabla(Producto.NOMBRE, "id", " nombre = '" + producto + "' ");
-		String sql = "INSERT INTO pedidos (id, idProducto, idCliente, cantidad, diaPedido, mesPedido, diaEntrega, mesEntrega) VALUES ('" + darContadorId() + "','" + idProducto + "','" + login + "'," + cantidad + "," + pedido.getDate() + "," + pedido.getMonth() + "," + entrega.getDate() + "," + entrega.getMonth();
+		String sql = "INSERT INTO pedidos (id, idProducto, idCliente, cantidad, diaPedido, mesPedido, diaEntrega, mesEntrega) VALUES ('" + darContadorId() + "','" + idProducto.get(0) + "','" + login + "'," + cantidad + "," + pedido.getDate() + "," + pedido.getMonth() + "," + entrega.getDate() + "," + entrega.getMonth() + ")";
 		System.out.println(sql);
 		Statement s = crud.darConexion().createStatement();
 		s.executeUpdate(sql);
