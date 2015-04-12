@@ -208,7 +208,7 @@ public class AplicacionWeb {
 			int mesEntrega = rs.getInt(8);
 			Date fechaPedido = new Date(2015, mesPedido, diaPedido);
 			Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
-			Pedido pedido = new Pedido(idProducto, login, cantidad, fechaPedido, fechaEntrega);
+			Pedido pedido = new Pedido(id, idProducto, login, cantidad, fechaPedido, fechaEntrega);
 			rta.add(pedido);
 		}
 		return rta;
@@ -284,8 +284,8 @@ public class AplicacionWeb {
 			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaEntrega = " + entrega.getDate() +  "mesEntrega = " + pedido.getMonth());
 		}
 		for (int i = 0; i < prod.size(); i++) {
-			Pedido p = new Pedido(usuarioActual, prod.get(i), 2, pedido, entrega);
-			rta.add(p);
+//			Pedido p = new Pedido(usuarioActual, prod.get(i), 2, pedido, entrega);
+//			rta.add(p);
 		}
 		return rta;
 	}
@@ -383,9 +383,8 @@ public class AplicacionWeb {
 		return true;
 	}
 	
-	public void eliminarPedidoCliente(String login, String idPedido){
-		
-		
+	public void eliminarPedidoCliente(String login, String idPedido) throws Exception{
+		crud.eliminarTuplaPorId(Pedido.NOMBRE, idPedido);
 	}
 	
 	public static void main(String[] args) {

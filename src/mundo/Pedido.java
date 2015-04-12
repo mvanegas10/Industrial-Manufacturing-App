@@ -28,8 +28,8 @@ public class Pedido {
 	 * @param fechaPedido
 	 * @param fechaEntrega
 	 */
-	public Pedido( String producto, String idCliente, int cantidad, Date fechaPedido, Date fechaEntrega) {
-	
+	public Pedido(String id, String producto, String idCliente, int cantidad, Date fechaPedido, Date fechaEntrega) {
+		this.id = id;
 		this.idProducto = producto;
 		this.idCliente = idCliente;
 		this.cantidad = cantidad;

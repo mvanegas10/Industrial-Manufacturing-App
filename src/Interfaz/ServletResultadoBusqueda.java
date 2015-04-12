@@ -81,10 +81,11 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 	        	pedidos = AplicacionWeb.getInstancia().darPedidosCliente(login);
 	        	if (pedidos.size() != 0)
 		        {
+	        		respuesta.write( "<h4 align=\"center\">Tienes registrados " + pedidos.size() + " pedidos en total:</h4>" );
 	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 			        for (Pedido ped : pedidos) {
 			        	String producto = AplicacionWeb.getInstancia().buscarNombreProducto(ped.getProducto());
-			        	respuesta.write( "<form method=\"POST\" action=\"registroPedido.htm\">" );
+			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 			        	respuesta.write( "<tr>" );
 				        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
 				        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
@@ -92,7 +93,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Unidades Pedidas: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + ped.getCantidad() + "</td></tr>" );
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (ped.getFechaPedido().toLocaleString()).substring(0, 10) + "</td></tr>" );
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (ped.getFechaEntrega().toLocaleString()).substring(0, 10) + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"right\"><input value=" + login + " size=\"53\" name=\"login\" type=\"hidden\"><input value=" + ped.getProducto() + " size=\"53\" name=\"producto\" type=\"hidden\"><input value=\"eliminarPedido\" size=\"53\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
+				        respuesta.write( "<tr><td align=\"right\"><input value=" + ped.getId() + " name=\"idPedido\" type=\"hidden\"><input value=" + login + " name=\"login\" type=\"hidden\"><input value=\"eliminarPedido\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
 				        respuesta.write( "</table></td>" );
 				        respuesta.write( "</tr>" );
 				        respuesta.write( "<tr></tr>" );
@@ -112,25 +113,26 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		else if(criterio.equals("eliminarPedido"))
 		{
 			String login = request.getParameter("login");
-			String prodEliminar = request.getParameter("producto");
+			String idPedido = request.getParameter("idPedido");
 			ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 			try
 			{
-				AplicacionWeb.getInstancia().eliminarPedidoCliente(login, prodEliminar);
+				AplicacionWeb.getInstancia().eliminarPedidoCliente(login, idPedido);
 			}
 			catch (Exception e)
 			{
-				
+				error(respuesta);
 			}
 			try 
 	        {
 	        	pedidos = AplicacionWeb.getInstancia().darPedidosCliente(login);
 	        	if (pedidos.size() != 0)
 		        {
+	        		respuesta.write( "<h4 align=\"center\">Tienes registrados " + pedidos.size() + " pedidos en total:</h4>" );
 	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 			        for (Pedido ped : pedidos) {
 			        	String producto = AplicacionWeb.getInstancia().buscarNombreProducto(ped.getProducto());
-			        	respuesta.write( "<form method=\"POST\" action=\"registroPedido.htm\">" );
+			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 			        	respuesta.write( "<tr>" );
 				        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
 				        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
@@ -138,7 +140,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Unidades Pedidas: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + ped.getCantidad() + "</td></tr>" );
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (ped.getFechaPedido().toLocaleString()).substring(0, 10) + "</td></tr>" );
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (ped.getFechaEntrega().toLocaleString()).substring(0, 10) + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"right\"><input value=" + login + " size=\"53\" name=\"login\" type=\"hidden\"><input value=" + ped.getProducto() + " size=\"53\" name=\"producto\" type=\"hidden\"><input value=\"eliminarPedido\" size=\"53\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
+				        respuesta.write( "<tr><td align=\"right\"><input value=" + ped.getId() + " name=\"idPedido\" type=\"hidden\"><input value=" + login + " name=\"login\" type=\"hidden\"><input value=\"eliminarPedido\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
 				        respuesta.write( "</table></td>" );
 				        respuesta.write( "</tr>" );
 				        respuesta.write( "<tr></tr>" );

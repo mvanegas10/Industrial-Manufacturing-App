@@ -36,9 +36,6 @@ public class ServletRegistrarPedido extends ServletAbstract{
 		entrega.setTime(temp.getTime());
 		try
 		{
-			ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
-	        pedidos = AplicacionWeb.getInstancia().darPedidosCliente(login);
-	        
 			AplicacionWeb.getInstancia().registrarPedidoCliente(login, productoPedido, cantidad, pedido.getTime(), entrega.getTime());
 	        
 	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
@@ -57,10 +54,13 @@ public class ServletRegistrarPedido extends ServletAbstract{
 	        respuesta.write( "<tr></tr>" );
 	        respuesta.write( "</table>" );
 	        
+	        ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+	        pedidos = AplicacionWeb.getInstancia().darPedidosCliente(login);
+	        
 	        if (pedidos.size() != 0)
 	        {
 	        	respuesta.write( "<hr>" );
-	        	respuesta.write( "<h4 align=\"center\">Estos son otros pedidos que haz realizado con nosotros.</h4>" );
+	        	respuesta.write( "<h4 align=\"center\">Tienes registrados " + pedidos.size() + " pedidos en total:</h4>" );
 	        	respuesta.write( "</table>" );
 	        	respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 		        for (Pedido ped : pedidos) {
@@ -74,7 +74,7 @@ public class ServletRegistrarPedido extends ServletAbstract{
 			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Unidades Pedidas: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + cantidad + "</td></tr>" );
 			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (pedido.getTime().toLocaleString()).substring(0, 10) + "</td></tr>" );
 			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (entrega.getTime().toLocaleString()).substring(0, 10) + "</td></tr>" );
-			        respuesta.write( "<tr><td align=\"right\"><input value=" + login + " size=\"53\" name=\"login\" type=\"hidden\"><input value=" + login + " size=\"53\" name=\"login\" type=\"hidden\"><input value=" + ped.getProducto() + " size=\"53\" name=\"producto\" type=\"hidden\"><input value=\"eliminarPedido\" size=\"53\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
+			        respuesta.write( "<tr><td align=\"right\"><input value=" + ped.getId() + " name=\"idPedido\" type=\"hidden\"><input value=" + login + " name=\"login\" type=\"hidden\"><input value=\"eliminarPedido\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
 			        respuesta.write( "</table></td>" );
 			        respuesta.write( "</tr>" );
 			        respuesta.write( "<tr></tr>" );
