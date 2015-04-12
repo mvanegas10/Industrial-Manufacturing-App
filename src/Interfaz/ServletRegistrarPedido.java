@@ -24,6 +24,7 @@ public class ServletRegistrarPedido extends ServletAbstract{
 		int cantidad = Integer.parseInt(request.getParameter("cantidad"));
 		String productoPedido = request.getParameter("producto");
 		String login = request.getParameter("login");
+		int precio = Integer.parseInt(request.getParameter("precio"));
 		Calendar temp = Calendar.getInstance();
 		temp.setTime(new Date());
 		Calendar pedido = Calendar.getInstance();
@@ -44,6 +45,32 @@ public class ServletRegistrarPedido extends ServletAbstract{
 	        respuesta.write( "</form>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
+	        
+	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
+	        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+	        respuesta.write( "<tr>El siguiente pedido se ha realizado de manera exitosa. La fecha de entrega es: " + entrega.getTime().toLocaleString() + ".</tr>" );
+	        respuesta.write( "<tr>" );
+	        respuesta.write( "<tr><td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\"></td>" );
+	        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=10%>" );
+	        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto Pedido: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><input value=\"" + productoPedido + "\" name=\"producto\" type=\"hidden\"\"><td align=\"right\">" + productoPedido + "</td></tr>" );
+	        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Costo Total: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (precio* cantidad) + "</td></tr>" );
+	        respuesta.write( "<tr><td><table bgcolor=\"#ecf0f1\" width=10%>" );
+	        respuesta.write( "<tr><td align=\"left\"><h4>Unidades: </h4></td>" );
+	        respuesta.write( "<td align=\"right\">" );
+	        respuesta.write( "<select size=\"1\" name=\"cantidad\" class=\"normal\" style=\"border: none;\">" );
+	        respuesta.write( "<option value=\"1\">1</option>" );
+	        respuesta.write( "<option value=\"2\">2</option>" );
+	        respuesta.write( "<option value=\"3\">3</option>" );
+	        respuesta.write( "</select>" );
+	        respuesta.write( "</td></tr>" );
+	        respuesta.write( "</table></td></tr>" );
+	        respuesta.write( "<tr><td align=\"right\"><input value=\"Pedir\" size=\"33\" name=\"pedir\" type=\"submit\"\"></td></tr>" );
+	        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
+	        respuesta.write( "</table></td>" );
+	        respuesta.write( "</tr>" );
+	        respuesta.write( "</form>" );
+	        respuesta.write( "</table>" );
+	        
 		}
 		catch (Exception e){
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );

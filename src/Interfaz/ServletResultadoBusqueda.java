@@ -43,7 +43,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				error(respuesta);
 			}
 			
-			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
+			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 			for (int i = 0; i < rta.size(); i++) {
 				respuesta.write( "<form method=\"POST\" action=\"registroPedido.htm\">" );
 				respuesta.write( "<tr>" );
@@ -63,6 +63,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		        respuesta.write( "</table></td></tr>" );
 		        respuesta.write( "<tr><td align=\"right\"><input value=\"Pedir\" size=\"33\" name=\"pedir\" type=\"submit\"\"></td></tr>" );
 		        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
+		        respuesta.write( "<input type=\"hidden\" name=\"precio\" value=" + rta.get(i) + ">" );
 		        respuesta.write( "</table></td>" );
 		        respuesta.write( "</tr>" );
 		        respuesta.write( "</form>" );
