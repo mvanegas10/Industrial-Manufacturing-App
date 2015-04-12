@@ -35,6 +35,11 @@ public class CRUD {
 		{   
 		    String atributos ="(" + columnas[0];
 			String values ="(?";
+			if(columnas.length == 1)
+			{
+				values+=")";
+				atributos+=")";
+			}
 		    for(int i=1; i< columnas.length;i++){
 		    	atributos += (","+columnas[i]);
 		    	values+=",?";
