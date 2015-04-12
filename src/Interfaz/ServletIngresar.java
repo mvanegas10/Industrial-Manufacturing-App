@@ -118,7 +118,7 @@ public class ServletIngresar extends ServletAbstract{
 		}
 		else
 		{
-	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
+			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<td><h3> BIENVENIDO " + tipo.toUpperCase() + ": " + login + "</h3></td>" );
 	        respuesta.write( "</tr>" );
@@ -186,19 +186,8 @@ public class ServletIngresar extends ServletAbstract{
 		        }
 		        catch(Exception e4){	
 		        }
-		        try
-		        {
-		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-		        	respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
-			        respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
-		        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 4) + "></td>" );
-			        respuesta.write( "<td><input value=" + productos.get(i+4) + " name=\"nombre\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
-			        respuesta.write( "</form>" );
-		        }
-		        catch(Exception e5){	
-		        }
 		        respuesta.write( "</tr>" );
-		        i+=5;
+		        i+=4;
 	        }
 	        respuesta.write( "</table>" );
 		}
