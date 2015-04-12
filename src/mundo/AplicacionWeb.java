@@ -176,8 +176,10 @@ public class AplicacionWeb {
 	public void registrarPedidoCliente (String login, String producto, int cantidad, Date pedido, Date entrega) throws Exception{
 		ArrayList<String> idProducto = new ArrayList<String>();
 		idProducto = crud.darSubTabla(Producto.NOMBRE, "id", " nombre = '" + producto + "' ");
-		String[] datos = {Integer.toString(darContadorId()), idProducto.get(0), login, Integer.toString(cantidad), Integer.toString(pedido.getDate()), Integer.toString(pedido.getMonth()), Integer.toString(entrega.getDate()), Integer.toString(entrega.getMonth())};
-		crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datos);
+		String sql = "INSERT INTO pedidos (id, idProducto, idCliente, cantidad, diaPedido, mesPedido, diaEntrega, mesEntrega) VALUES ('" + darContadorId() + "','" + idProducto + "','" + login + "'," + cantidad + "," + pedido.getDate() + "," + pedido.getMonth() + "," + entrega.getDate() + "," + entrega.getMonth();
+		System.out.println(sql);
+		Statement s = crud.darConexion().createStatement();
+		s.executeUpdate(sql);
 	}
 	
 	public ArrayList<Pedido> darPedidosCliente(String login) throws Exception{
@@ -371,7 +373,8 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			aplicacionWeb.registrarPedidoCliente("clara", "at", 1, new Date(), new Date());
+			Statement s = crud.darConexion().createStatement();
+			s.execute("INSERT INTO pedidos (id, idProducto, idCliente, cantidad, diaPedido, mesPedido, diaEntrega, mesEntrega) VALUES ('10','225','meili',1,1,2,1,2)");
 		}
 		catch (Exception e)
 		{

@@ -47,7 +47,7 @@ public class CRUD {
 			PreparedStatement statement = conexion.prepareStatement(sql); 
 			for(int i =0; i<columnas.length; i++){
 				if(tipos[i].equals("String")){
-					statement.setString(i+1, "'" +  datos[i] + "'");
+					statement.setString(i+1, datos[i]);
 					System.err.println( "'" +  datos[i] + "'");
 				}
 				else if(tipos[i].equals("int")){

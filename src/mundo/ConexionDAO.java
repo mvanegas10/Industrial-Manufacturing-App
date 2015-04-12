@@ -109,7 +109,6 @@ public class ConexionDAO
 				// La excepci�n se lanza si la tabla no existe
 				crearTabla = true;
 			}
-
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
@@ -119,7 +118,7 @@ public class ConexionDAO
 			else
 				System.out.println("La tabla clientes ya existe");
 			s.close();
-
+			crearTabla = false;
 			Statement s1 = conexion.createStatement( );
 			try
 			{
@@ -131,7 +130,7 @@ public class ConexionDAO
 				// La excepci�n se lanza si la tabla no existe
 				crearTabla = true;
 			}
-
+			
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
@@ -189,6 +188,29 @@ public class ConexionDAO
 			s3.close();
 			crearTabla = false;
 
+			Statement s10 = conexion.createStatement( );
+			try
+			{
+				// Verificar si ya existe la tabla
+				s10.executeQuery( "SELECT * FROM etapasProduccion" );
+			}
+			catch( SQLException se )
+			{
+				// La excepci�n se lanza si la tabla no existe
+				crearTabla = true;
+			}
+
+			// Se crea una nueva tabla vac�a
+			if( crearTabla )
+			{
+				s10.execute( "CREATE TABLE etapasProduccion (id varchar(32), numSecuencia int, idProducto varchar(32), idSiguiente varchar(32), PRIMARY KEY (id))" );
+				System.out.println("Se cre� la tabla etapasProduccion");
+			}
+			else
+				System.out.println("La tabla etapasProduccion ya existe");
+			s10.close();
+			crearTabla = false;
+			
 			Statement s4 = conexion.createStatement( );
 			try
 			{
@@ -203,7 +225,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s4.execute( "CREATE TABLE productosEtapasProduccion (id_producto varchar(32), idEtapa int, descripcion varchar(32), PRIMARY KEY (id_producto, idEtapa), CONSTRAINT fk_idProdEtapa FOREIGN KEY (id_producto) REFERENCES productos(id), CONSTRAINT fk_etapasProductos FOREIGN KEY (idEtapa) REFERENCES etapasProduccion(id))" );
+				s4.execute( "CREATE TABLE productosEtapasProduccion (id_producto varchar(32), idEtapa varchar(32), descripcion varchar(32), PRIMARY KEY (id_producto, idEtapa), CONSTRAINT fk_idProdEtapa FOREIGN KEY (id_producto) REFERENCES productos(id), CONSTRAINT fk_etapasProductos FOREIGN KEY (idEtapa) REFERENCES etapasProduccion(id))" );
 				System.out.println("Se cre� la tabla productosEtapasProduccion");
 			}
 			else
@@ -324,29 +346,6 @@ public class ConexionDAO
 			else
 				System.out.println("La tabla Pedidos ya existe");
 			s9.close();
-			crearTabla = false;
-
-			Statement s10 = conexion.createStatement( );
-			try
-			{
-				// Verificar si ya existe la tabla
-				s10.executeQuery( "SELECT * FROM etapasProduccion" );
-			}
-			catch( SQLException se )
-			{
-				// La excepci�n se lanza si la tabla no existe
-				crearTabla = true;
-			}
-
-			// Se crea una nueva tabla vac�a
-			if( crearTabla )
-			{
-				s10.execute( "CREATE TABLE etapasProduccion (id varchar(32), numSecuencia int, idProducto varchar(32), idSiguiente varchar(32), PRIMARY KEY (id))" );
-				System.out.println("Se cre� la tabla etapasProduccion");
-			}
-			else
-				System.out.println("La tabla etapasProduccion ya existe");
-			s10.close();
 			crearTabla = false;
 			Statement s11 = conexion.createStatement( );
 			try
