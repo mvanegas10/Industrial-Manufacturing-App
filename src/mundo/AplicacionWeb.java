@@ -52,7 +52,7 @@ public class AplicacionWeb {
 			contadorId = rs.getInt(0);
 		}
 		catch (Exception e){
-			contadorId = 1003;
+			contadorId = 1004;
 		}
 		usuarioActual = "";
 	}
