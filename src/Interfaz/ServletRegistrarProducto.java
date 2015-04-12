@@ -24,6 +24,8 @@ public class ServletRegistrarProducto extends ServletAbstract{
 		
 		String idProducto = request.getParameter("idProducto");
 		
+		String idAnterior = request.gets
+		
 		int contador = 0;
 		
 		List<String[]> datosEtapaProduccion = new ArrayList<String[]>();

@@ -116,7 +116,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE productos (id varchar(32), nombre varchar(32), precio int, cantidad int, PRIMARY KEY (id))" );
+				s.execute( "CREATE TABLE productos (id varchar(32), nombre varchar(32), precio int, PRIMARY KEY (id))" );
 				System.out.println("Se cre� la tabla productos");
 			}
 			else
@@ -465,7 +465,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE etapas (id varchar(32), idProducto varchar(32), idEstacion varchar(32), idMateriaPrima varchar(32), idComponente varchar(32), duracion int, numero int, PRIMARY KEY (id), CONSTRAINT fk_idProducto FOREIGN KEY (idProducto) REFERENCES productos(id), CONSTRAINT fk_idEstacion FOREIGN KEY (idEstacion) REFERENCES estaciones(id), CONSTRAINT fk_idMateriaPrima FOREIGN KEY (idMateriaPrima) REFERENCES materiasPrimas(id), CONSTRAINT fk_idComponente FOREIGN KEY (idComponentes) REFERENCES componentes(id), CONSTRAINT fk_idProducto FOREIGN KEY (idProducto) REFERENCES productos(id),CONSTRAINT unq_ofertaUnica UNIQUE (idProducto,numero))" );
+				s.execute( "CREATE TABLE etapas (id varchar(32), idProducto varchar(32), idEstacion varchar(32), idMateriaPrima varchar(32), idComponente varchar(32), duracion int, numeroSecuencia int, idAnterior varchar(32), PRIMARY KEY (id), CONSTRAINT fk_idProductoEtapa FOREIGN KEY (idProducto) REFERENCES productos(id),CONSTRAINT fk_idEtapaEtapa FOREIGN KEY (idAnterior) REFERENCES etapas(id), CONSTRAINT fk_idEstacionEtapa FOREIGN KEY (idEstacion) REFERENCES estaciones(id), CONSTRAINT fk_idMateriaPrimaEtapa FOREIGN KEY (idMateriaPrima) REFERENCES materiasPrimas(id), CONSTRAINT fk_idComponenteEtapa FOREIGN KEY (idComponentes) REFERENCES componentes(id), CONSTRAINT unq_ofertaUnica UNIQUE (idProducto,numero))" );
 				System.out.println("Se cre� la tabla etapas");
 			}
 			else

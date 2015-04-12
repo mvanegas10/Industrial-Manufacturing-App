@@ -2,11 +2,11 @@ package mundo;
 
 public class EtapaProduccion {
 	
-	public static final String NOMBRE = "etapaProduccion";
+	public static final String NOMBRE = "etapas";
 	
-	public static final String[] COLUMNAS = {"id", "numSecuencia", "idProducto", "idSiguiente"};
+	public static final String[] COLUMNAS = {"id", "idProducto", "idEstacion", "idMateriaPrima", "idComponente", "duracion", "numeroSecuencia", "idAnterior"};
 	
-	public static final String[] TIPO = {"String", "int", "String", "String"};
+	public static final String[] TIPO = {"String", "String", "String", "String", "String", "int", "int", "String"};
 	
 	//--------------------------------------------------
 	// ATRIBUTOS
@@ -14,21 +14,84 @@ public class EtapaProduccion {
 	
 	private String id;
 	
-	private int numeroSecuencia;
-	
 	private String idProducto;
 	
-	private String idSiguiente;
+	private String idEstacion;
 
+	private String idMateriaPrima;
+	
+	private String idComponente;
+	
+	private int duracion;
+	
+	private int numeroSecuencia;
+	
+	private String idAnterior;
+	
 	//--------------------------------------------------
 	// CONSTRUCTOR
 	//--------------------------------------------------
+
+	public EtapaProduccion(String id, String idProducto, String idEstacion,
+			String idMateriaPrima, String idComponente, int duracion,
+			int numeroSecuencia, String idAnterior) {
+		super();
+		this.id = id;
+		this.idProducto = idProducto;
+		this.idEstacion = idEstacion;
+		this.idMateriaPrima = idMateriaPrima;
+		this.idComponente = idComponente;
+		this.duracion = duracion;
+		this.numeroSecuencia = numeroSecuencia;
+		this.idAnterior = idAnterior;
+	}
 	
-	public EtapaProduccion(String pId, int pNumeroSecuencia, String pProducto, String pSiguiente) {
-		this.id = pId;
-		this.numeroSecuencia = pNumeroSecuencia;
-		this.idProducto = pProducto;
-		this.idSiguiente = pSiguiente;
+	public String getIdProducto() {
+		return idProducto;
+	}
+
+	public void setIdProducto(String idProducto) {
+		this.idProducto = idProducto;
+	}
+
+	public String getIdEstacion() {
+		return idEstacion;
+	}
+
+	public void setIdEstacion(String idEstacion) {
+		this.idEstacion = idEstacion;
+	}
+
+	public String getIdMateriaPrima() {
+		return idMateriaPrima;
+	}
+
+	public void setIdMateriaPrima(String idMateriaPrima) {
+		this.idMateriaPrima = idMateriaPrima;
+	}
+
+	public String getIdComponente() {
+		return idComponente;
+	}
+
+	public void setIdComponente(String idComponente) {
+		this.idComponente = idComponente;
+	}
+
+	public int getDuracion() {
+		return duracion;
+	}
+
+	public void setDuracion(int duracion) {
+		this.duracion = duracion;
+	}
+
+	public String getIdAnterior() {
+		return idAnterior;
+	}
+
+	public void setIdAnterior(String idAnterior) {
+		this.idAnterior = idAnterior;
 	}
 	
 	//--------------------------------------------------
@@ -57,14 +120,6 @@ public class EtapaProduccion {
 
 	public void setProducto(String idProducto) {
 		this.idProducto = idProducto;
-	}
-
-	public String getSiguiente() {
-		return idSiguiente;
-	}
-
-	public void setSiguiente(String idSiguiente) {
-		this.idSiguiente = idSiguiente;
 	}
 	
 	//--------------------------------------------------

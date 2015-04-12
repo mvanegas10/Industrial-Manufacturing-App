@@ -179,10 +179,8 @@ public class AplicacionWeb {
 		System.out.println("Se registro " + datos);
 	}
 	
-	public void registrarProductoEtapasProduccion  (List<String[]> etapasProduccion) throws Exception{
-		for (int i = 0; i < etapasProduccion.size(); i++) {
-			crud.insertarTupla(Producto.NOMBRE_RELACION_ETAPA_PRODUCCION, Producto.COLUMNA_RELACION_ETAPA_PRODUCCION, Producto.TIPO_RELACION_ETAPA_PRODUCCION, etapasProduccion.get(i));
-		}
+	public void registrarProductoEtapasProduccion  (String[] etapasProduccion) throws Exception{
+		crud.insertarTupla(EtapaProduccion.NOMBRE, EtapaProduccion.COLUMNAS, EtapaProduccion.TIPO, etapasProduccion);
 	}
 	
 	public void registrarPedidoCliente (String login, String producto, int cantidad, Date pedido, Date entrega) throws Exception{
