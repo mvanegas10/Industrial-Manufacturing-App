@@ -113,9 +113,11 @@ public class AplicacionWeb {
 		return rta;
 	}
 	
-	public void registrarProveedor (String id, String direccion, int telefono, String ciudad, String idRepLegal) throws Exception{
-		String[] datosSimples = {id,direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
+	public void registrarProveedor (String idProveedor, String direccion, int telefono, String ciudad, String idRepLegal) throws Exception{
+		String[] id = {idProveedor};
+		String[] datosSimples = {id[0],direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
 		crud.insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO, datosSimples);
+		crud.insertarTupla(ID, COLUMNAS, TIPO, id);
 	}
 	
 	public void registrarProveedorMateriaPrima (List<String[]> datosProveedorMateriaPrima ) throws Exception{
@@ -133,14 +135,16 @@ public class AplicacionWeb {
 	}
 	
 	public void registrarMateriaPrima (String id, String unidadMedida, int cantidadInicial) throws Exception{
+		String[] id1 = {id};
 		String[] datosSimples = {id, unidadMedida, Integer.toString(cantidadInicial)};
+		crud.insertarTupla(ID, COLUMNAS, TIPO, id1);
 		try{
 			int cantidadActual= Integer.parseInt((crud.darSubTabla(MateriaPrima.NOMBRE, "cantidadInicial", "id="+id).get(0)));
 			String[] columnas = new String[1];
 			columnas[0] = "cantidadInicial";
 			String[] cantidad = new String[1];
 			cantidad[0] = (Integer.toString(cantidadInicial + cantidadActual));
-			crud.actualizarTupla(MateriaPrima.NOMBRE,columnas,cantidad, "id="+id);	
+			crud.actualizarTupla(MateriaPrima.NOMBRE,columnas,cantidad, "id= '"+id+"'");	
 		}
 		catch(Exception e){
 			crud.insertarTupla(MateriaPrima.NOMBRE, MateriaPrima.COLUMNAS, MateriaPrima.TIPO, datosSimples);
@@ -148,7 +152,9 @@ public class AplicacionWeb {
 	}
 	
 	public void registrarComponente (String id, int cantidadInicial) throws Exception {
+		String[] id1 = {id};
 		String[] datosSimples = {id, Integer.toString(cantidadInicial)};
+		crud.insertarTupla(ID, COLUMNAS, TIPO, id1);
 		try{
 			int cantidadActual= Integer.parseInt((crud.darSubTabla(Componente.NOMBRE, "cantidadInicial", "id="+id).get(0)));
 			String[] columnas = new String[1];
@@ -162,8 +168,10 @@ public class AplicacionWeb {
 	}
 	
 	public void registrarProducto (String id, String nombre, int precio) throws Exception{
+		String[] id1 = {id};
 		String[] datos = {id, nombre, Integer.toString(precio)};
 		crud.insertarTupla(Producto.NOMBRE, Producto.COLUMNAS, Producto.TIPO, datos);
+		crud.insertarTupla(ID, COLUMNAS, TIPO, id1);
 		System.out.println("Se registro " + datos);
 	}
 	
@@ -349,9 +357,7 @@ public class AplicacionWeb {
 		}
 		return componentes;
 	}
-	
-	
-	
+
 	public boolean registrarRegistro (String idProducto, int cantidad) throws Exception{
 		try
 		{
