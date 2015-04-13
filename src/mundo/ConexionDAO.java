@@ -508,36 +508,9 @@ public class ConexionDAO
 			else
 			System.out.println("La tabla registrosProductos ya existe");
 			s.close();
-			
+		
 			
 			// TABLA 15: INVENTARIO PRODUCTOS ------------------------------------------------------------
-
-			crearTabla = false;
-			
-			s = conexion.createStatement( );
-			try
-			{
-				// Verificar si ya existe la tabla
-				s.executeQuery( "SELECT * FROM inventarioProductos" );
-			}
-			catch( SQLException se )
-			{
-				// La excepci�n se lanza si la tabla no existe
-				crearTabla = true;
-			}
-
-			// Se crea una nueva tabla vac�a
-			if( crearTabla )
-			{
-				s.execute( "CREATE TABLE inventarioProductos (idRegistro varchar(32), idProducto varchar(32), idPedido varchar(32), PRIMARY KEY (idRegistro), CONSTRAINT fk_idRegistroProdInven FOREIGN KEY (idRegistro) REFERENCES registrosProductos(id), CONSTRAINT fk_idProductoInventario FOREIGN KEY (idProducto) REFERENCES productos(id),CONSTRAINT fk_idPedidoInven FOREIGN KEY (idPedido) REFERENCES pedidos(id))" );
-				System.out.println("Se cre� la tabla inventarioProductos");
-			}
-			else
-			System.out.println("La tabla inventarioProductos ya existe");
-			s.close();
-			
-			
-			// TABLA 16: PEDIDOS ------------------------------------------------------------
 
 			crearTabla = false;
 			
@@ -562,10 +535,38 @@ public class ConexionDAO
 			else
 			System.out.println("La tabla pedidos ya existe");
 			s.close();	
+
+			// TABLA 16: PEDIDOS ------------------------------------------------------------
+			
+			crearTabla = false;
+			
+			s = conexion.createStatement( );
+			try
+			{
+				// Verificar si ya existe la tabla
+				s.executeQuery( "SELECT * FROM inventarioProductos" );
+			}
+			catch( SQLException se )
+			{
+				// La excepci�n se lanza si la tabla no existe
+				crearTabla = true;
+			}
+
+			// Se crea una nueva tabla vac�a
+			if( crearTabla )
+			{
+				s.execute( "CREATE TABLE inventarioProductos (idRegistro varchar(32), idProducto varchar(32), idPedido varchar(32), PRIMARY KEY (idRegistro), CONSTRAINT fk_idRegistroProdInven FOREIGN KEY (idRegistro) REFERENCES registrosProductos(id), CONSTRAINT fk_idProductoInventario FOREIGN KEY (idProducto) REFERENCES productos(id),CONSTRAINT fk_idPedidoInven FOREIGN KEY (idPedido) REFERENCES pedidos(id))" );
+				System.out.println("Se cre� la tabla inventarioProductos");
+			}
+			else
+			System.out.println("La tabla inventarioProductos ya existe");
+			s.close();
+			
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+			
 	}
 }

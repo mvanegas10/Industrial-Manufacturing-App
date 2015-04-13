@@ -53,14 +53,14 @@ public class CRUD {
 			for(int i =0; i<columnas.length; i++){
 				if(tipos[i].equals("String")){
 					statement.setString(i+1, datos[i]);
-					System.err.println( "'" +  datos[i] + "'");
+					System.out.println( "'" +  datos[i] + "'");
 				}
 				else if(tipos[i].equals("int")){
 					statement.setInt(i+1, Integer.parseInt(datos[i]));
-					System.err.println(Integer.parseInt(datos[i]));
+					System.out.println(Integer.parseInt(datos[i]));
 				}	
 			}
-			System.err.println(sql);
+			System.out.println(sql);
 			
 			int filasInsertadas = statement.executeUpdate();
 			
