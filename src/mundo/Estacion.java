@@ -12,7 +12,7 @@ public class Estacion {
 	
 	public static final String[] TIPO = {"String", "String"};
 	
-	public static final String NOMBRE_REGISTRO_ESTACIONES = "registroEstaciones";
+	public static final String NOMBRE_REGISTRO_ESTACIONES = "registrosEstaciones";
 	
 	public static final String[] COLUMNAS_REGISTRO_ESTACIONES = {"id", "idEstacion","dia","mes"};
 	

@@ -16,7 +16,7 @@ public class Producto {
 	
 	public static final String NOMBRE_REGISTRO_PRODUCTOS = "registrosProductos";
 	
-	public static final String[] COLUMNAS_REGISTRO_PRODUCTOS = {"id","idEtapa","idRegistroEstacion","idRegistroMateriaPrima","idregistroComponente"};
+	public static final String[] COLUMNAS_REGISTRO_PRODUCTOS = {"id","idEtapa","idRegistroEstacion","idRegistroMateriaPrima","idRegistroComponente"};
 	
 	public static final String[] TIPO_REGISTRO_PRODUCTOS = {"String","String","String","String","String"};
 				
@@ -38,7 +38,7 @@ public class Producto {
 	// CONSTRUCTOR
 	//---------------------------------------------------
 
-	public Producto(String id, String nombre, double precio, int pNumeroEtapas, int disponibles,ArrayList<Cliente> pClientes, int cantidad,ArrayList<Etapa> pEtapasProduccion) {
+	public Producto(String id, String nombre, double precio, int pNumeroEtapas, int disponibles, int cantidad,ArrayList<Etapa> pEtapasProduccion) {
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;

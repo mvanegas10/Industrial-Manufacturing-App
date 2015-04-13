@@ -49,6 +49,7 @@ public class AplicacionWeb {
 		conexion.iniciarConexion();
 		conexion.crearTablas();
 		crud = new CRUD(conexion);
+		poblarTablas();
 		try
 		{
 			Statement s = crud.darConexion().createStatement();
