@@ -324,26 +324,30 @@ public class AplicacionWeb {
 	}
 	
 	public ArrayList<MateriaPrima> darMateriasPrimas( ) throws Exception {
-		ArrayList<MateriaPrima> materiasPrimas = new ArrayList<MateriaPrima>();
-		ArrayList<String> datosMateriasPrimas = crud.darTuplas(MateriaPrima.NOMBRE);
-		
-		for(int i = 0; i < datosMateriasPrimas.size();i++){
-			MateriaPrima materiaPrima = new MateriaPrima(datosMateriasPrimas.get(i),"",2);
-			materiasPrimas.add(materiaPrima);
+		ArrayList<MateriaPrima> rta = new ArrayList<MateriaPrima>();
+		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + MateriaPrima.NOMBRE + "");
+		while(rs.next())
+		{
+			String id = rs.getString(1);
+			String unidadMedida = rs.getString(2);
+			int cantidad = rs.getInt(3);
+			MateriaPrima estacion = new MateriaPrima(id, unidadMedida, cantidad);
+			rta.add(estacion);
 		}
-		return materiasPrimas;
+		return rta;
 	}
 	
 	public ArrayList<Componente> darComponentes( ) throws Exception {
-		ArrayList<Componente> componentes = new ArrayList<Componente>();
-		int numeroColumnas = Componente.COLUMNAS.length;
-		ArrayList<String> datosComponentes = crud.darTuplas(Componente.NOMBRE);
-		
-		for(int i = 0; i < datosComponentes.size();i+=numeroColumnas){
-			Componente componente = new Componente(datosComponentes.get(i),Integer.parseInt(datosComponentes.get(i+1)));
-			componentes.add(componente);
+		ArrayList<Componente> rta = new ArrayList<Componente>();
+		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Componente.NOMBRE + "");
+		while(rs.next())
+		{
+			String id = rs.getString(1);
+			int cantidad = rs.getInt(2);
+			Componente estacion = new Componente(id, cantidad);
+			rta.add(estacion);
 		}
-		return componentes;
+		return rta;
 	}
 	
 	private ArrayList<MateriaPrima> darMateriasPrimasProveedor(String idProveedor) throws Exception{
@@ -440,6 +444,19 @@ public class AplicacionWeb {
 	
 	public void eliminarPedidoCliente(String login, String idPedido) throws Exception{
 		crud.eliminarTuplaPorId(Pedido.NOMBRE, idPedido);
+	}
+	
+	public ArrayList<Estacion> darEstaciones() throws Exception{
+		ArrayList<Estacion> rta = new ArrayList<Estacion>();
+		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Estacion.NOMBRE + "");
+		while(rs.next())
+		{
+			String id = rs.getString(1);
+			String nombre = rs.getString(2);
+			Estacion estacion = new Estacion(id, nombre);
+			rta.add(estacion);
+		}
+		return rta;
 	}
 	
 	public static void main(String[] args) {

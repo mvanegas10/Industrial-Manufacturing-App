@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mundo.AplicacionWeb;
+import mundo.Componente;
+import mundo.Estacion;
+import mundo.MateriaPrima;
 
 public class ServletRegistrarProducto extends ServletAbstract{
 
@@ -24,108 +27,71 @@ public class ServletRegistrarProducto extends ServletAbstract{
 		
 		String idProducto = request.getParameter("idProducto");
 		
-		String idAnterior = request.gets
+		String idAnterior = request.getParameter("idAnterior");
 		
-		int contador = 0;
+		ArrayList<Estacion> estaciones = new ArrayList<Estacion>();
 		
-		List<String[]> datosEtapaProduccion = new ArrayList<String[]>();
+		ArrayList<MateriaPrima> materiasPrimas = new ArrayList<MateriaPrima>();
 		
-		try {
-			int numSecuencia1 = Integer.parseInt(request.getParameter("numSecuencia1"));
-			String descripcion1 = request.getParameter("descripcion1");
-			String[] d1 = {idProducto, Integer.toString(numSecuencia1), descripcion1};
-			contador++;
-			datosEtapaProduccion.add(d1);
+		ArrayList<Componente> componentes = new ArrayList<Componente>();
+		
+		try
+		{
+			estaciones = AplicacionWeb.getInstancia().darEstaciones();
+			materiasPrimas = AplicacionWeb.getInstancia().darMateriasPrimas();
+			componentes = AplicacionWeb.getInstancia().darComponentes();
+			respuesta.write( "<table align= center bgcolor=\"#ecf0f1\" width=\"40%\">" );
+			respuesta.write( "<tr>" );
+			respuesta.write( "<td><h4>Numero de Secuencia:</h4></td>" );
+			respuesta.write( "<td><input type=\"text\" name=\"numeroSecuencia\" size=\"23\" class=\"normal\"></td>" );
+			respuesta.write( "</tr>" );
+			respuesta.write( "<tr></tr>" );
+			respuesta.write( "<tr>" );
+			respuesta.write( "<td><h4>Duracion (en dias):</h4></td>" );
+			respuesta.write( "<td><input type=\"text\" name=\"duracion\" size=\"23\" class=\"normal\"></td>" );
+			respuesta.write( "</tr>" );
+			respuesta.write( "<tr></tr>" );
+			respuesta.write( "<tr>" );
+			respuesta.write( "<td><h4 align=\"left\">Estacion:</h4></td>" );
+			respuesta.write( "<td width=\"100\"><select size=\"1\" name=\"estacion\" style=\"width: 207px\" class=\"normal\">" );
+			for (Estacion estacion : estaciones) {
+				respuesta.write( "<option value=" + estacion.getId() + ">" + estacion.getId() + "</option>" );
+			}
+			respuesta.write( "</select>" );
+			respuesta.write( "</td>" );
+			respuesta.write( "</tr>" );
+			respuesta.write( "<tr></tr>" );
+			respuesta.write( "<tr>" );
+			respuesta.write( "<td><h4 align=\"left\">Materia Prima:</h4></td>" );
+			respuesta.write( "<td width=\"100\"><select size=\"1\" name=\"materiaPrima\" style=\"width: 207px\" class=\"normal\">" );
+			for (MateriaPrima materiaPrima : materiasPrimas) {
+				respuesta.write( "<option value=" + materiaPrima.getId() + ">" + materiaPrima.getId() + "</option>" );
+			}
+			respuesta.write( "</select>" );
+			respuesta.write( "</td>" );
+			respuesta.write( "</tr>" );
+			respuesta.write( "<tr></tr>" );
+			respuesta.write( "<tr>" );
+			respuesta.write( "<td><h4 align=\"left\">Componente:</h4></td>" );
+			respuesta.write( "<td width=\"100\"><select size=\"1\" name=\"componente\" style=\"width: 207px\" class=\"normal\">" );
+			for (Componente componente : componentes) {
+				respuesta.write( "<option value=" + componente.getId() + ">" + componente.getId() + "</option>" );
+			}
+			respuesta.write( "</select>" );
+			respuesta.write( "</td>" );
+			respuesta.write( "</tr>" );
+			respuesta.write( "<tr></tr>" );
+			respuesta.write( "</table>" );
+			respuesta.write( "<h4 align=\"center\"><form method=\"POST\" action=\"registroEtapasProduccion.htm\"><input type=\"submit\" value=\"Registrar Siguiente Etapa de Produccion\" size=\"33\" name=\"registrarEP\" class=\"normal\" style=\"background: #FFFFFF; border: none;\"></form></h4>" );
+			respuesta.write( "<h4 align=\"center\"><form method=\"POST\" action=\"registroProducto.htm\"><input type=\"submit\" value=\"Finalizar Registro Etapas de Produccion\" size=\"33\" name=\"registrarEP\" class=\"normal\" style=\"background: #FFFFFF; border: none;\"></form></h4>" );
+			respuesta.write( "<p align=center>" );
+			respuesta.write( "<input type=\"reset\" value=\"Borrar\" name=\"B2\" class=\"normal\"></p>" );
+		}
+		catch (Exception e){
 			
 		}
-		catch(Exception e){
-	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
-	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><h3>Ingrese por lo menos una etapa</h3></td>" );
-	        respuesta.write( "</tr>" );
-	        respuesta.write( "</table>" );
-		}
-		try{
-			int numSecuencia2 = Integer.parseInt(request.getParameter("numSecuencia2"));
-			String descripcion2 = request.getParameter("descripcion2");
-			String[] d2 = {idProducto, Integer.toString(numSecuencia2), descripcion2};
-			contador++;
-			datosEtapaProduccion.add(d2);
-		}
-		catch (Exception e){	
-		}
-		try{
-			int numSecuencia3 = Integer.parseInt(request.getParameter("numSecuencia3"));
-			String descripcion3 = request.getParameter("descripcion3");
-			String[] d3 = {idProducto, Integer.toString(numSecuencia3), descripcion3};
-			contador++;
-			datosEtapaProduccion.add(d3);
-		}
-		catch (Exception e){	
-		}
-		try{
-			int numSecuencia4 = Integer.parseInt(request.getParameter("numSecuencia4"));
-			String descripcion4 = request.getParameter("descripcion4");
-			String[] d4 = {idProducto, Integer.toString(numSecuencia4), descripcion4};
-			contador++;
-			datosEtapaProduccion.add(d4);
-		}
-		catch (Exception e){	
-		}
-		try{
-			int numSecuencia5 = Integer.parseInt(request.getParameter("numSecuencia5"));
-			String descripcion5 = request.getParameter("descripcion5");
-			String[] d5 = {idProducto, Integer.toString(numSecuencia5), descripcion5};
-			contador++;
-			datosEtapaProduccion.add(d5);
-		}
-		catch (Exception e){	
-		}
-		try{
-			int numSecuencia6 = Integer.parseInt(request.getParameter("numSecuencia6"));
-			String descripcion6 = request.getParameter("descripcion6");
-			String[] d6 = {idProducto, Integer.toString(numSecuencia6), descripcion6};
-			contador++;
-			datosEtapaProduccion.add(d6);
-		}
-		catch (Exception e){	
-		}
-		try{
-			int numSecuencia7 = Integer.parseInt(request.getParameter("numSecuencia7"));
-			String descripcion7 = request.getParameter("descripcion7");
-			String[] d7 = {idProducto, Integer.toString(numSecuencia7), descripcion7};
-			contador++;
-			datosEtapaProduccion.add(d7);
-		}
-		catch (Exception e){	
-		}
-		try{
-			int numSecuencia8 = Integer.parseInt(request.getParameter("numSecuencia8"));
-			String descripcion8 = request.getParameter("descripcion8");
-			String[] d8 = {idProducto, Integer.toString(numSecuencia8), descripcion8};
-			contador++;
-			datosEtapaProduccion.add(d8);
-		}
-		catch (Exception e){	
-		}
-		try{
-			int numSecuencia9 = Integer.parseInt(request.getParameter("numSecuencia9"));
-			String descripcion9 = request.getParameter("descripcion9");
-			String[] d9 = {idProducto, Integer.toString(numSecuencia9), descripcion9};
-			contador++;
-			datosEtapaProduccion.add(d9);
-		}
-		catch (Exception e){	
-		}
-		try{
-			int numSecuencia10 = Integer.parseInt(request.getParameter("numSecuencia10"));
-			String descripcion10 = request.getParameter("descripcion10");
-			String[] d10 = {idProducto, Integer.toString(numSecuencia10), descripcion10};
-			contador++;
-			datosEtapaProduccion.add(d10);
-		}
-		catch (Exception e){	
-		}
+		String[] datos;
+				
 		try
 		{
 			AplicacionWeb.getInstancia().registrarProductoEtapasProduccion(datosEtapaProduccion);

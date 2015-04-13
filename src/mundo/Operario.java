@@ -12,13 +12,13 @@ public class Operario {
 	
 	private boolean estaOcupado;
 	
-	private EstacionProduccion estacionProduccion;
+	private Estacion estacionProduccion;
 	
 	//--------------------------------------------------
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
-	public Operario(String pId, String pNombre, boolean pEstaOcupado, EstacionProduccion pEstacionProduccion) {
+	public Operario(String pId, String pNombre, boolean pEstaOcupado, Estacion pEstacionProduccion) {
 		this.id = pId;
 		this.nombre = pNombre;
 		this.estaOcupado = pEstaOcupado;
@@ -53,11 +53,11 @@ public class Operario {
 		this.estaOcupado = estaOcupado;
 	}
 
-	public EstacionProduccion getEstacionProduccion() {
+	public Estacion getEstacionProduccion() {
 		return estacionProduccion;
 	}
 
-	public void setEstacionProduccion(EstacionProduccion estacionProduccion) {
+	public void setEstacionProduccion(Estacion estacionProduccion) {
 		this.estacionProduccion = estacionProduccion;
 	}	
 
