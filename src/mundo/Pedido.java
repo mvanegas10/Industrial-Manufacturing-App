@@ -6,9 +6,9 @@ public class Pedido {
 	
 	public static final String NOMBRE = "pedidos";
 	
-	public static final String[] COLUMNAS = {"id", "idInventario", "idUsuario","diaPedido", "mesPedido"};
+	public static final String[] COLUMNAS = {"id", "idInventario", "idUsuario","diaPedido", "mesPedido","cantidad"};
 	
-	public static final String[] TIPO = {"String", "String", "String", "int", "int"};
+	public static final String[] TIPO = {"String", "String", "String", "int", "int","int"};
 	
 	private String id;
 
