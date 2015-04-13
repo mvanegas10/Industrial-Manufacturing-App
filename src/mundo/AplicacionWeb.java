@@ -274,10 +274,7 @@ public class AplicacionWeb {
 		
 //		String sql = "INSERT INTO pedidos (id, idProducto, idCliente, cantidad, diaPedido, mesPedido, diaEntrega, mesEntrega) VALUES ('" + Integer.toString(idsGenerados.get(0)) + "','" + idProducto + "','" + login + "'," + cantidad + "," + pedido.getDate() + "," + pedido.getMonth() + "," + entrega.getDate() + "," + entrega.getMonth() + ")";
 //		System.out.println(sql);
-//		for (Integer id : idsGenerados) {
-//			String[] pId = {Integer.toString(id)};
-//			crud.insertarTupla(ID, COLUMNAS, TIPO, pId);
-//		}
+		
 //		Statement s = crud.darConexion().createStatement();
 //		s.executeUpdate(sql);
 	}
@@ -293,12 +290,17 @@ public class AplicacionWeb {
 	public void insertarPedido (String login, String nombreProducto, int cantidad, Date pedido, Date entrega) throws Exception{
 		String idProducto;
 		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
+		ArrayList<Integer> idsGenerados = new ArrayList<Integer>();
 		int duracion = 0;
 		conexion.setAutoCommitFalso();
 		idProducto = obtenerIdProducto(nombreProducto);
 		etapas = obtenerEtapas(idProducto);
 		for(Etapa etapa : etapas){
 			verificarExistencias(etapa,cantidad);
+		}
+		for (Integer id : idsGenerados) {
+			String[] pId = {Integer.toString(id)};
+			crud.insertarTupla(ID, COLUMNAS, TIPO, pId);
 		}
 	}
 	
@@ -329,13 +331,13 @@ public class AplicacionWeb {
 		PreparedStatement verificarComponentes = null;
 		PreparedStatement insertarRegistro = null;
 		
-		String verificarEstacionesText = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion = " + etapa.getIdEstacion() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroEstacion = a.id ORDER BY a.dia,a.mes";
+		String verificarEstacionesText = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion = " + etapa.getIdEstacion() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroEstacion = a.id ORDER BY a.dia,a.mes)";
 		ResultSet rs_verificarEstaciones = verificarEstaciones.executeQuery(verificarEstacionesText);
 		
-		String verificarMateriasPrimasText = "SELECT a.id FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " a WHERE a.idMateriaPrima = " + etapa.getIdMateriaPrima() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroMateriaPrima = a.id";
+		String verificarMateriasPrimasText = "SELECT a.id FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " a WHERE a.idMateriaPrima = " + etapa.getIdMateriaPrima() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroMateriaPrima = a.id)";
 		ResultSet rs_verificarMateriasPrimas = verificarMateriasPrimas.executeQuery(verificarMateriasPrimasText);
 
-		String verificarComponentesText = "SELECT a.id FROM " + Componente.NOMBRE_REGISTRO_COMPONENTES + " a WHERE a.idComponente = " + etapa.getIdComponente() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroComponente = a.id";
+		String verificarComponentesText = "SELECT a.id FROM " + Componente.NOMBRE_REGISTRO_COMPONENTES + " a WHERE a.idComponente = " + etapa.getIdComponente() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroComponente = a.id)";
 		ResultSet rs_verificarComponentes = verificarComponentes.executeQuery(verificarComponentesText);
 
 		for(int i = 0; i < cantidad; i++){
