@@ -529,7 +529,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE inventarioProductos (idRegistro varchar(32), idProducto varchar(32),PRIMARY KEY (idRegistro), CONSTRAINT fk_idRegistroProdInven FOREIGN KEY (idRegistro) REFERENCES registrosProductos(id), CONSTRAINT fk_idProductoInventario FOREIGN KEY (idProducto) REFERENCES productos(id))" );
+				s.execute( "CREATE TABLE inventarioProductos (idRegistro varchar(32), idProducto varchar(32), idPedido varchar(32), PRIMARY KEY (idRegistro), CONSTRAINT fk_idRegistroProdInven FOREIGN KEY (idRegistro) REFERENCES registrosProductos(id), CONSTRAINT fk_idProductoInventario FOREIGN KEY (idProducto) REFERENCES productos(id),CONSTRAINT fk_idPedidoInven FOREIGN KEY (idPedido) REFERENCES pedidos(id))" );
 				System.out.println("Se cre� la tabla inventarioProductos");
 			}
 			else
@@ -556,7 +556,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE pedidos (id varchar(32), idInventario varchar(32), idUsuario varchar(32), diaPedido int, mesPedido int, diaEntrega int, mesEntrega int, cantidad int, PRIMARY KEY (id,idInventario), CONSTRAINT fk_idInventarioPedido FOREIGN KEY (idInventario) REFERENCES inventarioProductos(idRegistro),CONSTRAINT fk_idCliPed FOREIGN KEY (idUsuario) REFERENCES usuarios(login))" );
+				s.execute( "CREATE TABLE pedidos (id varchar(32), idUsuario varchar(32), diaPedido int, mesPedido int, diaEntrega int, mesEntrega int, cantidad int, PRIMARY KEY (id),CONSTRAINT fk_idCliPed FOREIGN KEY (idUsuario) REFERENCES usuarios(login))" );
 				System.out.println("Se cre� la tabla pedidos");
 			}
 			else
