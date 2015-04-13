@@ -27,7 +27,7 @@ public class ServletRegistrarProducto extends ServletAbstract{
 		
 		String idProducto = Integer.toString(AplicacionWeb.getInstancia().darContadorId());
 		
-		String producto = request.getParameter("idProducto");
+		String producto = request.getParameter("nombre");
 		
 		int precio = Integer.parseInt(request.getParameter("precio"));
 		
@@ -47,8 +47,12 @@ public class ServletRegistrarProducto extends ServletAbstract{
 			materiasPrimas = AplicacionWeb.getInstancia().darMateriasPrimas();
 			componentes = AplicacionWeb.getInstancia().darComponentes();
 			idActual = Integer.toString(AplicacionWeb.getInstancia().darContadorId());
-			respuesta.write( "<input type=\"hidden\" value=" + idProducto + " name=\"idProducto\"><input type=\"hidden\" value=" + idActual + " name=\"idAnterior\">" );
-			respuesta.write( "<table align= center bgcolor=\"#ecf0f1\" width=\"40%\">" );
+			respuesta.write( "<form method=\"POST\" action=\"registroEtapasProduccion.htm\"><input type=\"hidden\" value=" + idProducto + " name=\"idProducto\"><input type=\"hidden\" value=" + idActual + " name=\"idAnterior\">" );
+			respuesta.write( "<table align= center bgcolor=\"#ecf0f1\" width=\"45%\">" );
+			respuesta.write( "<tr>" );
+			respuesta.write( "<td><h4>Nombre Etapa (descripcion): </h4></td>" );
+			respuesta.write( "<td><input type=\"text\" name=\"nombre\" size=\"23\" class=\"normal\"></td>" );
+			respuesta.write( "</tr>" );
 			respuesta.write( "<tr>" );
 			respuesta.write( "<td><h4>Numero de Secuencia:</h4></td>" );
 			respuesta.write( "<td><input type=\"text\" name=\"numeroSecuencia\" size=\"23\" class=\"normal\"></td>" );
@@ -90,8 +94,8 @@ public class ServletRegistrarProducto extends ServletAbstract{
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr></tr>" );
 			respuesta.write( "</table>" );
-			respuesta.write( "<h4 align=\"center\"><form method=\"POST\" action=\"registroEtapasProduccion.htm\"><input type=\"submit\" value=\"Registrar Siguiente Etapa de Produccion\" size=\"33\" name=\"registrarEP\" class=\"normal\" style=\"background: #FFFFFF; border: none;\"></form></h4>" );
-			respuesta.write( "<h4 align=\"center\"><form method=\"POST\" action=\"registroProducto.htm\"><input type=\"submit\" value=\"Finalizar Registro Etapas de Produccion\" size=\"33\" name=\"registrarEP\" class=\"normal\" style=\"background: #FFFFFF; border: none;\"></form></h4>" );
+			respuesta.write( "<h4 align=\"center\"><input type=\"hidden\" value=\"continuar\" name=\"criterio\" ><input type=\"submit\" value=\"Registrar Siguiente Etapa de Produccion\" size=\"33\" name=\"registrarEP\" class=\"normal\" style=\"background: #FFFFFF; border: none;\"></h4>" );
+			respuesta.write( "<h4 align=\"center\"><input type=\"hidden\" value=\"finalizar\" name=\"criterio\" ><input type=\"submit\" value=\"Finalizar Registro Etapas de Produccion\" size=\"33\" name=\"registrarEP\" class=\"normal\" style=\"background: #FFFFFF; border: none;\"></form></h4>" );
 			respuesta.write( "<p align=center>" );
 			respuesta.write( "<input type=\"reset\" value=\"Borrar\" name=\"B2\" class=\"normal\"></p>" );
 		}

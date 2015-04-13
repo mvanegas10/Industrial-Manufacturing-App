@@ -9,6 +9,8 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.omg.CORBA.ExceptionList;
+
 import mundo.AplicacionWeb;
 
 public class ServletIngresar extends ServletAbstract{
@@ -40,12 +42,17 @@ public class ServletIngresar extends ServletAbstract{
 			try
 			{
 				tipo = AplicacionWeb.getInstancia().buscarUsuario(usuario, constrasenia);
-				aceptarIngreso(respuesta, usuario, tipo, productos);
-				
+				aceptarIngreso(respuesta, usuario, tipo, productos);				
 			}
 			catch(Exception e)
 			{
-				denegarIngreso(respuesta);
+				String reingreso = request.getParameter("reingreso");
+				if (reingreso != null)
+				{
+					
+				}
+				else
+					denegarIngreso(respuesta);
 			}
 		
 		}	
