@@ -141,13 +141,12 @@ public class CRUD {
 	
 	
 	public void poblarTablas(){
-		
 		try{
-			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//clientes.csv"));
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//productos.csv"));
 			String linea = null;
 			while((linea = reader.readLine())!=null){
 				String[] lineaInsertar = linea.split(",");
-				insertarTupla(Cliente.NOMBRE, Cliente.COLUMNAS, Cliente.TIPO,lineaInsertar);
+				insertarTupla(Producto.NOMBRE, Producto.COLUMNAS, Producto.TIPO,lineaInsertar);
 			}
 			reader.close();
 		}catch(Exception e){
@@ -155,11 +154,23 @@ public class CRUD {
 		}
 		
 		try{
-			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//componentes.csv"));
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//proveedores.csv"));
 			String linea = null;
 			while((linea = reader.readLine())!=null){
 				String[] lineaInsertar = linea.split(",");
-				insertarTupla(Componente.NOMBRE, Componente.COLUMNAS, Componente.TIPO,lineaInsertar);
+				insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO,lineaInsertar);
+			}
+			reader.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//usuarios.csv"));
+			String linea = null;
+			while((linea = reader.readLine())!=null){
+				String[] lineaInsertar = linea.split(",");
+				insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO,lineaInsertar);
 			}
 			reader.close();
 		}catch(Exception e){
@@ -179,23 +190,11 @@ public class CRUD {
 		}
 		
 		try{
-			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//productos.csv"));
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//componentes.csv"));
 			String linea = null;
 			while((linea = reader.readLine())!=null){
 				String[] lineaInsertar = linea.split(",");
-				insertarTupla(Producto.NOMBRE, Producto.COLUMNAS, Producto.TIPO,lineaInsertar);
-			}
-			reader.close();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		try{
-			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//proveedores.csv"));
-			String linea = null;
-			while((linea = reader.readLine())!=null){
-				String[] lineaInsertar = linea.split(",");
-				insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO,lineaInsertar);
+				insertarTupla(Componente.NOMBRE, Componente.COLUMNAS, Componente.TIPO,lineaInsertar);
 			}
 			reader.close();
 		}catch(Exception e){
@@ -227,11 +226,99 @@ public class CRUD {
 		}
 		
 		try{
-			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//usuarios.csv"));
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//generadorID.csv"));
 			String linea = null;
 			while((linea = reader.readLine())!=null){
 				String[] lineaInsertar = linea.split(",");
-				insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO,lineaInsertar);
+				insertarTupla(AplicacionWeb.ID, AplicacionWeb.COLUMNAS, AplicacionWeb.TIPO,lineaInsertar);
+			}
+			reader.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//estaciones.csv"));
+			String linea = null;
+			while((linea = reader.readLine())!=null){
+				String[] lineaInsertar = linea.split(",");
+				insertarTupla(Estacion.NOMBRE, Estacion.COLUMNAS, Estacion.TIPO,lineaInsertar);
+			}
+			reader.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//registrosEstaciones.csv"));
+			String linea = null;
+			while((linea = reader.readLine())!=null){
+				String[] lineaInsertar = linea.split(",");
+				insertarTupla(Estacion.NOMBRE_REGISTRO_ESTACIONES, Estacion.COLUMNAS_REGISTRO_ESTACIONES, Estacion.TIPO_REGISTRO_ESTACIONES,lineaInsertar);
+			}
+			reader.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//registrosMateriasPrimas.csv"));
+			String linea = null;
+			while((linea = reader.readLine())!=null){
+				String[] lineaInsertar = linea.split(",");
+				insertarTupla(MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.COLUMNAS_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.TIPO_REGISTRO_MATERIAS_PRIMAS,lineaInsertar);
+			}
+			reader.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//registrosComponentes.csv"));
+			String linea = null;
+			while((linea = reader.readLine())!=null){
+				String[] lineaInsertar = linea.split(",");
+				insertarTupla(Componente.NOMBRE_REGISTRO_COMPONENTES, Componente.COLUMNAS_REGISTRO_COMPONENTES, Componente.TIPO_REGISTRO_COMPONENTES,lineaInsertar);
+			}
+			reader.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//etapas.csv"));
+			String linea = null;
+			while((linea = reader.readLine())!=null){
+				String[] lineaInsertar = linea.split(",");
+				insertarTupla(Etapa.NOMBRE, Etapa.COLUMNAS, Etapa.TIPO,lineaInsertar);
+			}
+			reader.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//registrosProductos.csv"));
+			String linea = null;
+			while((linea = reader.readLine())!=null){
+				String[] lineaInsertar = linea.split(",");
+				insertarTupla(Producto.NOMBRE_REGISTRO_PRODUCTOS, Producto.COLUMNAS_REGISTRO_PRODUCTOS, Producto.TIPO_REGISTRO_PRODUCTOS,lineaInsertar);
+			}
+			reader.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//inventarioProductos.csv"));
+			String linea = null;
+			while((linea = reader.readLine())!=null){
+				String[] lineaInsertar = linea.split(",");
+				insertarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, Producto.COLUMNAS_INVENTARIO_PRODUCTOS, Producto.TIPO_INVENTARIO_PRODUCTOS,lineaInsertar);
+			}
+			reader.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//pedidos.csv"));
+			String linea = null;
+			while((linea = reader.readLine())!=null){
+				String[] lineaInsertar = linea.split(",");
+				insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO,lineaInsertar);
 			}
 			reader.close();
 		}catch(Exception e){
