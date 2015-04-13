@@ -1,5 +1,6 @@
 package mundo;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -280,6 +281,73 @@ public class AplicacionWeb {
 //		Statement s = crud.darConexion().createStatement();
 //		s.executeUpdate(sql);
 	}
+	
+	/**
+	 * @param login
+	 * @param producto
+	 * @param cantidad
+	 * @param pedido
+	 * @param entrega
+	 * @throws Exception
+	 */
+	public void insertarPedido (String login, String nombreProducto, int cantidad, Date pedido, Date entrega) throws Exception{
+		String idProducto;
+		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
+		int duracion = 0;
+		conexion.setAutoCommitFalso();
+		idProducto = obtenerIdProducto(nombreProducto);
+		etapas = obtenerEtapas(idProducto);
+		for(Etapa etapa : etapas){
+			verificarExistencias(etapa,cantidad);
+		}
+	}
+	
+	public String obtenerIdProducto (String producto) throws Exception{
+		return crud.darSubTabla(Producto.NOMBRE, "id", " nombre = '" + producto + "' ").get(0);
+	}
+	
+	public ArrayList<Etapa> obtenerEtapas (String idProducto) throws Exception{
+		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
+		ResultSet rs_etapas = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Etapa.NOMBRE + " WHERE idProducto = '" + idProducto + "'");
+		while(rs_etapas.next()){
+			String idEtapa = rs_etapas.getString(1);
+			String idEstacion = rs_etapas.getString(3);
+			String idMateriaPrima = rs_etapas.getString(4);
+			String idComponente = rs_etapas.getString(5);
+			int duracion = rs_etapas.getInt(6);
+			int numeroSecuencia = rs_etapas.getInt(7);
+			String idAnterior = rs_etapas.getString(8);
+			Etapa etapa = new Etapa(idEtapa, idProducto, idEstacion, idMateriaPrima, idComponente, duracion, numeroSecuencia, idAnterior);
+			etapas.add(etapa);
+		}
+		return etapas;
+	}
+	
+	public void verificarExistencias (Etapa etapa, int cantidad) throws Exception{
+		PreparedStatement verificarEstaciones = null;
+		PreparedStatement verificarMateriasPrimas = null;
+		PreparedStatement verificarComponentes = null;
+		PreparedStatement insertarRegistro = null;
+		
+		String verificarEstacionesText = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion = " + etapa.getIdEstacion() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroEstacion = a.id ORDER BY a.dia,a.mes";
+		ResultSet rs_verificarEstaciones = verificarEstaciones.executeQuery(verificarEstacionesText);
+		
+		String verificarMateriasPrimasText = "SELECT a.id FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " a WHERE a.idMateriaPrima = " + etapa.getIdMateriaPrima() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroMateriaPrima = a.id";
+		ResultSet rs_verificarMateriasPrimas = verificarMateriasPrimas.executeQuery(verificarMateriasPrimasText);
+
+		String verificarComponentesText = "SELECT a.id FROM " + Componente.NOMBRE_REGISTRO_COMPONENTES + " a WHERE a.idComponente = " + etapa.getIdComponente() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroComponente = a.id";
+		ResultSet rs_verificarComponentes = verificarComponentes.executeQuery(verificarComponentesText);
+
+		for(int i = 0; i < cantidad; i++){
+			String[] datos = {Integer.toString(i+1000),etapa.getId(),rs_verificarEstaciones.getString(1),rs_verificarMateriasPrimas.getString(1),rs_verificarComponentes.getString(1)};
+			crud.insertarTupla(Producto.NOMBRE_REGISTRO_PRODUCTOS, Producto.COLUMNAS_REGISTRO_PRODUCTOS, Producto.TIPO_REGISTRO_PRODUCTOS, datos);
+			rs_verificarEstaciones.next();
+			rs_verificarMateriasPrimas.next();
+			rs_verificarComponentes.next();
+		}
+	}
+	
+	
 	
 	//--------------------------------------------------
 	// METODOS DAR Y BUSCAR
@@ -626,7 +694,7 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-
+			System.out.println(conexion.darNivelAislamiento());
 		}
 		catch (Exception e)
 		{

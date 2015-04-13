@@ -89,6 +89,43 @@ public class ConexionDAO
 			throw new Exception("Error al intentar cerrar la conexi�n.");
 		}
     }
+    
+    /**
+     * Da el nivel de aislamiento implementado
+     */
+    public int darNivelAislamiento(){
+    	try{
+        	return conexion.getTransactionIsolation();
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    	}
+		return 0;
+    }
+    
+    /**
+     * Cambia la propiedad de autocommit de la conexión a falso
+     */
+    public void setAutoCommitFalso(){
+    	try{
+        	conexion.setAutoCommit(false);
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    	}
+    }
+    
+    /**
+     * Cambia la propiedad de autocommit de la conexión a verdadero
+     */
+    public void setAutoCommitVerdadero(){
+    	try{
+        	conexion.setAutoCommit(true);
+    	}
+    	catch(Exception e){
+    		e.printStackTrace();
+    	}
+    }
 
 	/**
 	 * Crea las tablas
