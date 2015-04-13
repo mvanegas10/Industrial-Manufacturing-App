@@ -303,22 +303,22 @@ public class CRUD {
 			e.printStackTrace();
 		}
 		try{
-			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//inventarioProductos.csv"));
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//pedidos.csv"));
 			String linea = null;
 			while((linea = reader.readLine())!=null){
 				String[] lineaInsertar = linea.split(",");
-				insertarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, Producto.COLUMNAS_INVENTARIO_PRODUCTOS, Producto.TIPO_INVENTARIO_PRODUCTOS,lineaInsertar);
+				insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO,lineaInsertar);
 			}
 			reader.close();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		try{
-			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//pedidos.csv"));
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//inventarioProductos.csv"));
 			String linea = null;
 			while((linea = reader.readLine())!=null){
 				String[] lineaInsertar = linea.split(",");
-				insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO,lineaInsertar);
+				insertarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, Producto.COLUMNAS_INVENTARIO_PRODUCTOS, Producto.TIPO_INVENTARIO_PRODUCTOS,lineaInsertar);
 			}
 			reader.close();
 		}catch(Exception e){
