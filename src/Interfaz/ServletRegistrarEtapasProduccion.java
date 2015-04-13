@@ -68,7 +68,7 @@ public class ServletRegistrarEtapasProduccion extends ServletAbstract{
 				respuesta.write( "</tr>" );
 				respuesta.write( "<tr>" );
 				respuesta.write( "<td><h4>Numero de Secuencia:</h4></td>" );
-				respuesta.write( "<td><input type=\"text\" name=\"numeroSecuencia\" size=\"23\" class=\"normal\"></td>" );
+				respuesta.write( "<td><input type=\"text\" name=\"numeroSecuencia\" size=\"23\" class=\"normal\" style=\"background: #FFFFFF; border: none;\" value=" + (numeroSecuencia + 1) + " disabled=\"disabled\" ></td>" );
 				respuesta.write( "</tr>" );
 				respuesta.write( "<tr></tr>" );
 				respuesta.write( "<tr>" );
