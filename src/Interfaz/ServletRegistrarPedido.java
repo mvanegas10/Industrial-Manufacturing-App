@@ -24,30 +24,26 @@ public class ServletRegistrarPedido extends ServletAbstract{
 		PrintWriter respuesta = response.getWriter( );
 		
 		int cantidad = Integer.parseInt(request.getParameter("cantidad"));
-		String productoPedido = request.getParameter("producto");
+		String idProducto = request.getParameter("idProducto");
+		String nombre = request.getParameter("nombre");
 		String login = request.getParameter("login");
 		int precio = Integer.parseInt(request.getParameter("precio"));
-		Calendar temp = Calendar.getInstance();
-		temp.setTime(new Date());
-		Calendar pedido = Calendar.getInstance();
-		Calendar entrega = Calendar.getInstance();
-		pedido.setTime(new Date());
-		temp.add(Calendar.DATE, 5);
-		entrega.setTime(temp.getTime());
+		Date pedido = new Date();
+		Date entrega = pedido;
 		try
 		{
-			AplicacionWeb.getInstancia().registrarPedido(login, productoPedido, cantidad, pedido.getTime());
+			entrega = AplicacionWeb.getInstancia().registrarPedido(login, idProducto, cantidad, pedido);
 	        
 	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
-	        respuesta.write( "<tr><h4 align=\"center\">Gracias " + login + " por comprar con ProdAndes. El siguiente pedido se ha realizado de manera exitosa. La fecha de entrega es: " + entrega.getTime().toLocaleString() + ".</h4></tr>" );
+	        respuesta.write( "<tr><h4 align=\"center\">Gracias " + login + " por comprar con ProdAndes. El siguiente pedido se ha realizado de manera exitosa. La fecha de entrega es: " + entrega.toLocaleString() + ".</h4></tr>" );
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<tr><td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\"></td>" );
 	        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
-	        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto Pedido: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><input value=\"" + productoPedido + "\" name=\"producto\" type=\"hidden\"\"><td align=\"right\">" + productoPedido + "</td></tr>" );
+	        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto Pedido: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><input value=\"" + nombre + "\" name=\"producto\" type=\"hidden\"\"><td align=\"right\">" + nombre + "</td></tr>" );
 	        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Costo Total: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (precio* cantidad) + "</td></tr>" );
 	        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Unidades Pedidas: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + cantidad + "</td></tr>" );
-	        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (pedido.getTime().toLocaleString()).substring(0, 10) + "</td></tr>" );
-	        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (entrega.getTime().toLocaleString()).substring(0, 10) + "</td></tr>" );
+	        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (pedido.toLocaleString()).substring(0, 10) + "</td></tr>" );
+	        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (entrega.toLocaleString()).substring(0, 10) + "</td></tr>" );
 	        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
 	        respuesta.write( "</table></td>" );
 	        respuesta.write( "</tr>" );
@@ -72,8 +68,8 @@ public class ServletRegistrarPedido extends ServletAbstract{
 			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto Pedido: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><input value=\"" + producto + "\" name=\"producto\" type=\"hidden\"\"><td align=\"right\">" + producto + "</td></tr>" );
 			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Costo Total: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (precio* cantidad) + "</td></tr>" );
 			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Unidades Pedidas: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + cantidad + "</td></tr>" );
-			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (pedido.getTime().toLocaleString()).substring(0, 10) + "</td></tr>" );
-			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (entrega.getTime().toLocaleString()).substring(0, 10) + "</td></tr>" );
+			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (pedido.toLocaleString()).substring(0, 10) + "</td></tr>" );
+			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (entrega.toLocaleString()).substring(0, 10) + "</td></tr>" );
 			        respuesta.write( "<tr><td align=\"right\"><input value=" + ped.getId() + " name=\"idPedido\" type=\"hidden\"><input value=" + login + " name=\"login\" type=\"hidden\"><input value=\"eliminarPedido\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
 			        respuesta.write( "</table></td>" );
 			        respuesta.write( "</tr>" );

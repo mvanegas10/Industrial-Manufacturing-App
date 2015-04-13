@@ -49,9 +49,9 @@ public class AplicacionWeb {
 	public AplicacionWeb() {
 		conexion = new ConexionDAO();
 		conexion.iniciarConexion();
-		conexion.crearTablas();
+//		conexion.crearTablas();
 		crud = new CRUD(conexion);
-		poblarTablas();
+//		poblarTablas();
 		try
 		{
 			Statement s = crud.darConexion().createStatement();
@@ -148,7 +148,6 @@ public class AplicacionWeb {
 		String[] id = {idProveedor};
 		String[] datosSimples = {id[0],direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
 		crud.insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO, datosSimples);
-		crud.insertarTupla(ID, COLUMNAS, TIPO, id);
 	}
 
 	/**
@@ -223,7 +222,6 @@ public class AplicacionWeb {
 		String[] id1 = {id};
 		String[] datos = {id, nombre, Integer.toString(precio)};
 		crud.insertarTupla(Producto.NOMBRE, Producto.COLUMNAS, Producto.TIPO, datos);
-		crud.insertarTupla(ID, COLUMNAS, TIPO, id1);
 		System.out.println("Se registro " + datos);
 	}
 
@@ -251,12 +249,10 @@ public class AplicacionWeb {
 	 * @param entrega
 	 * @throws Exception
 	 */
-	public Date registrarPedido (String login, String nombreProducto, int cantidad, Date fechaPedido) throws Exception{
-		String idProducto;
+	public Date registrarPedido (String login, String idProducto, int cantidad, Date fechaPedido) throws Exception{
 		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
 		String idPedido = Integer.toString(darContadorId());
 		conexion.setAutoCommitFalso();
-		idProducto = obtenerIdProducto(nombreProducto);
 		etapas = obtenerEtapas(idProducto);
 		Date fechaEntrega = null;
 		for(Etapa etapa : etapas){
@@ -266,11 +262,7 @@ public class AplicacionWeb {
 		conexion.setAutoCommitVerdadero();
 		return fechaEntrega;
 	}
-	
-	public String obtenerIdProducto (String producto) throws Exception{
-		return crud.darSubTabla(Producto.NOMBRE, "id", " nombre = '" + producto + "' ").get(0);
-	}
-	
+		
 	public ArrayList<Etapa> obtenerEtapas (String idProducto) throws Exception{
 		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
 		ResultSet rs_etapas = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Etapa.NOMBRE + " WHERE idProducto = '" + idProducto + "'");
@@ -423,8 +415,18 @@ public class AplicacionWeb {
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<String> buscarProducto (String nombre) throws Exception{
-		return crud.darSubTabla(Producto.NOMBRE, "precio", "nombre = '" + nombre + "'");
+	public ArrayList<Producto> buscarProducto (String nombre) throws Exception{
+		ArrayList<Producto> rta = new ArrayList<Producto>();
+		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT DISTINCT * FROM " + Producto.NOMBRE + " WHERE UPPER(nombre) LIKE UPPER('%" + nombre + "%')");
+		while(rs.next())
+		{
+			String id = rs.getString(1);
+			String pNombre = rs.getString(2);
+			int precio = rs.getInt(3);
+			Producto producto = new Producto(id, pNombre, precio);
+			rta.add(producto);
+		}
+		return rta;
 	}
 
 	/**
@@ -471,9 +473,17 @@ public class AplicacionWeb {
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<String> darCantidadProductos (int cantidad) throws Exception{
-		ArrayList<String> rta = new ArrayList<String>();
-		rta = crud.darSubTabla(Producto.NOMBRE, "nombre", "precio > 0");
+	public ArrayList<Producto> darCantidadProductos (int cantidad) throws Exception{
+		ArrayList<Producto> rta = new ArrayList<Producto>();
+		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Producto.NOMBRE + "");
+		while(rs.next())
+		{
+			String id = rs.getString(1);
+			String nombre = rs.getString(2);
+			int precio = rs.getInt(3);
+			Producto producto = new Producto(id, nombre, precio);
+			rta.add(producto);
+		}
 		return rta;
 	}
 	
@@ -526,6 +536,21 @@ public class AplicacionWeb {
 	 */
 	public ArrayList<String> darIdPedido (String producto) throws Exception{
 		return crud.darSubTabla(Pedido.NOMBRE, "id", "idCliente = " + usuarioActual + "idProducto = " + producto);
+	}
+	
+	public ArrayList<Producto> darProducto(String id) throws Exception{
+		ArrayList<Producto> rta = new ArrayList<Producto>();
+		String sql = "SELECT * FROM " + Producto.NOMBRE + " WHERE id = '" + id + "'";
+		System.out.println(sql);
+		ResultSet rs = crud.darConexion().createStatement().executeQuery(sql);
+		while(rs.next())
+		{
+			String nombre = rs.getString(2);
+			int precio = rs.getInt(3);
+			Producto producto = new Producto(id, nombre, precio);
+			rta.add(producto);
+		}
+		return rta;
 	}
 
 	/**
@@ -675,7 +700,12 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			System.out.println(conexion.darNivelAislamiento());
+			ResultSet s = crud.darConexion().createStatement().executeQuery("SELECT precio FROM productos WHERE nombre = 'Club Colombia'");
+			System.out.println("No entra");
+			while(s.next())
+			{
+				System.out.println(s.getInt(1));
+			}
 		}
 		catch (Exception e)
 		{

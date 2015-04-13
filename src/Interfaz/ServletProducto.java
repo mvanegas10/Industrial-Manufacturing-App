@@ -24,13 +24,13 @@ public class ServletProducto extends ServletAbstract{
 		
 		PrintWriter respuesta = response.getWriter( );
 		
-		String producto = request.getParameter("producto");
+		String idProducto = request.getParameter("producto");
 		String login = request.getParameter("login");
-		ArrayList<String> rta = new ArrayList<String>();
+		ArrayList<Producto> rta = new ArrayList<Producto>();
 		
 		try
 		{
-			rta = AplicacionWeb.getInstancia().buscarProducto(producto);
+			rta = AplicacionWeb.getInstancia().darProducto(idProducto);
 		}
 		catch (Exception e){
 			error(respuesta);
@@ -42,8 +42,8 @@ public class ServletProducto extends ServletAbstract{
 			respuesta.write( "<tr>" );
         	respuesta.write( "<tr><td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\"></td>" );
         	respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=10%>" );
-	        respuesta.write( "<tr><td><input value=\"Producto: " + producto + "\" name=\"producto\" style=\"border: none;\" type=\"text\"\"></td></tr>" );
-	        respuesta.write( "<tr><td><input value=\"Precio: " + rta.get(i) + "\" name=\"precio\" style=\"border: none;\" type=\"text\"\"></td></tr>" );
+	        respuesta.write( "<tr><td><input value=\"Producto: " + rta.get(i).getNombre() + "\" name=\"producto\" style=\"border: none;\" type=\"text\"\"></td></tr>" );
+	        respuesta.write( "<tr><td><input value=\"Precio: " + rta.get(i).getPrecio() + "\" name=\"precio\" style=\"border: none;\" type=\"text\"\"></td></tr>" );
 	        respuesta.write( "<tr><td><table align=\"left\" bgcolor=\"#ecf0f1\" width=10%>" );
 	        respuesta.write( "<tr><td align=\"left\">Unidades: </td>" );
 	        respuesta.write( "<td align=\"right\">" );
@@ -66,7 +66,7 @@ public class ServletProducto extends ServletAbstract{
 	
 	public void error(PrintWriter respuesta){
 		
-        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
         respuesta.write( "<tr>" );
         respuesta.write( "<td><h3>Oops! Hubo un error, lo sentimos, vuelve a intentarlo nuevamente.</FONT></td>" );
         respuesta.write( "</tr>" );

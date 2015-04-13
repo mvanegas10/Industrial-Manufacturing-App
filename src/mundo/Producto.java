@@ -38,11 +38,11 @@ public class Producto {
 	// CONSTRUCTOR
 	//---------------------------------------------------
 
-	public Producto(String id, String nombre, double precio, int pNumeroEtapas, int disponibles, int cantidad,ArrayList<Etapa> pEtapasProduccion) {
+	public Producto(String id, String nombre, double precio) {
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
-		this.etapasProduccion = pEtapasProduccion;
+		this.etapasProduccion = new ArrayList<Etapa>();
 	}
 
 	//---------------------------------------------------
