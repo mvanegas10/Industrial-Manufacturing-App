@@ -33,7 +33,7 @@ public class ServletRegistrarProveedor extends ServletAbstract{
 				datosProveedorComponente.add(datos);
 			}
 			
-			AplicacionWeb.getInstancia().registrarProveedorComponente(datosProveedorComponente);
+			AplicacionWeb.getInstancia().registrarComponente(datosProveedorComponente);
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<td><h3>Se pudo agregar el proveedor con el id " + idProveedor + " de manera correcta</h3></td>" );

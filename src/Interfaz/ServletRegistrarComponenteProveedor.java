@@ -36,7 +36,7 @@ public class ServletRegistrarComponenteProveedor extends ServletAbstract {
 		
 		try
 		{
-			AplicacionWeb.getInstancia().registrarProveedorMateriaPrima(datosProveedorMateriaPrima);
+			AplicacionWeb.getInstancia().registrarMateriaPrima(datosProveedorMateriaPrima);
 			ArrayList<Componente> componentes = AplicacionWeb.getInstancia().darComponentes();
 			hayComponentes(respuesta, componentes, idProveedor);
 		}

@@ -90,19 +90,17 @@ public class ServletRegistrar extends ServletAbstract{
 			
 			respuesta.write( "<td><table align=\"center\" width=\"50%\">" );
 			respuesta.write( "<tr>" );
-			respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Materiales</h3></td>" );
-			respuesta.write( "</tr>" );
-			respuesta.write( "<tr>" );
-			respuesta.write( "<td><table align=\"right\" style=\"padding-left: 5em;\" width=\"50%\"><form method=\"POST\" action=\"registroLlegadaMaterial.htm\">" );
-			respuesta.write( "<td><select style=\"font-size: 14px;\" name=\"llegadaMaterial\" size=\"1\"  class=\"normal\" \">" );
+			respuesta.write( "<td><table align=\"right\" style=\"padding-left: 5em;\" width=\"50%\"><h3 style=\"padding:0.5em;\"> Materiales</h3></td>" );
+			respuesta.write( "<td><select style=\"font-size: 14px;\" name=\"tipo\" size=\"1\"  class=\"normal\" \">" );
 			respuesta.write( "<option value=\"materiaPrima\">Materia Prima</option>" );
 			respuesta.write( "<option value=\"componente\">Componente</option>" );
 			respuesta.write( "</select></td>" );
-			respuesta.write( "<td><h4><input type=\"submit\" value=\"Registrar Material\" name=\"B1\" class=\"normal\" style=\"background: #FFF; border: none;\"></h4></td>" );
-			respuesta.write( "</form></table></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr>" );
-			respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Material\" name=\"consMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+			respuesta.write( "<td><form method=\"POST\" action=\"registroLlegadaMaterial.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Material\" name=\"regMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+			respuesta.write( "</tr>" );
+			respuesta.write( "<tr>" );
+			respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Material\" name=\"consMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr></tr>" );
 			respuesta.write( "</table>" );

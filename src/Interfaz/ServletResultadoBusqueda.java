@@ -84,7 +84,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 	        		respuesta.write( "<h4 align=\"center\">Tienes registrados " + pedidos.size() + " pedidos en total:</h4>" );
 	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 			        for (Pedido ped : pedidos) {
-			        	String producto = AplicacionWeb.getInstancia().buscarNombreProducto(ped.getProducto());
+			        	String producto = AplicacionWeb.getInstancia().darNombreProducto(ped.getProducto());
 			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 			        	respuesta.write( "<tr>" );
 				        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
@@ -141,7 +141,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 	        		respuesta.write( "<h4 align=\"center\">Tienes registrados " + pedidos.size() + " pedidos en total:</h4>" );
 	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 			        for (Pedido ped : pedidos) {
-			        	String producto = AplicacionWeb.getInstancia().buscarNombreProducto(ped.getProducto());
+			        	String producto = AplicacionWeb.getInstancia().darNombreProducto(ped.getProducto());
 			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 			        	respuesta.write( "<tr>" );
 				        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
@@ -202,7 +202,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			}
 			try
 			{
-				ArrayList<Pedido> pedidos = AplicacionWeb.getInstancia().buscarPedidosCliente(diaSolicitud, pedido1, diaEntrega, entrega1);
+				ArrayList<Pedido> pedidos = AplicacionWeb.getInstancia().buscarPedidos(diaSolicitud, pedido1, diaEntrega, entrega1);
 		        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 		        respuesta.write( "<tr>" );
 		        respuesta.write( "<td><h3>Los pedidos encontrados son los siguientes:</h3></td>" );
@@ -272,7 +272,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			}
 			if (materialABuscar.equals("producto")){
 				try{
-					rta = AplicacionWeb.getInstancia().buscarExistenciasProducto(tipo, nombreMaterial, rango, mayorA, menorA, etapa);	
+					rta = AplicacionWeb.getInstancia().buscarProducto(tipo, nombreMaterial, rango, mayorA, menorA, etapa);	
 				}
 				catch (Exception e){
 			        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
@@ -284,7 +284,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			}
 			else if (materialABuscar.equals("materiaPrima")){
 				try{
-					rta = AplicacionWeb.getInstancia().buscarExistenciasMateriaPrima(tipo, nombreMaterial, rango, mayorA, menorA);	
+					rta = AplicacionWeb.getInstancia().buscarMateriaPrima(tipo, nombreMaterial, rango, mayorA, menorA);	
 				}
 				catch (Exception e){
 			        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
@@ -304,7 +304,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			}
 			else if (materialABuscar.equals("componente")){
 				try{
-					rta = AplicacionWeb.getInstancia().buscarExistenciasComponente(tipo, nombreMaterial, rango, mayorA, menorA);	
+					rta = AplicacionWeb.getInstancia().buscarComponente(tipo, nombreMaterial, rango, mayorA, menorA);	
 				}
 				catch (Exception e){
 			        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );

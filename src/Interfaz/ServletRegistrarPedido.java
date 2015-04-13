@@ -36,7 +36,7 @@ public class ServletRegistrarPedido extends ServletAbstract{
 		entrega.setTime(temp.getTime());
 		try
 		{
-			AplicacionWeb.getInstancia().registrarPedidoCliente(login, productoPedido, cantidad, pedido.getTime(), entrega.getTime());
+			AplicacionWeb.getInstancia().registrarPedido(login, productoPedido, cantidad, pedido.getTime(), entrega.getTime());
 	        
 	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 	        respuesta.write( "<tr><h4 align=\"center\">Gracias " + login + " por comprar con ProdAndes. El siguiente pedido se ha realizado de manera exitosa. La fecha de entrega es: " + entrega.getTime().toLocaleString() + ".</h4></tr>" );
@@ -64,7 +64,7 @@ public class ServletRegistrarPedido extends ServletAbstract{
 	        	respuesta.write( "</table>" );
 	        	respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 		        for (Pedido ped : pedidos) {
-		        	String producto = AplicacionWeb.getInstancia().buscarNombreProducto(ped.getProducto());
+		        	String producto = AplicacionWeb.getInstancia().darNombreProducto(ped.getProducto());
 		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 		        	respuesta.write( "<tr>" );
 			        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );

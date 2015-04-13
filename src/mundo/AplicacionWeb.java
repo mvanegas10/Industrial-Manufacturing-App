@@ -6,29 +6,33 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author Meili
+ *
+ */
 public class AplicacionWeb {
-	
+
 	//--------------------------------------------------
 	// ATRIBUTOS
 	//--------------------------------------------------
-		
+
 	public static final String ID = "generadorId";
-	
+
 	public static final String[] COLUMNAS = {"id"};
-	
+
 	public static final String[] TIPO = {"String"};
-	
+
 	private static CRUD crud;
-	
+
 	private static ConexionDAO conexion;
-	
+
 	private static AplicacionWeb instancia ;
-	
+
 	private String usuarioActual;
-	
+
 	private int contadorId;
-	
-	
+
+
 	//--------------------------------------------------
 	// CONSTRUCTOR E INSTANCIACION
 	//--------------------------------------------------
@@ -39,7 +43,7 @@ public class AplicacionWeb {
 		}
 		return instancia;
 	}
-	
+
 	public AplicacionWeb() {
 		conexion = new ConexionDAO();
 		conexion.iniciarConexion();
@@ -62,10 +66,14 @@ public class AplicacionWeb {
 		}
 		usuarioActual = "";
 	}
-	
+
 	//--------------------------------------------------
 	// GETTERS AND SETTERS
 	//--------------------------------------------------
+
+	public int darContadorId(){
+		return ++contadorId;
+	}
 
 	public static CRUD getCrud() {
 		return crud;
@@ -88,60 +96,77 @@ public class AplicacionWeb {
 	}
 	
 	//--------------------------------------------------
-	// METODOS
+	// METODOS AUXILIARES
 	//--------------------------------------------------
 	
+	/**
+	 * 
+	 */
 	public static void poblarTablas(){
 		crud.poblarTablas();	
 	}
+
+	//--------------------------------------------------
+	// METODOS CREAR
+	//--------------------------------------------------
 	
-	public int darContadorId(){
-		return ++contadorId;
-	}
-	
+	/**
+	 * @param login
+	 * @param password
+	 * @param tipo
+	 * @throws Exception
+	 */
 	public void registrarUsuario (String login, String password, String tipo) throws Exception{
-//		columnas de Usuario: login, password, tipo, nombre, direccion, telefono, ciudad, idRepLegal
+		//		columnas de Usuario: login, password, tipo, nombre, direccion, telefono, ciudad, idRepLegal
 		String[] datos = {login, password, tipo, "", "", Integer.toString(0), "", ""}; 
 		crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
 		usuarioActual = login;
-		
+
 	}
 	
-	public String ingresarUsuario (String login, String password) throws Exception{
-		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "tipo", "login = '" + login + "' AND password = '" + password + "'");
-		usuarioActual = login;
-		if ( usuario.get(0) != null )
-			return usuario.get(0);
-		return "";
-	}
-	
-	public ArrayList<String> darCantidadProductos (int cantidad) throws Exception{
-		ArrayList<String> rta = new ArrayList<String>();
-		rta = crud.darSubTabla(Producto.NOMBRE, "nombre", "precio > 0");
-		return rta;
-	}
-	
+	/**
+	 * @param idProveedor
+	 * @param direccion
+	 * @param telefono
+	 * @param ciudad
+	 * @param idRepLegal
+	 * @throws Exception
+	 */
 	public void registrarProveedor (String idProveedor, String direccion, int telefono, String ciudad, String idRepLegal) throws Exception{
 		String[] id = {idProveedor};
 		String[] datosSimples = {id[0],direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
 		crud.insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO, datosSimples);
 		crud.insertarTupla(ID, COLUMNAS, TIPO, id);
 	}
-	
-	public void registrarProveedorMateriaPrima (List<String[]> datosProveedorMateriaPrima ) throws Exception{
+
+	/**
+	 * @param datosProveedorMateriaPrima
+	 * @throws Exception
+	 */
+	public void registrarMateriaPrima (List<String[]> datosProveedorMateriaPrima ) throws Exception{
 		for(int i = 0; i < datosProveedorMateriaPrima.size(); i++){
 			String[] datosCompuestosMateria = datosProveedorMateriaPrima.get(i);
-			crud.insertarTupla(Proveedor.NOMBRERELACIONMATERIAPRIMA, Proveedor.COLUMNASRELACIONMATERIAPRIMA, Proveedor.TIPORELACIONMATERIAPRIMA, datosCompuestosMateria);
+			crud.insertarTupla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, Proveedor.COLUMNAS_RELACION_MATERIA_PRIMA, Proveedor.TIPO_RELACION_MATERIA_PRIMA, datosCompuestosMateria);
 		}
 	}
-	
-	public void registrarProveedorComponente (List<String[]> datosProveedorComponente) throws Exception{
+
+	/**
+	 * @param datosProveedorComponente
+	 * @throws Exception
+	 */
+	public void registrarComponente (List<String[]> datosProveedorComponente) throws Exception{
 		for (int i = 0; i < datosProveedorComponente.size(); i++) {
 			String[] datosCompuestosComponente = datosProveedorComponente.get(i);
-			crud.insertarTupla(Proveedor.NOMBRERELACIONCOMPONENTE, Proveedor.COLUMNASRELACIONCOMPONENTE, Proveedor.TIPORELACIONCOMPONENTE, datosCompuestosComponente);
+			crud.insertarTupla(Proveedor.NOMBRE_RELACION_COMPONENTE, Proveedor.COLUMNAS_RELACION_COMPONENTE, Proveedor.TIPO_RELACION_COMPONENTE, datosCompuestosComponente);
 		}
 	}
-	
+
+	/**
+	 * @param id
+	 * @param unidadMedida
+	 * @param cantidadInicial
+	 * @throws Exception
+	 */
 	public void registrarMateriaPrima (String id, String unidadMedida, int cantidadInicial) throws Exception{
 		String[] datosSimples = {id, unidadMedida, Integer.toString(cantidadInicial)};
 		try{
@@ -156,7 +181,12 @@ public class AplicacionWeb {
 			crud.insertarTupla(MateriaPrima.NOMBRE, MateriaPrima.COLUMNAS, MateriaPrima.TIPO, datosSimples);
 		}
 	}
-	
+
+	/**
+	 * @param id
+	 * @param cantidadInicial
+	 * @throws Exception
+	 */
 	public void registrarComponente (String id, int cantidadInicial) throws Exception {
 		String[] datosSimples = {id, Integer.toString(cantidadInicial)};
 		try{
@@ -170,7 +200,13 @@ public class AplicacionWeb {
 		catch(Exception e){
 			crud.insertarTupla(Componente.NOMBRE, Componente.COLUMNAS, Componente.TIPO, datosSimples);		}
 	}
-	
+
+	/**
+	 * @param id
+	 * @param nombre
+	 * @param precio
+	 * @throws Exception
+	 */
 	public void registrarProducto (String id, String nombre, int precio) throws Exception{
 		String[] id1 = {id};
 		String[] datos = {id, nombre, Integer.toString(precio)};
@@ -178,13 +214,32 @@ public class AplicacionWeb {
 		crud.insertarTupla(ID, COLUMNAS, TIPO, id1);
 		System.out.println("Se registro " + datos);
 	}
-	
-	public void registrarProductoEtapasProduccion  (String id, String idProducto, String idEstacion, String idMateriaPrima, String idComponente, int duracion, int numeroSecuencia, String idAnterior) throws Exception{
+
+	/**
+	 * @param id
+	 * @param idProducto
+	 * @param idEstacion
+	 * @param idMateriaPrima
+	 * @param idComponente
+	 * @param duracion
+	 * @param numeroSecuencia
+	 * @param idAnterior
+	 * @throws Exception
+	 */
+	public void registrarEtapaProduccion  (String id, String idProducto, String idEstacion, String idMateriaPrima, String idComponente, int duracion, int numeroSecuencia, String idAnterior) throws Exception{
 		String[] datos = {id, idProducto, idEstacion, idMateriaPrima, idComponente, Integer.toString(duracion), Integer.toString(numeroSecuencia), idAnterior};
 		crud.insertarTupla(Etapa.NOMBRE, Etapa.COLUMNAS, Etapa.TIPO, datos);
 	}
-	
-	public void registrarPedidoCliente (String login, String producto, int cantidad, Date pedido, Date entrega) throws Exception{
+
+	/**
+	 * @param login
+	 * @param producto
+	 * @param cantidad
+	 * @param pedido
+	 * @param entrega
+	 * @throws Exception
+	 */
+	public void registrarPedido (String login, String producto, int cantidad, Date pedido, Date entrega) throws Exception{
 		ArrayList<String> idProducto = new ArrayList<String>();
 		String[] id = {Integer.toString(darContadorId())};
 		idProducto = crud.darSubTabla(Producto.NOMBRE, "id", " nombre = '" + producto + "' ");
@@ -195,6 +250,175 @@ public class AplicacionWeb {
 		s.executeUpdate(sql);
 	}
 	
+	//--------------------------------------------------
+	// METODOS DAR Y BUSCAR
+	//--------------------------------------------------
+
+	/**
+	 * @param login
+	 * @param password
+	 * @return
+	 * @throws Exception
+	 */
+	public String buscarUsuario (String login, String password) throws Exception{
+		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "tipo", "login = '" + login + "' AND password = '" + password + "'");
+		usuarioActual = login;
+		if ( usuario.get(0) != null )
+			return usuario.get(0);
+		return "";
+	}
+	
+	/**
+	 * @param id
+	 * @param idDeseado
+	 * @param rango
+	 * @param mayorA
+	 * @param menorA
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<String> buscarMateriaPrima (boolean id, String idDeseado, boolean rango, int mayorA, int menorA) throws Exception{
+		if(id && rango){
+			return crud.darSubTabla (MateriaPrima.NOMBRE, "cantidadInicial", "id = " + idDeseado + " AND cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
+		}
+		else if(id){
+			return crud.darSubTabla (MateriaPrima.NOMBRE, "cantidadInicial", "id = " + idDeseado);				
+		}
+		else if(rango){
+			return crud.darSubTabla (MateriaPrima.NOMBRE, "cantidadInicial", "cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
+		}
+		return null;
+	}
+
+	/**
+	 * @param nombre
+	 * @param nombreDeseado
+	 * @param rango
+	 * @param mayorA
+	 * @param menorA
+	 * @param etapa
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<String> buscarProducto (boolean nombre, String nombreDeseado, boolean rango, int mayorA, int menorA, boolean etapa) throws Exception{
+		if(nombre && rango && etapa){
+			return crud.darSubTabla (Producto.NOMBRE, "cantidad", "nombre = " + nombre + " AND cantidad BETWEEN " + mayorA + " AND " + menorA);				
+		}
+		else if(nombre && rango){
+			return crud.darSubTabla (Producto.NOMBRE, "cantidad", "nombre = " + nombre + " AND cantidad BETWEEN " + mayorA + " AND " + menorA);				
+		}
+		else if(nombre){
+			return crud.darSubTabla (Producto.NOMBRE, "cantidad", "nombre = " + nombre);				
+		}
+		else if(rango){
+			return crud.darSubTabla (Producto.NOMBRE, "cantidad", "cantidad BETWEEN " + mayorA + " AND " + menorA);				
+		}
+		return null;
+	}
+
+	/**
+	 * @param id
+	 * @param idDeseado
+	 * @param rango
+	 * @param mayorA
+	 * @param menorA
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<String> buscarComponente (boolean id, String idDeseado, boolean rango, int mayorA, int menorA) throws Exception{
+		if(id && rango){
+			return crud.darSubTabla (Componente.NOMBRE, "cantidadInicial", "id = " + idDeseado + " AND cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
+		}
+		else if(id){
+			return crud.darSubTabla (Componente.NOMBRE, "cantidadInicial", "id = " + idDeseado);				
+		}
+		else if(rango){
+			return crud.darSubTabla (Componente.NOMBRE, "cantidadInicial", "cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
+		}
+		return null;
+	}
+
+	/**
+	 * @param nombre
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<String> buscarProducto (String nombre) throws Exception{
+		return crud.darSubTabla(Producto.NOMBRE, "precio", "nombre = '" + nombre + "'");
+	}
+
+	/**
+	 * @param pedido
+	 * @param pedido1
+	 * @param entrega
+	 * @param entrega1
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<Pedido> buscarPedidos (Date pedido, boolean pedido1, Date entrega, boolean entrega1) throws Exception{
+		ArrayList<String> prod;
+		ArrayList<Pedido> rta = new ArrayList<Pedido>();
+		if (pedido1 && entrega1)
+		{
+			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaPedido = " + pedido.getDate() +  "mesPedido = " + pedido.getMonth() + "diaEntrega = " + entrega.getDate() +  "mesEntrega = " + pedido.getMonth());
+		}
+		else if (pedido1)
+		{
+			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaPedido = " + pedido.getDate() +  "mesPedido = " + pedido.getMonth());
+		}
+		else
+		{
+			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaEntrega = " + entrega.getDate() +  "mesEntrega = " + pedido.getMonth());
+		}
+		for (int i = 0; i < prod.size(); i++) {
+			//			Pedido p = new Pedido(usuarioActual, prod.get(i), 2, pedido, entrega);
+			//			rta.add(p);
+		}
+		return rta;
+	}
+	
+	/**
+	 * @param id
+	 * @return
+	 * @throws Exception
+	 */
+	public String darNombreProducto (String id) throws Exception{
+		return (crud.darSubTabla(Producto.NOMBRE, "nombre", "id = '" + id + "'")).get(0);
+	}
+	
+	/**
+	 * @param cantidad
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<String> darCantidadProductos (int cantidad) throws Exception{
+		ArrayList<String> rta = new ArrayList<String>();
+		rta = crud.darSubTabla(Producto.NOMBRE, "nombre", "precio > 0");
+		return rta;
+	}
+	
+	/**
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<Estacion> darEstaciones() throws Exception{
+		ArrayList<Estacion> rta = new ArrayList<Estacion>();
+		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Estacion.NOMBRE + "");
+		while(rs.next())
+		{
+			String id = rs.getString(1);
+			String nombre = rs.getString(2);
+			Estacion estacion = new Estacion(id, nombre);
+			rta.add(estacion);
+		}
+		return rta;
+	}
+
+	/**
+	 * @param login
+	 * @return
+	 * @throws Exception
+	 */
 	public ArrayList<Pedido> darPedidosCliente(String login) throws Exception{
 		ArrayList<Pedido> rta = new ArrayList<Pedido>();
 		Statement s = crud.darConexion().createStatement();
@@ -214,116 +438,20 @@ public class AplicacionWeb {
 		}
 		return rta;
 	}
-	
+
+	/**
+	 * @param producto
+	 * @return
+	 * @throws Exception
+	 */
 	public ArrayList<String> darIdPedido (String producto) throws Exception{
 		return crud.darSubTabla(Pedido.NOMBRE, "id", "idCliente = " + usuarioActual + "idProducto = " + producto);
 	}
-	
-	public ArrayList<String> buscarExistenciasMateriaPrima (boolean id, String idDeseado, boolean rango, int mayorA, int menorA) throws Exception{
-		if(id && rango){
-			return crud.darSubTabla (MateriaPrima.NOMBRE, "cantidadInicial", "id = " + idDeseado + " AND cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
-		}
-		else if(id){
-			return crud.darSubTabla (MateriaPrima.NOMBRE, "cantidadInicial", "id = " + idDeseado);				
-		}
-		else if(rango){
-			return crud.darSubTabla (MateriaPrima.NOMBRE, "cantidadInicial", "cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
-		}
-		return null;
-	}
-	
-	public ArrayList<String> buscarExistenciasProducto (boolean nombre, String nombreDeseado, boolean rango, int mayorA, int menorA, boolean etapa) throws Exception{
-		if(nombre && rango && etapa){
-			return crud.darSubTabla (Producto.NOMBRE, "cantidad", "nombre = " + nombre + " AND cantidad BETWEEN " + mayorA + " AND " + menorA);				
-		}
-		else if(nombre && rango){
-			return crud.darSubTabla (Producto.NOMBRE, "cantidad", "nombre = " + nombre + " AND cantidad BETWEEN " + mayorA + " AND " + menorA);				
-		}
-		else if(nombre){
-			return crud.darSubTabla (Producto.NOMBRE, "cantidad", "nombre = " + nombre);				
-		}
-		else if(rango){
-			return crud.darSubTabla (Producto.NOMBRE, "cantidad", "cantidad BETWEEN " + mayorA + " AND " + menorA);				
-		}
-		return null;
-	}
-	
-	public ArrayList<String> buscarExistenciasComponente (boolean id, String idDeseado, boolean rango, int mayorA, int menorA) throws Exception{
-		if(id && rango){
-			return crud.darSubTabla (Componente.NOMBRE, "cantidadInicial", "id = " + idDeseado + " AND cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
-		}
-		else if(id){
-			return crud.darSubTabla (Componente.NOMBRE, "cantidadInicial", "id = " + idDeseado);				
-		}
-		else if(rango){
-			return crud.darSubTabla (Componente.NOMBRE, "cantidadInicial", "cantidadInicial BETWEEN " + mayorA + " AND " + menorA);				
-		}
-		return null;
-	}
-	
-	public ArrayList<String> buscarProducto (String nombre) throws Exception{
-		return crud.darSubTabla(Producto.NOMBRE, "precio", "nombre = '" + nombre + "'");
-	}
-	
-	public String buscarNombreProducto (String id) throws Exception{
-		return (crud.darSubTabla(Producto.NOMBRE, "nombre", "id = '" + id + "'")).get(0);
-	}
 
-	public ArrayList<Pedido> buscarPedidosCliente (Date pedido, boolean pedido1, Date entrega, boolean entrega1) throws Exception{
-		ArrayList<String> prod;
-		ArrayList<Pedido> rta = new ArrayList<Pedido>();
-		if (pedido1 && entrega1)
-		{
-			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaPedido = " + pedido.getDate() +  "mesPedido = " + pedido.getMonth() + "diaEntrega = " + entrega.getDate() +  "mesEntrega = " + pedido.getMonth());
-		}
-		else if (pedido1)
-		{
-			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaPedido = " + pedido.getDate() +  "mesPedido = " + pedido.getMonth());
-		}
-		else
-		{
-			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaEntrega = " + entrega.getDate() +  "mesEntrega = " + pedido.getMonth());
-		}
-		for (int i = 0; i < prod.size(); i++) {
-//			Pedido p = new Pedido(usuarioActual, prod.get(i), 2, pedido, entrega);
-//			rta.add(p);
-		}
-		return rta;
-	}
-	
-	public ArrayList<Proveedor> darProveedores( ) throws Exception {
-		ArrayList<Proveedor> proveedores = new ArrayList<Proveedor>();
-		int numeroColumnas = Proveedor.COLUMNAS.length;
-		
-		ArrayList<String> datosProveedores = crud.darTuplas(Proveedor.NOMBRE);
-		
-		for(int i = 0; i < datosProveedores.size();i+=numeroColumnas){
-			
-			ArrayList<String> datosVolumenTiempoMateriaPre = crud.darSubTabla(Proveedor.NOMBRERELACIONMATERIAPRIMA,"id_Materia, volMax, volTiempo","TRUE");
-			List<String[]> datosVolumenTiempoMateria = new ArrayList<String[]>();
-			for(int j = 0; j < datosVolumenTiempoMateriaPre.size();j+=4){
-				datosVolumenTiempoMateria.get(j)[0]=datosVolumenTiempoMateriaPre.get(j);
-				datosVolumenTiempoMateria.get(j)[1]=datosVolumenTiempoMateriaPre.get(j+1);
-				datosVolumenTiempoMateria.get(j)[2]=datosVolumenTiempoMateriaPre.get(j+2);
-				datosVolumenTiempoMateria.get(j)[3]=datosVolumenTiempoMateriaPre.get(j+3);
-			}
-			
-			ArrayList<String> datosVolumenTiempoComponentePre = crud.darSubTabla(Proveedor.NOMBRERELACIONCOMPONENTE,"id_Materia, volMax, volTiempo","TRUE");
-			List<String[]> datosVolumenTiempoComponente = new ArrayList<String[]>();
-			for(int j = 0; j < datosVolumenTiempoComponentePre.size();j+=4){
-				datosVolumenTiempoComponente.get(j)[0]=datosVolumenTiempoComponentePre.get(j);
-				datosVolumenTiempoComponente.get(j)[1]=datosVolumenTiempoComponentePre.get(j+1);
-				datosVolumenTiempoComponente.get(j)[2]=datosVolumenTiempoComponentePre.get(j+2);
-				datosVolumenTiempoComponente.get(j)[3]=datosVolumenTiempoComponentePre.get(j+3);
-			}
-
-			Proveedor proveedor = new Proveedor(datosProveedores.get(i),datosProveedores.get(i+1),Integer.parseInt(datosProveedores.get(i+2)),datosProveedores.get(i+3),datosProveedores.get(i+4), datosVolumenTiempoMateria,datosVolumenTiempoComponente,darMateriasPrimasProveedor(datosProveedores.get(i)),darComponentesProveedor(datosProveedores.get(i)));
-			proveedores.add(proveedor);
-		}
-		
-		return proveedores;
-	}
-	
+	/**
+	 * @return
+	 * @throws Exception
+	 */
 	public ArrayList<MateriaPrima> darMateriasPrimas( ) throws Exception {
 		ArrayList<MateriaPrima> rta = new ArrayList<MateriaPrima>();
 		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + MateriaPrima.NOMBRE + "");
@@ -337,7 +465,11 @@ public class AplicacionWeb {
 		}
 		return rta;
 	}
-	
+
+	/**
+	 * @return
+	 * @throws Exception
+	 */
 	public ArrayList<Componente> darComponentes( ) throws Exception {
 		ArrayList<Componente> rta = new ArrayList<Componente>();
 		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Componente.NOMBRE + "");
@@ -350,7 +482,7 @@ public class AplicacionWeb {
 		}
 		return rta;
 	}
-	
+
 	private ArrayList<MateriaPrima> darMateriasPrimasProveedor(String idProveedor) throws Exception{
 		ArrayList<String> materiasPrimasPre = crud.darSubTabla("PROOVEDORESMATERIAS", "*", "id_proveedor=idProveedor");
 		ArrayList<MateriaPrima> materiasPrimas = new ArrayList<MateriaPrima>();
@@ -361,6 +493,11 @@ public class AplicacionWeb {
 		return materiasPrimas;
 	}
 
+	/**
+	 * @param idProveedor
+	 * @return
+	 * @throws Exception
+	 */
 	private ArrayList<Componente> darComponentesProveedor(String idProveedor) throws Exception {
 		ArrayList<String> componentesPre = crud.darSubTabla("PROOVEDORESCOMPONENTES", "*", "id_proveedor=idProveedor");
 		ArrayList<Componente> componentes = new ArrayList<Componente>();
@@ -371,23 +508,10 @@ public class AplicacionWeb {
 		return componentes;
 	}
 
-	public boolean registrarRegistro (String idProducto, int cantidad) throws Exception{
-		try
-		{
-			ArrayList<String> tuplas = crud.darSubTabla(Registro.NOMBRE, "idProducto", "idProducto = " + idProducto);
-			for (String string : tuplas) {
-				System.out.println(string);
-			}
-		}
-		catch (Exception e)
-		{
-			ArrayList<String> etapas = crud.darSubTabla(Producto.NOMBRE_RELACION_ETAPA_PRODUCCION, "idEtapa", "id_Producto = '" + idProducto + "'");
-			String[] datos =  {Integer.toString(darContadorId()),};
-			crud.insertarTupla(Registro.NOMBRE, Registro.COLUMNAS, Registro.TIPO, datos);
-		}
-		return true;
-	}
-	
+	/**
+	 * @return
+	 * @throws Exception
+	 */
 	public ArrayList<Usuario> darClientes() throws Exception{
 		ArrayList<Usuario> rta = new ArrayList<Usuario>();
 		ArrayList<String> datos = new ArrayList<String>();
@@ -408,8 +532,12 @@ public class AplicacionWeb {
 		}
 		return rta;
 	}
-	
-	public ArrayList<Proveedor> darProveedor() throws Exception {
+
+	/**
+	 * @return
+	 * @throws Exception
+	 */
+	public ArrayList<Proveedor> darProveedores() throws Exception {
 		ArrayList<Proveedor> rta = new ArrayList<Proveedor>();
 		ArrayList<String> datos = new ArrayList<String>();
 		int contador = 0;
@@ -427,14 +555,14 @@ public class AplicacionWeb {
 			ArrayList<String> idComponente = new ArrayList<String>();
 			ArrayList<MateriaPrima> pMateriasPrimas = new ArrayList<MateriaPrima>();
 			ArrayList<Componente> pComponentes = new ArrayList<Componente>();
-			idMateriaPrima = crud.darTuplas(Proveedor.NOMBRERELACIONMATERIAPRIMA);
-			idComponente = crud.darTuplas(Proveedor.NOMBRERELACIONCOMPONENTE);
+			idMateriaPrima = crud.darTuplas(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA);
+			idComponente = crud.darTuplas(Proveedor.NOMBRE_RELACION_COMPONENTE);
 			for (String materiaPrima : idMateriaPrima) {
 				ResultSet rs_1 = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + MateriaPrima.NOMBRE + " WHERE id = '" + materiaPrima + "'");
-				
+
 			}
 			for (String componente : idComponente) {
-				
+
 			}
 			Proveedor prov = new Proveedor(pId, pDireccion, pTelefono, pCiudad, pIdRepLegal, pMatrizVolTiempoMat, pMatrizVolTiempoComp, pMateriasPrimas, pComponentes);
 			rta.add(prov);
@@ -443,28 +571,31 @@ public class AplicacionWeb {
 		return rta;
 	}
 	
+	//--------------------------------------------------
+	// METODOS ELIMINAR
+	//--------------------------------------------------
+	
+	/**
+	 * @param login
+	 * @param idPedido
+	 * @throws Exception
+	 */
 	public void eliminarPedidoCliente(String login, String idPedido) throws Exception{
 		crud.eliminarTuplaPorId(Pedido.NOMBRE, idPedido);
 	}
 	
-	public ArrayList<Estacion> darEstaciones() throws Exception{
-		ArrayList<Estacion> rta = new ArrayList<Estacion>();
-		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Estacion.NOMBRE + "");
-		while(rs.next())
-		{
-			String id = rs.getString(1);
-			String nombre = rs.getString(2);
-			Estacion estacion = new Estacion(id, nombre);
-			rta.add(estacion);
-		}
-		return rta;
-	}
-	
+	//--------------------------------------------------
+	// MAIN
+	//--------------------------------------------------
+
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			
+
 		}
 		catch (Exception e)
 		{

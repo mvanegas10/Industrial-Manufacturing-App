@@ -207,7 +207,7 @@ public class CRUD {
 			String linea = null;
 			while((linea = reader.readLine())!=null){
 				String[] lineaInsertar = linea.split(",");
-				insertarTupla(Proveedor.NOMBRERELACIONCOMPONENTE, Proveedor.COLUMNASRELACIONCOMPONENTE, Proveedor.TIPORELACIONCOMPONENTE,lineaInsertar);
+				insertarTupla(Proveedor.NOMBRE_RELACION_COMPONENTE, Proveedor.COLUMNAS_RELACION_COMPONENTE, Proveedor.TIPO_RELACION_COMPONENTE,lineaInsertar);
 			}
 			reader.close();
 		}catch(Exception e){
@@ -219,7 +219,7 @@ public class CRUD {
 			String linea = null;
 			while((linea = reader.readLine())!=null){
 				String[] lineaInsertar = linea.split(",");
-				insertarTupla(Proveedor.NOMBRERELACIONMATERIAPRIMA, Proveedor.COLUMNASRELACIONMATERIAPRIMA, Proveedor.TIPORELACIONMATERIAPRIMA,lineaInsertar);
+				insertarTupla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, Proveedor.COLUMNAS_RELACION_MATERIA_PRIMA, Proveedor.TIPO_RELACION_MATERIA_PRIMA,lineaInsertar);
 			}
 			reader.close();
 		}catch(Exception e){

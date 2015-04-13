@@ -39,7 +39,7 @@ public class ServletIngresar extends ServletAbstract{
 			
 			try
 			{
-				tipo = AplicacionWeb.getInstancia().ingresarUsuario(usuario, constrasenia);
+				tipo = AplicacionWeb.getInstancia().buscarUsuario(usuario, constrasenia);
 				aceptarIngreso(respuesta, usuario, tipo, productos);
 				
 			}

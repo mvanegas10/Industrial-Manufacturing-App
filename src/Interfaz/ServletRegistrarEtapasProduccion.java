@@ -49,7 +49,7 @@ public class ServletRegistrarEtapasProduccion extends ServletAbstract{
 		
 		try
 		{
-			AplicacionWeb.getInstancia().registrarProductoEtapasProduccion(idAnterior, idProducto, idEstacion, idMateriaPrima, idComponente, duracion, numeroSecuencia, idAnterior);
+			AplicacionWeb.getInstancia().registrarEtapaProduccion(idAnterior, idProducto, idEstacion, idMateriaPrima, idComponente, duracion, numeroSecuencia, idAnterior);
 			
 			estaciones = AplicacionWeb.getInstancia().darEstaciones();
 			materiasPrimas = AplicacionWeb.getInstancia().darMateriasPrimas();

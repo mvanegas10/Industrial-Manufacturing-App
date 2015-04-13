@@ -22,7 +22,7 @@ public class ServletRegistrarLlegadaMaterial extends ServletAbstract{
 		{
 			PrintWriter respuesta = response.getWriter( );
 				
-			String llegadaMaterial = request.getParameter("llegadaMaterial");
+			String llegadaMaterial = request.getParameter("tipo");
 			
 			respuesta.write( " <form method=\"POST\" action=\"registroMaterial.htm\">" );
 			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
