@@ -20,13 +20,13 @@ public class Producto {
 
 	private double precio;
 	
-	private ArrayList<EtapaProduccion> etapasProduccion;
+	private ArrayList<Etapa> etapasProduccion;
 	
 	//---------------------------------------------------
 	// CONSTRUCTOR
 	//---------------------------------------------------
 
-	public Producto(String id, String nombre, double precio, int pNumeroEtapas, int disponibles,ArrayList<Cliente> pClientes, int cantidad,ArrayList<EtapaProduccion> pEtapasProduccion) {
+	public Producto(String id, String nombre, double precio, int pNumeroEtapas, int disponibles,ArrayList<Cliente> pClientes, int cantidad,ArrayList<Etapa> pEtapasProduccion) {
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
@@ -61,11 +61,11 @@ public class Producto {
 		this.precio = precio;
 	}
 
-	public ArrayList<EtapaProduccion> getEtapasProduccion() {
+	public ArrayList<Etapa> getEtapasProduccion() {
 		return etapasProduccion;
 	}
 
-	public void setEtapasProduccion(ArrayList<EtapaProduccion> etapasProduccion) {
+	public void setEtapasProduccion(ArrayList<Etapa> etapasProduccion) {
 		this.etapasProduccion = etapasProduccion;
 	}
 	

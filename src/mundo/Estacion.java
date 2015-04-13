@@ -26,7 +26,7 @@ public class Estacion {
 	
 	private String nombre;
 	
-	private ArrayList<EtapaProduccion> etapasProduccion;
+	private ArrayList<Etapa> etapasProduccion;
 	
 	//--------------------------------------------------
 	// CONSTRUCTOR
@@ -35,7 +35,7 @@ public class Estacion {
 	public Estacion(String pId, String pNombre) {
 		this.id = pId;
 		this.nombre = pNombre;
-		this.etapasProduccion = new ArrayList<EtapaProduccion>();
+		this.etapasProduccion = new ArrayList<Etapa>();
 	}
 	
 	//--------------------------------------------------
@@ -58,11 +58,11 @@ public class Estacion {
 		this.nombre = idNombre;
 	}
 
-	public ArrayList<EtapaProduccion> getEtapasProduccion() {
+	public ArrayList<Etapa> getEtapasProduccion() {
 		return etapasProduccion;
 	}
 
-	public void setEtapasProduccion(ArrayList<EtapaProduccion> etapasProduccion) {
+	public void setEtapasProduccion(ArrayList<Etapa> etapasProduccion) {
 		this.etapasProduccion = etapasProduccion;
 	}
 }

@@ -1,6 +1,6 @@
 package mundo;
 
-public class EtapaProduccion {
+public class Etapa {
 	
 	public static final String NOMBRE = "etapas";
 	
@@ -32,7 +32,7 @@ public class EtapaProduccion {
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
-	public EtapaProduccion(String id, String idProducto, String idEstacion,
+	public Etapa(String id, String idProducto, String idEstacion,
 			String idMateriaPrima, String idComponente, int duracion,
 			int numeroSecuencia, String idAnterior) {
 		super();

@@ -181,7 +181,7 @@ public class AplicacionWeb {
 	
 	public void registrarProductoEtapasProduccion  (String id, String idProducto, String idEstacion, String idMateriaPrima, String idComponente, int duracion, int numeroSecuencia, String idAnterior) throws Exception{
 		String[] datos = {id, idProducto, idEstacion, idMateriaPrima, idComponente, Integer.toString(duracion), Integer.toString(numeroSecuencia), idAnterior};
-		crud.insertarTupla(EtapaProduccion.NOMBRE, EtapaProduccion.COLUMNAS, EtapaProduccion.TIPO, datos);
+		crud.insertarTupla(Etapa.NOMBRE, Etapa.COLUMNAS, Etapa.TIPO, datos);
 	}
 	
 	public void registrarPedidoCliente (String login, String producto, int cantidad, Date pedido, Date entrega) throws Exception{
