@@ -191,18 +191,6 @@ public class CRUD {
 		}
 		
 		try{
-			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//productosEtapasProduccion.csv"));
-			String linea = null;
-			while((linea = reader.readLine())!=null){
-				String[] lineaInsertar = linea.split(",");
-				insertarTupla(Producto.NOMBRE_RELACION_ETAPA_PRODUCCION, Producto.COLUMNA_RELACION_ETAPA_PRODUCCION, Producto.TIPO_RELACION_ETAPA_PRODUCCION,lineaInsertar);
-			}
-			reader.close();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		try{
 			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//proveedores.csv"));
 			String linea = null;
 			while((linea = reader.readLine())!=null){

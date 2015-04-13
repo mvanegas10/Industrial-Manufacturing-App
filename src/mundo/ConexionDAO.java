@@ -249,7 +249,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE ProveedoresMateriasPrimas (id_proveedor varchar(32), id_materiaPrima varchar(32), volMax int, tiempoMax int, PRIMARY KEY (id_proveedor,id_materiaPrima), CONSTRAINT fk_idProveedores FOREIGN KEY (id_proveedor) REFERENCES proveedores(id), CONSTRAINT fk_idMateriasPrimas FOREIGN KEY (id_materiaPrima) REFERENCES materiasPrimas(id))" );
+				s.execute( "CREATE TABLE ProveedoresMateriasPrimas (id_proveedor varchar(32), id_materiaPrima varchar(32), PRIMARY KEY (id_proveedor,id_materiaPrima), CONSTRAINT fk_idProveedores FOREIGN KEY (id_proveedor) REFERENCES proveedores(id), CONSTRAINT fk_idMateriasPrimas FOREIGN KEY (id_materiaPrima) REFERENCES materiasPrimas(id))" );
 				System.out.println("Se cre� la tabla ProveedoresMateriasPrimas");
 			}
 			else
@@ -276,7 +276,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE ProveedoresComponentes (id_proveedor varchar(32), id_componente varchar(32), volMax int, tiempoMax int, PRIMARY KEY (id_proveedor,id_componente), CONSTRAINT fk_idProveCompo FOREIGN KEY (id_proveedor) REFERENCES proveedores(id), CONSTRAINT fk_idComponentes FOREIGN KEY (id_componente) REFERENCES componentes(id))" );
+				s.execute( "CREATE TABLE ProveedoresComponentes (id_proveedor varchar(32), id_componente varchar(32), PRIMARY KEY (id_proveedor,id_componente), CONSTRAINT fk_idProveCompo FOREIGN KEY (id_proveedor) REFERENCES proveedores(id), CONSTRAINT fk_idComponentes FOREIGN KEY (id_componente) REFERENCES componentes(id))" );
 				System.out.println("Se cre� la tabla ProveedoresComponentes");
 			}
 			else
@@ -284,34 +284,7 @@ public class ConexionDAO
 			s.close();
 			
 			
-			// TABLA 8: PEDIDOS ------------------------------------------------------------
-
-			crearTabla = false;
-			
-			s = conexion.createStatement( );
-			try
-			{
-				// Verificar si ya existe la tabla
-				s.executeQuery( "SELECT * FROM pedidos" );
-			}
-			catch( SQLException se )
-			{
-				// La excepci�n se lanza si la tabla no existe
-				crearTabla = true;
-			}
-
-			// Se crea una nueva tabla vac�a
-			if( crearTabla )
-			{
-				s.execute( "CREATE TABLE pedidos (id varchar(32), idProducto varchar(32), idCliente varchar(32), cantidad int, diaPedido int, mesPedido int, diaEntrega int, mesEntrega int, PRIMARY KEY (id), CONSTRAINT fk_idProdPed FOREIGN KEY (idProducto) REFERENCES productos(id), CONSTRAINT fk_idCliPed FOREIGN KEY (idCliente) REFERENCES usuarios(login))");
-				System.out.println("Se cre� la tabla Pedidos");
-			}
-			else
-			System.out.println("La tabla Pedidos ya existe");
-			s.close();
-			
-			
-			// TABLA 9: GENERADORID  ------------------------------------------------------------
+			// TABLA 8: GENERADORID  ------------------------------------------------------------
 
 			crearTabla = false;
 			
@@ -338,7 +311,7 @@ public class ConexionDAO
 			s.close();
 			
 			
-			// TABLA 10: ESTACIONES ------------------------------------------------------------
+			// TABLA 9: ESTACIONES ------------------------------------------------------------
 
 			crearTabla = false;
 			
@@ -365,7 +338,7 @@ public class ConexionDAO
 			s.close();
 			
 			
-			// TABLA 11: REGISTROS ESTACIONES ------------------------------------------------------------
+			// TABLA 10: REGISTROS ESTACIONES ------------------------------------------------------------
 
 			crearTabla = false;
 			
@@ -392,7 +365,7 @@ public class ConexionDAO
 			s.close();
 			
 			
-			// TABLA 12: REGISTROS MATERIAS PRIMAS ------------------------------------------------------------
+			// TABLA 11: REGISTROS MATERIAS PRIMAS ------------------------------------------------------------
 
 			crearTabla = false;
 			
@@ -419,7 +392,7 @@ public class ConexionDAO
 			s.close();
 			
 			
-			// TABLA 13: REGISTROS COMPONENTES ------------------------------------------------------------
+			// TABLA 12: REGISTROS COMPONENTES ------------------------------------------------------------
 
 			crearTabla = false;
 			
@@ -446,7 +419,7 @@ public class ConexionDAO
 			s.close();
 			
 			
-			// TABLA 14: ETAPAS ------------------------------------------------------------
+			// TABLA 13: ETAPAS ------------------------------------------------------------
 
 			crearTabla = false;
 			
@@ -473,7 +446,7 @@ public class ConexionDAO
 			s.close();
 			
 			
-			// TABLA 15: REGISTROS PRODUCTOS ------------------------------------------------------------
+			// TABLA 14: REGISTROS PRODUCTOS ------------------------------------------------------------
 
 			crearTabla = false;
 			
@@ -500,7 +473,7 @@ public class ConexionDAO
 			s.close();
 			
 			
-			// TABLA 16: INVENTARIO PRODUCTOS ------------------------------------------------------------
+			// TABLA 15: INVENTARIO PRODUCTOS ------------------------------------------------------------
 
 			crearTabla = false;
 			
@@ -527,7 +500,7 @@ public class ConexionDAO
 			s.close();
 			
 			
-			// TABLA 17: PEDIDOS ------------------------------------------------------------
+			// TABLA 16: PEDIDOS ------------------------------------------------------------
 
 			crearTabla = false;
 			
@@ -546,7 +519,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE pedidos (id varchar(32), idInventario varchar(32),PRIMARY KEY (id,idInventario), CONSTRAINT fk_idInventario FOREIGN KEY (idInventario) REFERENCES inventarioProductos(id))" );
+				s.execute( "CREATE TABLE pedidos (id varchar(32), idInventario varchar(32), idUsuario varchar(32), diaPedido int, mesPedido int, PRIMARY KEY (id,idInventario), CONSTRAINT fk_idInventario FOREIGN KEY (idInventario) REFERENCES inventarioProductos(id),CONSTRAINT fk_idCliPed FOREIGN KEY (idUsuario) REFERENCES usuarios(login))" );
 				System.out.println("Se cre� la tabla pedidos");
 			}
 			else

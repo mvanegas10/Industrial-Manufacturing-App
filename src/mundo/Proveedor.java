@@ -37,10 +37,6 @@ public class Proveedor{
 	
 	private String idRepLegal;
 	
-	private List<String[]> matrizVolTiempoMat;
-	
-	private List<String[]> matrizVolTiempoComp;
-	
 	private ArrayList<MateriaPrima> materiasPrimas;
 	
 	private ArrayList<Componente> componentes;
@@ -57,8 +53,6 @@ public class Proveedor{
 		this.telefono = pTelefono;
 		this.ciudad = pCiudad;
 		this.idRepLegal = pIdRepLegal;
-		this.matrizVolTiempoMat = pMatrizVolTiempoMat;
-		this.matrizVolTiempoComp = pMatrizVolTiempoComp;
 		this.materiasPrimas = pMateriasPrimas;
 		this.componentes = pComponentes;	
 	}
@@ -105,22 +99,6 @@ public class Proveedor{
 
 	public void setIdRepLegal(String idRepLegal) {
 		this.idRepLegal = idRepLegal;
-	}
-
-	public List<String[]> getMatrizVolTiempoMat() {
-		return matrizVolTiempoMat;
-	}
-
-	public void setMatrizVolTiempoMat(List<String[]> matrizVolTiempoMat) {
-		this.matrizVolTiempoMat = matrizVolTiempoMat;
-	}
-
-	public List<String[]> getMatrizVolTiempoComp() {
-		return matrizVolTiempoComp;
-	}
-
-	public void setMatrizVolTiempoComp(List<String[]> matrizVolTiempoComp) {
-		this.matrizVolTiempoComp = matrizVolTiempoComp;
 	}
 
 	public ArrayList<MateriaPrima> getMateriasPrimas() {
