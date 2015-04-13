@@ -357,7 +357,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE registrosEstaciones (id varchar(32), idEstacion varchar(32), dia int, mes int, ano int, PRIMARY KEY (id), CONSTRAINT fk_idEstacion FOREIGN KEY (idEstacion) REFERENCES estaciones(id), CONSTRAINT unq_ofertaUnica UNIQUE (idEstacion,dia,mes,ano))" );
+				s.execute( "CREATE TABLE registrosEstaciones (id varchar(32), idEstacion varchar(32), dia int, mes int, PRIMARY KEY (id), CONSTRAINT fk_idEstacion FOREIGN KEY (idEstacion) REFERENCES estaciones(id), CONSTRAINT unq_ofertaUnica UNIQUE (idEstacion,dia,mes))" );
 				System.out.println("Se cre� la tabla registrosEstaciones");
 			}
 			else

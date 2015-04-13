@@ -12,6 +12,12 @@ public class Estacion {
 	
 	public static final String[] TIPO = {"String", "String"};
 	
+	public static final String NOMBRE_REGISTRO_ESTACIONES = "registroEstaciones";
+	
+	public static final String[] COLUMNAS_REGISTRO_ESTACIONES = {"id", "idEstacion","dia","mes"};
+	
+	public static final String[] TIPO_REGISTRO_ESTACIONES = {"String", "String","int","int"};
+	
 	//--------------------------------------------------
 	// ATRIBUTOS
 	//--------------------------------------------------

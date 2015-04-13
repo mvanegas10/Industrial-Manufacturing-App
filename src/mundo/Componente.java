@@ -14,6 +14,12 @@ public class Componente {
 	
 	public static final String[] TIPO = {"String","int"};
 	
+	public static final String NOMBRE_REGISTRO_COMPONENTES = "registrosComponentes";
+	
+	public static final String[] COLUMNAS_REGISTRO_COMPONENTES = {"id","idComponente"};
+	
+	public static final String[] TIPO_REGISTRO_COMPONENTES = {"String","String"};
+	
 	private String id;
 	
 	private int cantidadInicial;

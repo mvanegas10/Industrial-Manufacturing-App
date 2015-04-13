@@ -14,6 +14,12 @@ public class MateriaPrima {
 	
 	public static final String[] TIPO = {"String","String","int"};
 	
+	public static final String NOMBRE_REGISTRO_MATERIAS_PRIMAS = "registrosMateriasPrimas";
+	
+	public static final String[] COLUMNAS_REGISTRO_MATERIAS_PRIMAS = {"id","idMateriaPrima"};
+	
+	public static final String[] TIPO_REGISTRO_MATERIAS_PRIMAS = {"String","String"};
+	
 	private String id;
 	
 	private String unidadMedidad;
