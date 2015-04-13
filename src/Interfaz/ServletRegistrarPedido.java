@@ -36,7 +36,7 @@ public class ServletRegistrarPedido extends ServletAbstract{
 		entrega.setTime(temp.getTime());
 		try
 		{
-			AplicacionWeb.getInstancia().registrarPedido(login, productoPedido, cantidad, pedido.getTime(), entrega.getTime());
+			AplicacionWeb.getInstancia().registrarPedido(login, productoPedido, cantidad, pedido.getTime());
 	        
 	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 	        respuesta.write( "<tr><h4 align=\"center\">Gracias " + login + " por comprar con ProdAndes. El siguiente pedido se ha realizado de manera exitosa. La fecha de entrega es: " + entrega.getTime().toLocaleString() + ".</h4></tr>" );
