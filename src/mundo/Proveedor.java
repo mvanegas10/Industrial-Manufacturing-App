@@ -17,15 +17,15 @@ public class Proveedor{
 	
 	public static final String NOMBRE_RELACION_MATERIA_PRIMA = "ProveedoresMateriasPrimas";
 	
-	public static final String[] COLUMNAS_RELACION_MATERIA_PRIMA = {"id_proveedor","id_materiaPrima","volMax","tiempoMax"};
+	public static final String[] COLUMNAS_RELACION_MATERIA_PRIMA = {"id_proveedor","id_materiaPrima"};
 	
-	public static final String[] TIPO_RELACION_MATERIA_PRIMA = {"String","String","int","int"};
+	public static final String[] TIPO_RELACION_MATERIA_PRIMA = {"String","String"};
 	
 	public static final String NOMBRE_RELACION_COMPONENTE = "ProveedoresComponentes";
 	
-	public static final String[] COLUMNAS_RELACION_COMPONENTE = {"id_proveedor","id_componente","volMax","tiempoMax"};
+	public static final String[] COLUMNAS_RELACION_COMPONENTE = {"id_proveedor","id_componente"};
 	
-	public static final String[] TIPO_RELACION_COMPONENTE = {"String","String","int","int"};
+	public static final String[] TIPO_RELACION_COMPONENTE = {"String","String"};
 	
 	private String id;
 	
