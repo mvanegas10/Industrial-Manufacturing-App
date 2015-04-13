@@ -25,9 +25,13 @@ public class ServletRegistrarProducto extends ServletAbstract{
 		
 		PrintWriter respuesta = response.getWriter( );
 		
-		String idProducto = request.getParameter("idProducto");
+		String idProducto = Integer.toString(AplicacionWeb.getInstancia().darContadorId());
 		
-		String idAnterior = request.getParameter("idAnterior");
+		String producto = request.getParameter("idProducto");
+		
+		int precio = Integer.parseInt(request.getParameter("precio"));
+		
+		String idActual;
 		
 		ArrayList<Estacion> estaciones = new ArrayList<Estacion>();
 		
@@ -37,9 +41,13 @@ public class ServletRegistrarProducto extends ServletAbstract{
 		
 		try
 		{
+			AplicacionWeb.getInstancia().registrarProducto(idProducto,producto, precio);
+			
 			estaciones = AplicacionWeb.getInstancia().darEstaciones();
 			materiasPrimas = AplicacionWeb.getInstancia().darMateriasPrimas();
 			componentes = AplicacionWeb.getInstancia().darComponentes();
+			idActual = Integer.toString(AplicacionWeb.getInstancia().darContadorId());
+			respuesta.write( "<input type=\"hidden\" value=" + idProducto + " name=\"idProducto\"><input type=\"hidden\" value=" + idActual + " name=\"idAnterior\">" );
 			respuesta.write( "<table align= center bgcolor=\"#ecf0f1\" width=\"40%\">" );
 			respuesta.write( "<tr>" );
 			respuesta.write( "<td><h4>Numero de Secuencia:</h4></td>" );
@@ -88,27 +96,13 @@ public class ServletRegistrarProducto extends ServletAbstract{
 			respuesta.write( "<input type=\"reset\" value=\"Borrar\" name=\"B2\" class=\"normal\"></p>" );
 		}
 		catch (Exception e){
-			
+			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
+	        respuesta.write( "<tr>" );
+	        respuesta.write( "<td><h3>Debe ingresar las especificaciones del producto para registrar etapas de produccion.</h3></td>" );
+	        respuesta.write( "</tr>" );
+	        respuesta.write( "</table>" );
 		}
-		String[] datos;
 				
-		try
-		{
-			AplicacionWeb.getInstancia().registrarProductoEtapasProduccion(datosEtapaProduccion);
-	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
-	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><h3>Su producto y las etapas de produccion se han registrado de manera exitosa</h3></td>" );
-	        respuesta.write( "</tr>" );
-	        respuesta.write( "</table>" );
-		}
-		catch (Exception e)
-		{
-	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
-	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><h3>Hubo un error al registrar el producto y sus etapas de produccion</h3></td>" );
-	        respuesta.write( "</tr>" );
-	        respuesta.write( "</table>" );
-		}
 	}
 
 }
