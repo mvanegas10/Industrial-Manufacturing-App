@@ -266,19 +266,19 @@ public class AplicacionWeb {
 		for (int i = 0; i < etapas.size(); i++) {
 			idsGenerados.add(darContadorId());
 			String[] datosRegistro = {Integer.toString(idsGenerados.get(1+i)), etapas.get(i).getId(), idProducto};
-			String[] datosInventario = {Integer.toString(idsGenerados.get(1+i)), idProducto};
-			crud.insertarTupla(Registro.NOMBRE, Registro.COLUMNAS, Registro.TIPO, datosRegistro);
+//			String[] datosInventario = {Integer.toString(idsGenerados.get(1+i)), idProducto};
+//			crud.insertarTupla(Producto.NOMBRE_REGISTRO_PRODUCTOS, Producto.COLUMNAS_REGISTRO_PRODUCTOS, Producto.TIPO_REGISTRO_PRODUCTOS, datosRegistro);
 			crud.insertarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, Producto.COLUMNAS_INVENTARIO_PRODUCTOS, Producto.TIPO_INVENTARIO_PRODUCTOS, datosRegistro);
 		}
 		
-		String sql = "INSERT INTO pedidos (id, idProducto, idCliente, cantidad, diaPedido, mesPedido, diaEntrega, mesEntrega) VALUES ('" + Integer.toString(idsGenerados.get(0)) + "','" + idProducto + "','" + login + "'," + cantidad + "," + pedido.getDate() + "," + pedido.getMonth() + "," + entrega.getDate() + "," + entrega.getMonth() + ")";
-		System.out.println(sql);
-		for (Integer id : idsGenerados) {
-			String[] pId = {Integer.toString(id)};
-			crud.insertarTupla(ID, COLUMNAS, TIPO, pId);
-		}
-		Statement s = crud.darConexion().createStatement();
-		s.executeUpdate(sql);
+//		String sql = "INSERT INTO pedidos (id, idProducto, idCliente, cantidad, diaPedido, mesPedido, diaEntrega, mesEntrega) VALUES ('" + Integer.toString(idsGenerados.get(0)) + "','" + idProducto + "','" + login + "'," + cantidad + "," + pedido.getDate() + "," + pedido.getMonth() + "," + entrega.getDate() + "," + entrega.getMonth() + ")";
+//		System.out.println(sql);
+//		for (Integer id : idsGenerados) {
+//			String[] pId = {Integer.toString(id)};
+//			crud.insertarTupla(ID, COLUMNAS, TIPO, pId);
+//		}
+//		Statement s = crud.darConexion().createStatement();
+//		s.executeUpdate(sql);
 	}
 	
 	//--------------------------------------------------
