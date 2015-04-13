@@ -241,12 +241,42 @@ public class AplicacionWeb {
 	 * @throws Exception
 	 */
 	public void registrarPedido (String login, String producto, int cantidad, Date pedido, Date entrega) throws Exception{
-		ArrayList<String> idProducto = new ArrayList<String>();
-		String[] id = {Integer.toString(darContadorId())};
-		idProducto = crud.darSubTabla(Producto.NOMBRE, "id", " nombre = '" + producto + "' ");
-		String sql = "INSERT INTO pedidos (id, idProducto, idCliente, cantidad, diaPedido, mesPedido, diaEntrega, mesEntrega) VALUES ('" + id[0] + "','" + idProducto.get(0) + "','" + login + "'," + cantidad + "," + pedido.getDate() + "," + pedido.getMonth() + "," + entrega.getDate() + "," + entrega.getMonth() + ")";
+		String idProducto;
+		int duracionProduccion = 0;
+		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
+		ArrayList<Integer> idsGenerados = new ArrayList<Integer>();
+		idsGenerados.add(darContadorId());
+		
+		idProducto = (crud.darSubTabla(Producto.NOMBRE, "id", " nombre = '" + producto + "' ")).get(0);
+		
+		ResultSet rs_etapas = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Etapa.NOMBRE + " WHERE idProducto = '" + idProducto + "'");
+		while(rs_etapas.next()){
+			String idEtapa = rs_etapas.getString(1);
+			String idEstacion = rs_etapas.getString(3);
+			String idMateriaPrima = rs_etapas.getString(4);
+			String idComponente = rs_etapas.getString(5);
+			int duracion = rs_etapas.getInt(6);
+			int numeroSecuencia = rs_etapas.getInt(7);
+			String idAnterior = rs_etapas.getString(8);
+			duracionProduccion+=duracion;
+			Etapa etapa = new Etapa(idEtapa, idProducto, idEstacion, idMateriaPrima, idComponente, duracion, numeroSecuencia, idAnterior);
+			etapas.add(etapa);
+		}
+		
+		for (int i = 0; i < etapas.size(); i++) {
+			idsGenerados.add(darContadorId());
+			String[] datosRegistro = {Integer.toString(idsGenerados.get(1+i)), etapas.get(i).getId(), idProducto};
+			String[] datosInventario = {Integer.toString(idsGenerados.get(1+i)), idProducto};
+			crud.insertarTupla(Registro.NOMBRE, Registro.COLUMNAS, Registro.TIPO, datosRegistro);
+			crud.insertarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, Producto.COLUMNAS_INVENTARIO_PRODUCTOS, Producto.TIPO_INVENTARIO_PRODUCTOS, datosRegistro);
+		}
+		
+		String sql = "INSERT INTO pedidos (id, idProducto, idCliente, cantidad, diaPedido, mesPedido, diaEntrega, mesEntrega) VALUES ('" + Integer.toString(idsGenerados.get(0)) + "','" + idProducto + "','" + login + "'," + cantidad + "," + pedido.getDate() + "," + pedido.getMonth() + "," + entrega.getDate() + "," + entrega.getMonth() + ")";
 		System.out.println(sql);
-		crud.insertarTupla(ID, COLUMNAS, TIPO, id);
+		for (Integer id : idsGenerados) {
+			String[] pId = {Integer.toString(id)};
+			crud.insertarTupla(ID, COLUMNAS, TIPO, pId);
+		}
 		Statement s = crud.darConexion().createStatement();
 		s.executeUpdate(sql);
 	}
