@@ -438,7 +438,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE etapas (id varchar(32), idProducto varchar(32), idEstacion varchar(32), idMateriaPrima varchar(32), idComponente varchar(32), duracion int, numeroSecuencia int, idAnterior varchar(32), PRIMARY KEY (id), CONSTRAINT fk_idProductoEtapa FOREIGN KEY (idProducto) REFERENCES productos(id),CONSTRAINT fk_idEtapaEtapa FOREIGN KEY (idAnterior) REFERENCES etapas(id), CONSTRAINT fk_idEstacionEtapa FOREIGN KEY (idEstacion) REFERENCES estaciones(id), CONSTRAINT fk_idMateriaPrimaEtapa FOREIGN KEY (idMateriaPrima) REFERENCES materiasPrimas(id), CONSTRAINT fk_idComponenteEtapa FOREIGN KEY (idComponentes) REFERENCES componentes(id), CONSTRAINT unq_ofertaUnica UNIQUE (idProducto,numero))" );
+				s.execute( "CREATE TABLE etapas (id varchar(32),nombre varchar(32), idProducto varchar(32), idEstacion varchar(32), idMateriaPrima varchar(32), idComponente varchar(32), duracion int, numeroSecuencia int, idAnterior varchar(32), PRIMARY KEY (id), CONSTRAINT fk_idProductoEtapa FOREIGN KEY (idProducto) REFERENCES productos(id), CONSTRAINT fk_idEstacionEtapa FOREIGN KEY (idEstacion) REFERENCES estaciones(id), CONSTRAINT fk_idMateriaPrimaEtapa FOREIGN KEY (idMateriaPrima) REFERENCES materiasPrimas(id), CONSTRAINT fk_idComponenteEtapa FOREIGN KEY (idComponentes) REFERENCES componentes(id), CONSTRAINT unq_ofertaUnica UNIQUE (idProducto,numero))" );
 				System.out.println("Se cre� la tabla etapas");
 			}
 			else
@@ -492,7 +492,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE inventarioProductos (id varchar(32), idProducto varchar(32),PRIMARY KEY (id), CONSTRAINT fk_idProducto FOREIGN KEY (idProducto) REFERENCES productos(id))" );
+				s.execute( "CREATE TABLE inventarioProductos (idRegistro varchar(32), idProducto varchar(32),PRIMARY KEY (id), CONSTRAINT fk_idRegistroProductoInventario FOREIGN KEY (idRegistro) REFERENCES registrosProductos(id), CONSTRAINT fk_idProductoInventario FOREIGN KEY (idProducto) REFERENCES productos(id))" );
 				System.out.println("Se cre� la tabla inventarioProductos");
 			}
 			else
