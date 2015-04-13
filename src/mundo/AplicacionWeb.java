@@ -287,16 +287,18 @@ public class AplicacionWeb {
 	 * @param entrega
 	 * @throws Exception
 	 */
-	public void insertarPedido (String login, String nombreProducto, int cantidad, Date pedido, Date entrega) throws Exception{
+	public void insertarPedido (String login, String nombreProducto, int cantidad, Date fechaPedido) throws Exception{
 		String idProducto;
 		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
 		ArrayList<Integer> idsGenerados = new ArrayList<Integer>();
-		int duracion = 0;
+		int diaEntrega = 0;
+		int mesEntrega = 0;
+		String idPedido = Integer.toString(darContadorId());
 		conexion.setAutoCommitFalso();
 		idProducto = obtenerIdProducto(nombreProducto);
 		etapas = obtenerEtapas(idProducto);
 		for(Etapa etapa : etapas){
-			verificarExistencias(etapa,cantidad);
+			verificarExistencias(etapa,cantidad,etapas.size(),login,fechaPedido,idPedido);
 		}
 		for (Integer id : idsGenerados) {
 			String[] pId = {Integer.toString(id)};
@@ -325,11 +327,11 @@ public class AplicacionWeb {
 		return etapas;
 	}
 	
-	public void verificarExistencias (Etapa etapa, int cantidad) throws Exception{
+	public void verificarExistencias (Etapa etapa, int cantidad, int ultimaEtapa, String login, Date fechaPedido, String idPedido) throws Exception{
 		PreparedStatement verificarEstaciones = null;
 		PreparedStatement verificarMateriasPrimas = null;
 		PreparedStatement verificarComponentes = null;
-		PreparedStatement insertarRegistro = null;
+		PreparedStatement fechaEntrega = null;
 		
 		String verificarEstacionesText = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion = " + etapa.getIdEstacion() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroEstacion = a.id ORDER BY a.dia,a.mes)";
 		ResultSet rs_verificarEstaciones = verificarEstaciones.executeQuery(verificarEstacionesText);
@@ -341,8 +343,18 @@ public class AplicacionWeb {
 		ResultSet rs_verificarComponentes = verificarComponentes.executeQuery(verificarComponentesText);
 
 		for(int i = 0; i < cantidad; i++){
-			String[] datos = {Integer.toString(i+1000),etapa.getId(),rs_verificarEstaciones.getString(1),rs_verificarMateriasPrimas.getString(1),rs_verificarComponentes.getString(1)};
-			crud.insertarTupla(Producto.NOMBRE_REGISTRO_PRODUCTOS, Producto.COLUMNAS_REGISTRO_PRODUCTOS, Producto.TIPO_REGISTRO_PRODUCTOS, datos);
+			String idRegProd = Integer.toString(darContadorId());
+			String[] datosRegProd = {idRegProd,etapa.getId(),rs_verificarEstaciones.getString(1),rs_verificarMateriasPrimas.getString(1),rs_verificarComponentes.getString(1)};
+			crud.insertarTupla(Producto.NOMBRE_REGISTRO_PRODUCTOS, Producto.COLUMNAS_REGISTRO_PRODUCTOS, Producto.TIPO_REGISTRO_PRODUCTOS, datosRegProd);
+			if(etapa.getNumeroSecuencia() == ultimaEtapa){
+				String[] datosInventario = {idRegProd,etapa.getIdProducto(),idPedido};
+				crud.insertarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, Producto.COLUMNAS_INVENTARIO_PRODUCTOS, Producto.TIPO_INVENTARIO_PRODUCTOS, datosInventario);
+				if(i==cantidad-1){
+					String fechaEntregaText = "SELECT a.dia, a.mes FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.id = " + rs_verificarEstaciones.getString(1);
+					ResultSet rs_fechaEntrega = verificarComponentes.executeQuery(verificarComponentesText);
+					String[] datosPedido = {idPedido,login,Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getMonth()),rs_fechaEntrega.getString(1),rs_fechaEntrega.getString(2),Integer.toString(cantidad)};
+				}
+			}
 			rs_verificarEstaciones.next();
 			rs_verificarMateriasPrimas.next();
 			rs_verificarComponentes.next();
