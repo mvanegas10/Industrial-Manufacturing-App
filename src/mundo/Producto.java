@@ -22,9 +22,9 @@ public class Producto {
 				
 	public static final String NOMBRE_INVENTARIO_PRODUCTOS = "inventarioProductos";
 	
-	public static final String[] COLUMNAS_INVENTARIO_PRODUCTOS = {"idRegistro","idProducto"};
+	public static final String[] COLUMNAS_INVENTARIO_PRODUCTOS = {"idRegistro","idProducto", "idPedido"};
 	
-	public static final String[] TIPO_INVENTARIO_PRODUCTOS = {"String","String"};
+	public static final String[] TIPO_INVENTARIO_PRODUCTOS = {"String","String", "String"};
 
 	private String id;
 
