@@ -71,6 +71,12 @@ public class CRUD {
 		
 	}
 	
+	public void eliminarTupla(String tabla,String condicion) throws Exception{
+		Statement s = conexion.createStatement();
+		s.executeQuery ("DELETE FROM " + tabla + " WHERE " + condicion);
+		s.close(); 
+	}
+	
 	public void eliminarTuplaPorId(String tabla,String id) throws Exception{
 		Statement s = conexion.createStatement();
 		s.executeQuery ("DELETE FROM " + tabla + " WHERE " + "id="+id);

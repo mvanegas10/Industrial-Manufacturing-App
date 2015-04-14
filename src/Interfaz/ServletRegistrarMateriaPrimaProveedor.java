@@ -90,7 +90,7 @@ public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 	public void noHayMateriasPrima (PrintWriter respuesta){
         respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
         respuesta.write( "<tr>" );
-        respuesta.write( "<td><h3>Error: No hay registrada ninguna materia prima, primero registre materias prima a ProdAndes</h3></td>" );
+        respuesta.write( "<td><h3>No hay registrada ninguna materia prima, primero registre materias prima a ProdAndes</h3></td>" );
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
 	}

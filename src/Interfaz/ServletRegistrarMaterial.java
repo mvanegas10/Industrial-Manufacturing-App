@@ -40,18 +40,18 @@ public class ServletRegistrarMaterial extends ServletAbstract{
 				tipo = "Componente";
 				AplicacionWeb.getInstancia().registrarComponente(nombre, cantInicial);
 			}
-			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
+			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"50%\">" );
 			respuesta.write( " <tr>" );
-			respuesta.write( " <td>Se agrego correctamente el material: " + tipo + " - " + nombre + "</td>" );
+			respuesta.write( " <td><h3>Se agrego correctamente el material: " + tipo + " - " + nombre + "</h3></td>" );
 			respuesta.write( " <tr>" );
-			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
+			respuesta.write( " </table>" );
 		}
 		catch (Exception e){
-			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
+			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"50%\">" );
 			respuesta.write( " <tr>" );
-			respuesta.write( " <td>No se agrego correctamente el material</td>" );
+			respuesta.write( " <td><h3>No se agrego correctamente el material</h3></td>" );
 			respuesta.write( " <tr>" );
-			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
+			respuesta.write( " </table>" );
 		}
 	}
 

@@ -13,6 +13,18 @@ import java.util.List;
  * @author Meili
  *
  */
+/**
+ * @author Meili
+ *
+ */
+/**
+ * @author Meili
+ *
+ */
+/**
+ * @author Meili
+ *
+ */
 public class AplicacionWeb {
 
 	//--------------------------------------------------
@@ -182,7 +194,7 @@ public class AplicacionWeb {
 	public void registrarMateriaPrima (String id, String unidadMedida, int cantidadInicial) throws Exception{
 		String[] datosSimples = {id, unidadMedida, Integer.toString(cantidadInicial)};
 		try{
-			int cantidadActual= Integer.parseInt((crud.darSubTabla(MateriaPrima.NOMBRE, "cantidadInicial", "id="+id).get(0)));
+			int cantidadActual= Integer.parseInt((crud.darSubTabla(MateriaPrima.NOMBRE, "cantidadInicial", "id='"+id+"'").get(0)));
 			String[] columnas = new String[1];
 			columnas[0] = "cantidadInicial";
 			String[] cantidad = new String[1];
@@ -270,8 +282,13 @@ public class AplicacionWeb {
 		conexion.darConexion().commit();
 		conexion.setAutoCommitVerdadero();
 		return fechaEntrega;
-	}
-		
+	}	
+	
+	/**
+	 * @param idProducto
+	 * @return
+	 * @throws Exception
+	 */
 	public ArrayList<Etapa> obtenerEtapas (String idProducto) throws Exception{
 		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
 		ResultSet rs_etapas = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Etapa.NOMBRE + " WHERE idProducto = '" + idProducto + "'");
@@ -291,6 +308,18 @@ public class AplicacionWeb {
 		return etapas;
 	}
 	
+	
+	/**
+	 * @param idProducto
+	 * @param etapa
+	 * @param cantidad
+	 * @param ultimaEtapa
+	 * @param login
+	 * @param fechaPedido
+	 * @param idPedido
+	 * @return
+	 * @throws Exception
+	 */
 	public Date verificarExistencias (String idProducto, Etapa etapa, int cantidad, int ultimaEtapa, String login, Date fechaPedido, String idPedido) throws Exception{
 		
 		String verificarEstacionesText = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion = '" + etapa.getIdEstacion() + "' AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroEstacion = a.id) ORDER BY a.dia,a.mes";
@@ -710,7 +739,19 @@ public class AplicacionWeb {
 	 * @throws Exception
 	 */
 	public void eliminarPedidoCliente(String login, String idPedido) throws Exception{
-		crud.eliminarTuplaPorId(Pedido.NOMBRE, idPedido);
+		conexion.setAutoCommitFalso();
+		Savepoint save = conexion.darConexion().setSavepoint();
+		try
+		{
+			crud.eliminarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, "idPedido = '" + idPedido + "'");
+			crud.eliminarTuplaPorId(Pedido.NOMBRE, idPedido);
+		}
+		catch(Exception e){
+			conexion.darConexion().rollback(save);
+			e.printStackTrace();
+		}
+		conexion.darConexion().commit();
+		conexion.setAutoCommitVerdadero();
 	}
 	
 	//--------------------------------------------------
