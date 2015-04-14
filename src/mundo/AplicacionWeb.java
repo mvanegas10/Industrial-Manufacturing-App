@@ -765,7 +765,7 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			aplicacionWeb.darPedidosCliente("Mangou");
+			aplicacionWeb.crud.darSubTabla(Usuario.NOMBRE, "login", "login = 'null' and password='null'");
 		}
 		catch (Exception e)
 		{

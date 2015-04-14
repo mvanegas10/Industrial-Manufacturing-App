@@ -125,23 +125,21 @@ public class CRUD {
 	}
 	
 	public ArrayList<String> darSubTabla (String tabla, String listaColumnas, String condicion) throws Exception{
+		int contador = 0;
 		ArrayList<String> resultado = new ArrayList<String>();
-		try
-		{
-			Statement s = conexion.createStatement();
-			String sql = "SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion ;
-			System.out.println(sql);
-			ResultSet rS = s.executeQuery (sql);
-			while (rS.next()){
-				System.out.println(rS.getString(1));
-				resultado.add(rS.getString(1));	
-			}
-			s.close();
+		Statement s = conexion.createStatement();
+		String sql = "SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion ;
+		System.out.println(sql);
+		ResultSet rS = s.executeQuery (sql);
+		while (rS.next()){
+			contador++;
+			System.out.println(rS.getString(1));
+			resultado.add(rS.getString(1));	
 		}
-		catch (Exception e1)
-		{
-			throw new Exception("No se encntr� el registro en la tabla " + tabla);
-		}
+		s.close();
+		System.out.println("Tuplas encontradas: " + contador);
+		if (contador == 0)
+			throw new Exception();
 		return resultado;
 	}
 	

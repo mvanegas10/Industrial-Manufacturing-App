@@ -43,7 +43,114 @@ public class ServletIngresar extends ServletAbstract{
 				String reingreso = request.getParameter("reingreso");
 				if (reingreso != null)
 				{
+					respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><h3>BIENVENIDO ADMIN</h3></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr></tr>" );
+					respuesta.write( "</table>" );
 					
+					
+					
+					respuesta.write( "<table align=\"center\" style=\"border: 2px solid #a1a1a1; padding: 10px 40px;border-radius: 25px;\" width=\"90%\">" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><table align=\"left\" width=\"30%\">" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Proveedores</h3></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Proveedores\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Proveedores\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr></tr>" );
+					respuesta.write( "</table>" );
+					respuesta.write( "</td>" );
+
+//					Siguiente columna
+					
+					respuesta.write( "<td><table align=\"center\" width=\"50%\">" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<tr><td><table align=\"right\" style=\"padding-left: 5em;\" width=\"50%\"><h3 style=\"padding:0.5em;\"> Materiales</h3></td>" );
+					respuesta.write( "<td><select style=\"font-size: 20px;\" name=\"tipo\" size=\"1\"  class=\"normal\" \">" );
+					respuesta.write( "<option value=\"materiaPrima\">Materia Prima</option>" );
+					respuesta.write( "<option value=\"componente\">Componente</option>" );
+					respuesta.write( "</select></td></tr></table></td>" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><form method=\"POST\" action=\"registroLlegadaMaterial.htm\"><h4 ><input value=\"materiaPrima\" name=\"tipo\" type=\"hidden\"><input type=\"submit\" value=\"Registrar Material\" name=\"regMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4><input value=\"componente\" name=\"tipo\" type=\"hidden\"><input type=\"submit\" value=\"Consultar Material\" name=\"consMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr></tr>" );
+					respuesta.write( "</table>" );
+					respuesta.write( "</td>" );
+
+
+//					Siguiente columna
+								
+					respuesta.write( "<td><table align=\"right\" width=\"30%\">" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Productos</h3></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Producto\" name=\"regProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Productos\" name=\"consProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr></tr>" );
+					respuesta.write( "</table>" );
+					respuesta.write( "</td>" );
+					respuesta.write( "</tr>" );
+					
+//					Siguiente Fila
+					
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><table align=\"left\" width=\"30%\">" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Clientes</h3></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input value=\"darClientes\" name=\"criterio\" type=\"hidden\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Clientes\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr></tr>" );
+					respuesta.write( "</table>" );
+					respuesta.write( "</td>" );
+					
+//					Siguiente columna
+					
+					respuesta.write( "<td><table align=\"left\" width=\"50%\">" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Pedidos</h3></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr>" );
+					respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input value=\"darClientes\" name=\"criterio\" type=\"hidden\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Pedidos\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+					respuesta.write( "</tr>" );
+					respuesta.write( "<tr></tr>" );
+					respuesta.write( "</table>" );
+					respuesta.write( "</td>" );
+					
+//					Siguiente columna
+					
+					respuesta.write( "<td>" );
+					respuesta.write( "<table align=\"right\" width=\"30%\">" );
+//					respuesta.write( "<tr>" );
+//					respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Productos</h3></td>" );
+//					respuesta.write( "</tr>" );
+//					respuesta.write( "<tr>" );
+//					respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Producto\" name=\"regProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+//					respuesta.write( "</tr>" );
+//					respuesta.write( "<tr>" );
+//					respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Productos\" name=\"consProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+//					respuesta.write( "</tr>" );
+//					respuesta.write( "<tr></tr>" );
+					respuesta.write( "</table>" );
+					respuesta.write( "</td>" );
+					respuesta.write( "</tr>" );
+					
+					respuesta.write( "</table>" );
 				}
 				else
 					denegarIngreso(respuesta);
