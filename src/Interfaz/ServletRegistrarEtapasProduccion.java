@@ -54,7 +54,7 @@ public class ServletRegistrarEtapasProduccion extends ServletAbstract{
 		try
 		{
 			AplicacionWeb.getInstancia().registrarEtapaProduccion(idAnterior, idProducto, idEstacion, idMateriaPrima, idComponente, duracion, numeroSecuencia, idAnterior);
-			if (criterio.equals("continuar"))
+			if (criterio.contains("Siguiente"))
 			{				
 				estaciones = AplicacionWeb.getInstancia().darEstaciones();
 				materiasPrimas = AplicacionWeb.getInstancia().darMateriasPrimas();
@@ -68,7 +68,7 @@ public class ServletRegistrarEtapasProduccion extends ServletAbstract{
 				respuesta.write( "</tr>" );
 				respuesta.write( "<tr>" );
 				respuesta.write( "<td><h4>Numero de Secuencia:</h4></td>" );
-				respuesta.write( "<td><input type=\"text\" name=\"numeroSecuencia\" size=\"23\" class=\"normal\" style=\"background: #FFFFFF; border: none;\" value=" + (numeroSecuencia + 1) + " disabled=\"disabled\" ></td>" );
+				respuesta.write( "<td><input type=\"text\" name=\"numeroSecuencia\" size=\"23\" class=\"normal\" style=\"background: #FFFFFF; border: none;\" value=" + (numeroSecuencia + 1) + " readonly=\"readonly\" ></td>" );
 				respuesta.write( "</tr>" );
 				respuesta.write( "<tr></tr>" );
 				respuesta.write( "<tr>" );
@@ -107,10 +107,8 @@ public class ServletRegistrarEtapasProduccion extends ServletAbstract{
 				respuesta.write( "</tr>" );
 				respuesta.write( "<tr></tr>" );
 				respuesta.write( "</table>" );
-				respuesta.write( "<h4 align=\"center\"><input type=\"hidden\" value=\"continuar\" name=\"criterio\" ><input type=\"submit\" value=\"Registrar Siguiente Etapa de Produccion\" size=\"33\" name=\"registrarEP\" class=\"normal\" style=\"background: #FFFFFF; border: none;\"></h4>" );
-				respuesta.write( "<h4 align=\"center\"><input type=\"hidden\" value=\"finalizar\" name=\"criterio\" ><input type=\"submit\" value=\"Finalizar Registro Etapas de Produccion\" size=\"33\" name=\"registrarEP\" class=\"normal\" style=\"background: #FFFFFF; border: none;\"></form></h4>" );
-				respuesta.write( "<p align=center>" );
-				respuesta.write( "<input type=\"reset\" value=\"Borrar\" name=\"B2\" class=\"normal\"></p>" );
+				respuesta.write( "<h4 align=\"center\"><input type=\"submit\" value=\"Registrar Siguiente Etapa de Produccion\" size=\"33\" name=\"criterio\" class=\"normal\" style=\"background: #FFFFFF; border: none;\"></h4>" );
+				respuesta.write( "<h4 align=\"center\"><input type=\"submit\" value=\"Finalizar Registro Etapas de Produccion\" size=\"33\" name=\"criterio\" class=\"normal\" style=\"background: #FFFFFF; border: none;\"></form></h4>" );
 			}
 			else
 			{
