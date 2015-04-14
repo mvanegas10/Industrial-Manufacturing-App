@@ -14,6 +14,8 @@ public class Etapa {
 	
 	private String id;
 	
+	private String nombre;
+
 	private String idProducto;
 	
 	private String idEstacion;
@@ -32,7 +34,7 @@ public class Etapa {
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
-	public Etapa(String id, String idProducto, String idEstacion,
+	public Etapa(String id, String nombre, String idProducto, String idEstacion,
 			String idMateriaPrima, String idComponente, int duracion,
 			int numeroSecuencia, String idAnterior) {
 		super();
@@ -94,9 +96,13 @@ public class Etapa {
 		this.idAnterior = idAnterior;
 	}
 	
-	//--------------------------------------------------
-	// GETTERS AND SETTERS
-	//--------------------------------------------------
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
 	public String getId() {
 		return id;
@@ -126,6 +132,9 @@ public class Etapa {
 	// MÉTODOS
 	//--------------------------------------------------
 	
+	public String toString(){
+		return COLUMNAS[0] + " : " + id + " , " + COLUMNAS[1] + " : " + nombre + " , " + COLUMNAS[2] + " : " + idProducto + " , " + COLUMNAS[3] + " : " + idEstacion + " , " + COLUMNAS[4] + " : " + idMateriaPrima + " , " + COLUMNAS[5] + " : " + idComponente + " , " + COLUMNAS[6] + " : " + duracion + " , " + COLUMNAS[7] + " : " + numeroSecuencia + " , " + COLUMNAS[8] + " : " + idAnterior;
+	}
 	
 	
 }

@@ -62,7 +62,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			for (int i = 0; i < rta.size(); i++) {
 				respuesta.write( "<form method=\"POST\" action=\"registroPedido.htm\">" );
 				respuesta.write( "<tr>" );
-	        	respuesta.write( "<tr><td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\"></td>" );
+	        	respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\"></td>" );
 	        	respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=10%>" );
 		        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><input value=" + rta.get(i).getId() + " name=\"idProducto\" type=\"hidden\"><td align=\"right\">" + rta.get(i).getNombre() + "</td></tr>" );
 		        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Precio: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><input value=" + rta.get(i).getNombre() + " name=\"nombre\" type=\"hidden\"><td align=\"right\">" + rta.get(i).getPrecio() + "</td></tr>" );
@@ -348,8 +348,8 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			for (int i = 0; i < productos.size(); i++) {
 	        	respuesta.write( "<tr>" );
 	        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-		        respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i).getId() + ">" );
 		        respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
+		        respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i).getId() + " >" );
 		        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
 	        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i).getId() + "></td>" );
 		        respuesta.write( "<td><input value=" + productos.get(i).getNombre() + " name=\"nombre\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
@@ -357,11 +357,11 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		        try
 		        {
 		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-			        respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i+1).getId() + ">" );
 		        	respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
+		        	respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i+1).getId() + " >" );
 			        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
 		        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 1).getId() + "></td>" );
-			        respuesta.write( "<td><input value=" + productos.get(i+1).getNombre() + " name=\"nombre\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
+			        respuesta.write( "<td><input value=" + productos.get(i+1).getNombre() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
 			        respuesta.write( "</form>" );
 		        }
 		        catch(Exception e2){	
@@ -369,11 +369,11 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		        try
 		        {
 		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-		        	respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i+2).getId() + ">" );
 		        	respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
+		        	respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i+2).getId() + " >" );
 			        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
 		        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 2).getId() + "></td>" );
-			        respuesta.write( "<td><input value=" + productos.get(i+2).getNombre() + " name=\"nombre\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
+			        respuesta.write( "<td><input value=" + productos.get(i+2).getNombre() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
 			        respuesta.write( "</form>" );
 		        }
 		        catch(Exception e3){	
@@ -381,11 +381,11 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		        try
 		        {
 		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-		        	respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i+3).getId() + ">" );
 		        	respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
+		        	respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i+3).getId() + " >" );
 			        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
 		        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 3).getId() + "></td>" );
-		        	respuesta.write( "<td><input value=" + productos.get(i+3).getNombre() + " name=\"nombre\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
+		        	respuesta.write( "<td><input value=" + productos.get(i+3).getNombre() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
 			        respuesta.write( "</form>" );
 		        }
 		        catch(Exception e4){	

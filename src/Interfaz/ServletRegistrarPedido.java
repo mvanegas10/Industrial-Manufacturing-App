@@ -80,6 +80,7 @@ public class ServletRegistrarPedido extends ServletAbstract{
 	        }
 		}
 		catch (Exception e){
+			e.printStackTrace();
 	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<td><h3>El producto no tiene las unidades disponibles que desea.</h3></td>" );

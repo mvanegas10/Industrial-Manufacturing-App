@@ -88,13 +88,13 @@ public class ServletRegistrar extends ServletAbstract{
 			respuesta.write( "<td><select style=\"font-size: 14px;\" name=\"tipo\" size=\"1\"  class=\"normal\" \">" );
 			respuesta.write( "<option value=\"materiaPrima\">Materia Prima</option>" );
 			respuesta.write( "<option value=\"componente\">Componente</option>" );
-			respuesta.write( "</select></td>" );
+			respuesta.write( "</select></table></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr>" );
-			respuesta.write( "<td><form method=\"POST\" action=\"registroLlegadaMaterial.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Material\" name=\"regMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+			respuesta.write( "<td><form method=\"POST\" action=\"registroLlegadaMaterial.htm\"><h4 ><input value=\"materiaPrima\" name=\"tipo\"><input type=\"submit\" value=\"Registrar Material\" name=\"regMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr>" );
-			respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Material\" name=\"consMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+			respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4><input value=\"componente\" name=\"tipo\"><input type=\"submit\" value=\"Consultar Material\" name=\"consMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr></tr>" );
 			respuesta.write( "</table>" );
@@ -203,17 +203,19 @@ public class ServletRegistrar extends ServletAbstract{
 		        	respuesta.write( "<tr>" );
 		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 			        respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
+			        respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i).getId() + " >" );
 			        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
 		        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i).getId() + "></td>" );
-			        respuesta.write( "<td><input value=" + productos.get(i).getId() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
+			        respuesta.write( "<td><input value=" + productos.get(i).getNombre() + " name=\"nombre\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
 			        respuesta.write( "</form>" );
 			        try
 			        {
 			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 			        	respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
+			        	respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i+1).getId() + " >" );
 				        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
 			        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 1).getId() + "></td>" );
-				        respuesta.write( "<td><input value=" + productos.get(i+1).getId() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
+				        respuesta.write( "<td><input value=" + productos.get(i+1).getNombre() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
 				        respuesta.write( "</form>" );
 			        }
 			        catch(Exception e2){	
@@ -222,9 +224,10 @@ public class ServletRegistrar extends ServletAbstract{
 			        {
 			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 			        	respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
+			        	respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i+2).getId() + " >" );
 				        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
 			        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 2).getId() + "></td>" );
-				        respuesta.write( "<td><input value=" + productos.get(i+2).getId() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
+				        respuesta.write( "<td><input value=" + productos.get(i+2).getNombre() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
 				        respuesta.write( "</form>" );
 			        }
 			        catch(Exception e3){	
@@ -233,9 +236,10 @@ public class ServletRegistrar extends ServletAbstract{
 			        {
 			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 			        	respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
+			        	respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i+3).getId() + " >" );
 				        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
 			        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 3).getId() + "></td>" );
-			        	respuesta.write( "<td><input value=" + productos.get(i+3).getId() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
+			        	respuesta.write( "<td><input value=" + productos.get(i+3).getNombre() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
 				        respuesta.write( "</form>" );
 			        }
 			        catch(Exception e4){	
@@ -247,8 +251,7 @@ public class ServletRegistrar extends ServletAbstract{
 			}
 			catch (Exception e1){
 			}
-		}
-		
+		}		
 	}
 	
 	public void denegarRegistro(PrintWriter respuesta){

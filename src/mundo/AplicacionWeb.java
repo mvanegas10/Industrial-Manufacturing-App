@@ -2,6 +2,7 @@ package mundo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -250,13 +251,21 @@ public class AplicacionWeb {
 	 * @throws Exception
 	 */
 	public Date registrarPedido (String login, String idProducto, int cantidad, Date fechaPedido) throws Exception{
+		System.out.println(login + " - " + idProducto + " - " + cantidad + " - " + fechaPedido.toLocaleString());
 		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
 		String idPedido = Integer.toString(darContadorId());
 		conexion.setAutoCommitFalso();
+		Savepoint save = conexion.darConexion().setSavepoint();
 		etapas = obtenerEtapas(idProducto);
 		Date fechaEntrega = null;
 		for(Etapa etapa : etapas){
-			fechaEntrega = verificarExistencias(etapa,cantidad,etapas.size(),login,fechaPedido,idPedido);
+			try{
+				fechaEntrega = verificarExistencias(idProducto,etapa,cantidad,etapas.size(),login,fechaPedido,idPedido);
+			}
+			catch(Exception e){
+				conexion.darConexion().rollback(save);
+				e.printStackTrace();
+			}
 		}
 		conexion.darConexion().commit();
 		conexion.setAutoCommitVerdadero();
@@ -268,54 +277,65 @@ public class AplicacionWeb {
 		ResultSet rs_etapas = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Etapa.NOMBRE + " WHERE idProducto = '" + idProducto + "'");
 		while(rs_etapas.next()){
 			String idEtapa = rs_etapas.getString(1);
-			String idEstacion = rs_etapas.getString(3);
-			String idMateriaPrima = rs_etapas.getString(4);
-			String idComponente = rs_etapas.getString(5);
-			int duracion = rs_etapas.getInt(6);
-			int numeroSecuencia = rs_etapas.getInt(7);
-			String idAnterior = rs_etapas.getString(8);
-			Etapa etapa = new Etapa(idEtapa, idProducto, idEstacion, idMateriaPrima, idComponente, duracion, numeroSecuencia, idAnterior);
+			String nombre = rs_etapas.getString(2);
+			String idEstacion = rs_etapas.getString(4);
+			String idMateriaPrima = rs_etapas.getString(5);
+			String idComponente = rs_etapas.getString(6);
+			int duracion = rs_etapas.getInt(7);
+			int numeroSecuencia = rs_etapas.getInt(8);
+			String idAnterior = rs_etapas.getString(9);
+			Etapa etapa = new Etapa(idEtapa, nombre, idProducto, idEstacion, idMateriaPrima, idComponente, duracion, numeroSecuencia, idAnterior);
 			etapas.add(etapa);
+			System.out.println(etapa.toString());
 		}
 		return etapas;
 	}
 	
-	public Date verificarExistencias (Etapa etapa, int cantidad, int ultimaEtapa, String login, Date fechaPedido, String idPedido) throws Exception{
+	public Date verificarExistencias (String idProducto, Etapa etapa, int cantidad, int ultimaEtapa, String login, Date fechaPedido, String idPedido) throws Exception{
 		
-		String verificarEstacionesText = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion = " + etapa.getIdEstacion() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroEstacion = a.id ORDER BY a.dia,a.mes)";
+		String verificarEstacionesText = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion = '" + etapa.getIdEstacion() + "' AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroEstacion = a.id) ORDER BY a.dia,a.mes";
+		System.out.println(verificarEstacionesText);
 		ResultSet rs_verificarEstaciones = crud.darConexion().createStatement().executeQuery(verificarEstacionesText);
 		
-		String verificarMateriasPrimasText = "SELECT a.id FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " a WHERE a.idMateriaPrima = " + etapa.getIdMateriaPrima() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroMateriaPrima = a.id)";
+		String verificarMateriasPrimasText = "SELECT a.id FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " a WHERE a.idMateriaPrima = '" + etapa.getIdMateriaPrima() + "' AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroMateriaPrima = a.id)";
+		System.out.println(verificarMateriasPrimasText);
 		ResultSet rs_verificarMateriasPrimas =  crud.darConexion().createStatement().executeQuery(verificarMateriasPrimasText);
 
-		String verificarComponentesText = "SELECT a.id FROM " + Componente.NOMBRE_REGISTRO_COMPONENTES + " a WHERE a.idComponente = " + etapa.getIdComponente() + "AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroComponente = a.id)";
+		String verificarComponentesText = "SELECT a.id FROM " + Componente.NOMBRE_REGISTRO_COMPONENTES + " a WHERE a.idComponente = '" + etapa.getIdComponente() + "' AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroComponente = a.id)";
+		System.out.println(verificarComponentesText);
 		ResultSet rs_verificarComponentes =  crud.darConexion().createStatement().executeQuery(verificarComponentesText);
 		
 		Date fechaEntrega = null;
 
 		for(int i = 0; i < cantidad; i++){
+			rs_verificarEstaciones.next();
+			rs_verificarMateriasPrimas.next();
+			rs_verificarComponentes.next();
+			
+			System.out.println(rs_verificarEstaciones.getString(1));
+			System.out.println(rs_verificarMateriasPrimas.getString(1));
+			System.out.println(rs_verificarComponentes.getString(1));
+			
 			String idRegProd = Integer.toString(darContadorId());
 			String[] datosRegProd = {idRegProd,etapa.getId(),rs_verificarEstaciones.getString(1),rs_verificarMateriasPrimas.getString(1),rs_verificarComponentes.getString(1)};
 			crud.insertarTupla(Producto.NOMBRE_REGISTRO_PRODUCTOS, Producto.COLUMNAS_REGISTRO_PRODUCTOS, Producto.TIPO_REGISTRO_PRODUCTOS, datosRegProd);
 			if(etapa.getNumeroSecuencia() == ultimaEtapa){
-				String[] datosInventario = {idRegProd,etapa.getIdProducto(),idPedido};
-				crud.insertarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, Producto.COLUMNAS_INVENTARIO_PRODUCTOS, Producto.TIPO_INVENTARIO_PRODUCTOS, datosInventario);
 				if(i==cantidad-1){
-					String hallarFechaEntregaText = "SELECT a.dia, a.mes FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.id = " + rs_verificarEstaciones.getString(1);
+					String hallarFechaEntregaText = "SELECT a.dia, a.mes FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.id = '" + rs_verificarEstaciones.getString(1) + "'";
 					ResultSet rs_hallarFechaEntrega =  crud.darConexion().createStatement().executeQuery(hallarFechaEntregaText);
+					rs_hallarFechaEntrega.next();				
 					int diaEntrega = Integer.parseInt(rs_hallarFechaEntrega.getString(1));
 					int mesEntrega = Integer.parseInt(rs_hallarFechaEntrega.getString(2));
-					String[] datosPedido = {idPedido,login,Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getMonth()),Integer.toString(diaEntrega),Integer.toString(mesEntrega),Integer.toString(cantidad)};
+					String[] datosPedido = {idPedido,login,idProducto,Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getMonth()),Integer.toString(diaEntrega),Integer.toString(mesEntrega),Integer.toString(cantidad)};
 					crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datosPedido);
 					Calendar calendario = Calendar.getInstance();
 					calendario.setTime(new Date(2015, mesEntrega, diaEntrega));
 					calendario.add(Calendar.DATE, 1);
 					fechaEntrega = calendario.getTime();
 				}
+				String[] datosInventario = {idRegProd,etapa.getIdProducto(),idPedido};
+				crud.insertarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, Producto.COLUMNAS_INVENTARIO_PRODUCTOS, Producto.TIPO_INVENTARIO_PRODUCTOS, datosInventario);
 			}
-			rs_verificarEstaciones.next();
-			rs_verificarMateriasPrimas.next();
-			rs_verificarComponentes.next();
 		}
 		return fechaEntrega;
 	}
@@ -512,18 +532,22 @@ public class AplicacionWeb {
 	public ArrayList<Pedido> darPedidosCliente(String login) throws Exception{
 		ArrayList<Pedido> rta = new ArrayList<Pedido>();
 		Statement s = crud.darConexion().createStatement();
-		ResultSet rs = s.executeQuery("SELECT * FROM " + Pedido.NOMBRE + " WHERE idCliente = '" + login + "'");
+		String sql = "SELECT * FROM " + Pedido.NOMBRE + " WHERE idUsuario = '" + login + "'";
+		System.out.println(sql);
+		ResultSet rs = s.executeQuery(sql);
 		while(rs.next()){
 			String id = rs.getString(1);
-			String idProducto = rs.getString(2);
-			int cantidad = rs.getInt(4);
-			int diaPedido = rs.getInt(5);
-			int mesPedido = rs.getInt(6);
-			int diaEntrega = rs.getInt(7);
-			int mesEntrega = rs.getInt(8);
+			String idUsuario = rs.getString(2);
+			String idProducto = rs.getString(3);
+			int diaPedido = rs.getInt(4);
+			int mesPedido = rs.getInt(5);
+			int diaEntrega = rs.getInt(6);
+			int mesEntrega = rs.getInt(7);
+			int cantidad = rs.getInt(8);
 			Date fechaPedido = new Date(2015, mesPedido, diaPedido);
 			Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
 			Pedido pedido = new Pedido(id, idProducto, login, cantidad, fechaPedido, fechaEntrega);
+			System.out.println(pedido.toString());
 			rta.add(pedido);
 		}
 		return rta;
@@ -700,12 +724,7 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			ResultSet s = crud.darConexion().createStatement().executeQuery("SELECT precio FROM productos WHERE nombre = 'Club Colombia'");
-			System.out.println("No entra");
-			while(s.next())
-			{
-				System.out.println(s.getInt(1));
-			}
+			aplicacionWeb.darPedidosCliente("Mangou");
 		}
 		catch (Exception e)
 		{
