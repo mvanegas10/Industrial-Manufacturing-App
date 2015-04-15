@@ -7,9 +7,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-
-import sun.org.mozilla.javascript.internal.IdScriptableObject;
+import java.util.Set;
 
 
 public class AplicacionWeb {
@@ -691,6 +691,105 @@ public class AplicacionWeb {
 		}
 		return rta;
 	}
+	
+	public ArrayList<Producto> darProductosProveedor(String idProveedor){
+		
+		try{
+			Set<Producto> setProductosProveedorMateriasPrimas = new HashSet<Producto>();
+			
+			ResultSet rsIdMateriasPrimas = crud.darConexion().createStatement().executeQuery("SELECT idMateriaPrima FROM " + Proveedor.NOMBRE_RELACION_MATERIA_PRIMA + " WHERE idProveedor = '" + idProveedor + "'");
+			while(rsIdMateriasPrimas.next()){
+				String idMateriaPrima = rsIdMateriasPrimas.getString(1);
+				ResultSet rsIdInventarios = crud.darConexion().createStatement().executeQuery("SELECT idInventario FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " WHERE idMateriaPrima = '" + idMateriaPrima + "'");
+				while(rsIdInventarios.next()){
+					String idInventario = rsIdInventarios.getString(1);
+					ResultSet rsIdProductos = crud.darConexion().createStatement().executeQuery("SELECT idProducto FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " WHERE id = '" + idInventario + "'");
+					while(rsIdProductos.next()){
+						String idProducto = rsIdProductos.getString(1);
+						ResultSet rsProductos = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Producto.NOMBRE + " WHERE id = '" + idProducto + "'");
+						while(rsProductos.next())
+						{
+							String id = rsProductos.getString(1);
+							String nombre = rsProductos.getString(2);
+							int precio = rsProductos.getInt(3);
+							Producto producto = new Producto(id, nombre, precio);
+							setProductosProveedorMateriasPrimas.add(producto);
+						}
+					}
+				}
+			}
+			
+			Set<Producto> setProductosProveedorComponentes = new HashSet<Producto>();
+			
+			ResultSet rsIdComponentes = crud.darConexion().createStatement().executeQuery("SELECT idComponente FROM " + Proveedor.NOMBRE_RELACION_COMPONENTE + " WHERE idProveedor = '" + idProveedor + "'");
+			while(rsIdComponentes.next()){
+				String idComponente = rsIdComponentes.getString(1);
+				ResultSet rsIdInventarios = crud.darConexion().createStatement().executeQuery("SELECT idInventario FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " WHERE idComponente = '" + idComponente + "'");
+				while(rsIdInventarios.next()){
+					String idInventario = rsIdInventarios.getString(1);
+					ResultSet rsIdProductos = crud.darConexion().createStatement().executeQuery("SELECT idProducto FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " WHERE id = '" + idInventario + "'");
+					while(rsIdProductos.next()){
+						String idProducto = rsIdProductos.getString(1);
+						ResultSet rsProductos = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Producto.NOMBRE + " WHERE id = '" + idProducto + "'");
+						while(rsProductos.next())
+						{
+							String id = rsProductos.getString(1);
+							String nombre = rsProductos.getString(2);
+							int precio = rsProductos.getInt(3);
+							Producto producto = new Producto(id, nombre, precio);
+							setProductosProveedorComponentes.add(producto);
+						}
+					}
+				}
+
+			}
+			ArrayList<Producto> productosProveedor = new ArrayList<Producto>();
+			productosProveedor.addAll(setProductosProveedorMateriasPrimas);
+			productosProveedor.addAll(setProductosProveedorComponentes);
+			return productosProveedor;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public ArrayList<Pedido> darPedidosProveedor(String idProveedor){
+		
+		try{
+			ArrayList<Producto> productosProveedor = darProductosProveedor(idProveedor);
+			
+			Set<Pedido> setPedidosProveedor = new HashSet<Pedido>();
+			for(int i = 0; i < productosProveedor.size(); i++){
+				Producto productoActual = productosProveedor.get(i);
+				String idProductoActual = productoActual.getId();
+				ResultSet rsPedidos = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Pedido.NOMBRE + " WHERE idProducto = '" + idProductoActual + "'");
+				while(rsPedidos.next()){
+					String id = rsPedidos.getString(1);
+					String idProducto = rsPedidos.getString(2);
+					String idUsuario = rsPedidos.getString(3);
+					int diaPedido = rsPedidos.getInt(4);
+					int mesPedido = rsPedidos.getInt(5);
+					int diaEntrega = rsPedidos.getInt(6);
+					int mesEntrega = rsPedidos.getInt(7);
+					int cantidad = rsPedidos.getInt(8);
+					Date fechaPedido = new Date(2015, mesPedido, diaPedido);
+					Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
+					Pedido pedido = new Pedido(id, idProducto, idUsuario, cantidad, fechaPedido, fechaEntrega);	
+					setPedidosProveedor.add(pedido);
+				}
+			}
+			ArrayList<Pedido> pedidosProveedor = new ArrayList<Pedido>();
+			pedidosProveedor.addAll(setPedidosProveedor);
+			pedidosProveedor.addAll(setPedidosProveedor);
+			return pedidosProveedor;	
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 
 	/**
 	 * @param idProveedor

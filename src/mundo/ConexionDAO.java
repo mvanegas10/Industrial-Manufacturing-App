@@ -483,7 +483,7 @@ public class ConexionDAO
 			s.close();
 			
 			
-			// TABLA 14: REGISTROS PRODUCTOS ------------------------------------------------------------
+			// TABLA 14: PEDIDOS ------------------------------------------------------------
 			
 			crearTabla = false;
 			
@@ -534,7 +534,7 @@ public class ConexionDAO
 			s.close();
 		
 			
-			// TABLA 15: PEDIDOS ------------------------------------------------------------
+			// TABLA 15: INVENTARIO PRODUCTOS ------------------------------------------------------------
 
 			crearTabla = false;
 			
@@ -561,7 +561,7 @@ public class ConexionDAO
 			s.close();	
 			
 
-			// TABLA 16: INVENTARIO PRODUCTOS ------------------------------------------------------------
+			// TABLA 16: REGISTROS PRODUCTOS ------------------------------------------------------------
 			
 			crearTabla = false;
 			
