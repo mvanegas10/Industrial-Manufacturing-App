@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import mundo.AplicacionWeb;
 import mundo.Pedido;
 import mundo.Producto;
+import mundo.Proveedor;
 import mundo.Usuario;
 
 public class ServletResultadoBusqueda extends ServletAbstract{
@@ -134,21 +135,20 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				clientes = AplicacionWeb.getInstancia().darClientes();
 				if (clientes.size() != 0)
 		        {
-	        		respuesta.write( "<h4 align=\"center\">Tienes registrados " + clientes.size() + " pedidos en total:</h4>" );
+	        		respuesta.write( "<h4 align=\"center\">ProdAndes tiene registrados " + clientes.size() + " clientes en total:</h4>" );
 	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 			        for (Usuario cliente : clientes) {
 				        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-				        respuesta.write( "<tr>" );
-				        respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input type=\"hidden\" value=" + login + " name=\"login\" class=\"normal\"><input type=\"hidden\" value=\"darPedidos\" name=\"criterio\" class=\"normal\"><h4 align=\"left\"><input type=\"submit\" value=\"Consulta los detalles de tus pedidos\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
-				        respuesta.write( "</tr>" );
 			        	respuesta.write( "<tr>" );
-				        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
+				        respuesta.write( "<tr><td><img alt=\"Cliente\" src=\"imagenes/usuario.jpg\" name=\"usuario\"></td>" );
 				        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto Pedido: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + producto + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Unidades Pedidas: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + ped.getCantidad() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (ped.getFechaPedido().toLocaleString()).substring(0, 10) + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (ped.getFechaEntrega().toLocaleString()).substring(0, 10) + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"right\"><input value=" + ped.getId() + " name=\"idPedido\" type=\"hidden\"><input value=" + login + " name=\"login\" type=\"hidden\"><input value=\"eliminarPedido\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + cliente.getNombre() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Usuario: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + cliente.getLogin() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Direccion: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + cliente.getDireccion() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Telefono: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + cliente.getTelefono() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Ciudad: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + cliente.getCiudad() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Represetante: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + cliente.getIdRepLegal() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"right\"><input value=" + cliente.getLogin() + " name=\"login\" type=\"hidden\"><input value=\"darPedidos\" name=\"criterio\" type=\"hidden\"><input value=\"Ver Pedidos\" size=\"53\" name=\"verPedidos\" type=\"submit\"></td></tr>" );
 				        respuesta.write( "</table></td>" );
 				        respuesta.write( "</tr>" );
 				        respuesta.write( "<tr></tr>" );
@@ -157,12 +157,53 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			        respuesta.write( "</table>" );
 		        }
 				else
+				{
+					respuesta.write( "<h4 align=\"center\">No hay clientes registrados en ProdAndes</h4>" );
+				}
+			}
+			catch (Exception e)
+			{
+				respuesta.write( "<h4 align=\"center\">No hay clientes registrados en ProdAndes</h4>" );
 			}
 		}
 		
 		else if (criterio.equals("darProveedores"))
 		{
-			
+			ArrayList<Proveedor> proveedores = new ArrayList<Proveedor>();
+			try
+			{
+				proveedores = AplicacionWeb.getInstancia().darProveedores();
+				if (proveedores.size() != 0)
+		        {
+	        		respuesta.write( "<h4 align=\"center\">ProdAndes tiene registrados " + proveedores.size() + " proveedores en total:</h4>" );
+	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
+			        for (Proveedor proveedor : proveedores) {
+				        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+			        	respuesta.write( "<tr>" );
+				        respuesta.write( "<tr><td><img alt=\"Proveedor\" src=\"imagenes/proveedor.jpg\" name=\"proveedor\"></td>" );
+				        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + proveedor.getId() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Direccion: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + proveedor.getDireccion() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Telefono: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + proveedor.getTelefono() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Ciudad: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + proveedor.getCiudad() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Represetante: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + proveedor.getIdRepLegal() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"right\"><input value=" + proveedor.getId() + " name=\"idProveedor\" type=\"hidden\"><input value=\"darPedidos\" name=\"criterio\" type=\"hidden\"><input value=\"Ver Pedidos\" size=\"53\" name=\"verPedidos\" type=\"submit\"></td></tr>" );
+				        respuesta.write( "</table></td>" );
+				        respuesta.write( "</tr>" );
+				        respuesta.write( "<tr></tr>" );
+				        respuesta.write( "</form>" );
+					}
+			        respuesta.write( "</table>" );
+		        }
+				else
+				{
+					respuesta.write( "<h4 align=\"center\">No hay proveedores registrados en ProdAndes</h4>" );
+				}
+			}
+			catch (Exception e)
+			{
+				respuesta.write( "<h4 align=\"center\">No hay proveedores registrados en ProdAndes</h4>" );
+			}
 		}
 		
 		else if(criterio.equals("eliminarPedido"))
