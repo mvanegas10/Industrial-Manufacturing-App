@@ -774,6 +774,7 @@ public class AplicacionWeb {
 					String unidadMedida = rs_1.getString(2);
 					int cantidadInicial = rs_1.getInt(3);
 					MateriaPrima m = new MateriaPrima(id, unidadMedida, cantidadInicial);
+					System.out.println(m.toString());
 					pMateriasPrimas.add(m);
 				}
 			}
@@ -786,12 +787,11 @@ public class AplicacionWeb {
 					String id = rs_1.getString(1);
 					int cantidadInicial = rs_1.getInt(2);
 					Componente c = new Componente(id, cantidadInicial);
+					System.out.println(c.toString());
 					pComponentes.add(c);
 				}
 			}
-			Proveedor prov = new Proveedor(pId, pDireccion, pTelefono, pCiudad, pIdRepLegal);
-			prov.setMateriasPrimas(pMateriasPrimas);
-			prov.setComponentes(pComponentes);
+			Proveedor prov = new Proveedor(pId, pDireccion, pTelefono, pCiudad, pIdRepLegal, pMateriasPrimas, pComponentes);
 			rta.add(prov);
 		}
 		return rta;

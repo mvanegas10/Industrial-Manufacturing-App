@@ -47,14 +47,14 @@ public class Proveedor{
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
-	public Proveedor(String pId, String pDireccion, int pTelefono, String pCiudad, String pIdRepLegal) {
+	public Proveedor(String pId, String pDireccion, int pTelefono, String pCiudad, String pIdRepLegal, ArrayList<MateriaPrima> pMateriasPrimas, ArrayList<Componente> pComponentes) {
 		this.id = pId;
 		this.direccion = pDireccion;
 		this.telefono = pTelefono;
 		this.ciudad = pCiudad;
 		this.idRepLegal = pIdRepLegal;
-		this.materiasPrimas = new ArrayList<MateriaPrima>();
-		this.componentes = new ArrayList<Componente>();	
+		this.materiasPrimas = pMateriasPrimas;
+		this.componentes = pComponentes;	
 	}
 	
 	//--------------------------------------------------
