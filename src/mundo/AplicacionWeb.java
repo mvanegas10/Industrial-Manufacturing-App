@@ -837,7 +837,10 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			aplicacionWeb.registrarCliente("clara", "Clara", "Calle 19", 3493939, "Bogota", "111111");
+			ArrayList<Proveedor> provs = aplicacionWeb.darProveedores();
+			for (Proveedor proveedor : provs) {
+				System.out.println(proveedor.toString());
+			}
 		}
 		catch (Exception e)
 		{
