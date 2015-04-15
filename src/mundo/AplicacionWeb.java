@@ -9,6 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import sun.org.mozilla.javascript.internal.IdScriptableObject;
+
 
 public class AplicacionWeb {
 
@@ -47,9 +49,9 @@ public class AplicacionWeb {
 	public AplicacionWeb() {
 		conexion = new ConexionDAO();
 		conexion.iniciarConexion();
-		conexion.crearTablas();
+//		conexion.crearTablas();
 		crud = new CRUD(conexion);
-		poblarTablas();
+//		poblarTablas();
 		try
 		{
 			Statement s = crud.darConexion().createStatement();
@@ -715,9 +717,9 @@ public class AplicacionWeb {
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<Usuario> darClientes() throws Exception{
+	public ArrayList<Usuario> darClientes(String condicionNombre, String condicionPedido, String condicionProducto) throws Exception{
 		ArrayList<Usuario> rta = new ArrayList<Usuario>();
-		String sql = "SELECT * FROM " + Usuario.NOMBRE + " WHERE tipo = 'natural' OR tipo = 'juridica'";
+		String sql = "SELECT * FROM " + Usuario.NOMBRE + " WHERE tipo = 'natural' OR tipo = 'juridica' AND " + condicionNombre;
 		System.out.println(sql);
 		ResultSet rs = crud.darConexion().createStatement().executeQuery(sql);
 		while(rs.next())
@@ -730,6 +732,38 @@ public class AplicacionWeb {
 			String ciudad = rs.getString(7);
 			String idRepLegal = rs.getString(8);
 			Usuario user = new Usuario(login, tipo, "", nombre, direccion, telefono, ciudad, idRepLegal);
+			
+			Statement s = crud.darConexion().createStatement();
+			String sql_pedido = "SELECT * FROM " + Pedido.NOMBRE + " WHERE idUsuario = '" + login + "' AND " + condicionPedido;
+			System.out.println(sql_pedido);
+			ResultSet rs_pedido = s.executeQuery(sql_pedido);
+			while(rs_pedido.next()){
+				String id = rs_pedido.getString(1);
+				String idProducto = rs_pedido.getString(2);
+				String idUsuario = rs_pedido.getString(3);
+				int diaPedido = rs_pedido.getInt(4);
+				int mesPedido = rs_pedido.getInt(5);
+				int diaEntrega = rs_pedido.getInt(6);
+				int mesEntrega = rs_pedido.getInt(7);
+				int cantidad = rs_pedido.getInt(8);
+				Date fechaPedido = new Date(2015, mesPedido, diaPedido);
+				Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
+				Pedido pedido = new Pedido(id, idProducto, login, cantidad, fechaPedido, fechaEntrega);
+				System.out.println(pedido.toString());
+				
+				String sql_producto = "SELECT * FROM " + Producto.NOMBRE + " WHERE id = '" + id + "' AND " + condicionProducto;
+				System.out.println(sql_producto);
+				ResultSet rs_producto = crud.darConexion().createStatement().executeQuery(sql_producto);
+				while(rs.next())
+				{
+					String nombreProducto = rs_producto.getString(2);
+					int precio = rs_producto.getInt(3);
+					Producto producto = new Producto(id, nombre, precio);
+					pedido.setProducto(producto);
+				}
+				
+				user.addPedido(pedido);
+			}
 			rta.add(user);
 		}
 		return rta;
@@ -739,9 +773,9 @@ public class AplicacionWeb {
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<Proveedor> darProveedores() throws Exception {
+	public ArrayList<Proveedor> darProveedores(String condicionProveedores, String condicionMateriasPrimas, String condicionComponentes) throws Exception {
 		ArrayList<Proveedor> rta = new ArrayList<Proveedor>();
-		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Proveedor.NOMBRE );
+		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Proveedor.NOMBRE + " WHERE " + condicionProveedores );
 		while(rs.next())
 		{
 			String pId = rs.getString(1);
@@ -749,22 +783,24 @@ public class AplicacionWeb {
 			int pTelefono = Integer.parseInt(rs.getString(3));
 			String pCiudad = rs.getString(4);
 			String pIdRepLegal = rs.getString(5);
+			
+			Proveedor prov = new Proveedor(pId, pDireccion, pTelefono, pCiudad, pIdRepLegal);
+			
 			ArrayList<String> idMateriaPrima = new ArrayList<String>();
 			ArrayList<String> idComponente = new ArrayList<String>();
-			String sql_materias = "SELECT id_materiaPrima FROM " + Proveedor.NOMBRE_RELACION_MATERIA_PRIMA + "";
+			
+			String sql_materias = "SELECT * FROM " + Proveedor.NOMBRE_RELACION_MATERIA_PRIMA + " WHERE id_proveedor = '" + prov.getId() + "' AND " + condicionMateriasPrimas;
 			ResultSet rs_materias = crud.darConexion().createStatement().executeQuery(sql_materias);
 			while(rs_materias.next())
 			{
-				idMateriaPrima.add(rs_materias.getString(1));
+				idMateriaPrima.add(rs_materias.getString(2));
 			}
-			String sql_componentes = "SELECT id_componente FROM " + Proveedor.NOMBRE_RELACION_COMPONENTE + "";
+			String sql_componentes = "SELECT * FROM " + Proveedor.NOMBRE_RELACION_COMPONENTE + " WHERE id_proveedor = '" + prov.getId() + "' AND " + condicionComponentes;
 			ResultSet rs_componentes = crud.darConexion().createStatement().executeQuery(sql_componentes);
 			while(rs_componentes.next())
 			{
-				idComponente.add(rs_componentes.getString(1));
+				idComponente.add(rs_componentes.getString(2));
 			}
-			ArrayList<MateriaPrima> pMateriasPrimas = new ArrayList<MateriaPrima>();
-			ArrayList<Componente> pComponentes = new ArrayList<Componente>();
 			for (String materiaPrima : idMateriaPrima) {
 				String sql_materiasPrimas = "SELECT * FROM " + MateriaPrima.NOMBRE + " WHERE id = '" + materiaPrima + "'";
 				ResultSet rs_1 = crud.darConexion().createStatement().executeQuery(sql_materiasPrimas);
@@ -774,25 +810,22 @@ public class AplicacionWeb {
 					String unidadMedida = rs_1.getString(2);
 					int cantidadInicial = rs_1.getInt(3);
 					MateriaPrima m = new MateriaPrima(id, unidadMedida, cantidadInicial);
-					pMateriasPrimas.add(m);
+					prov.addMateriaPrima(m);
 				}
 			}
 			for (String componente : idComponente) {
 				String sql_componentesProv = "SELECT * FROM " + Componente.NOMBRE + " WHERE id = '" + componente + "'";
-
 				ResultSet rs_1 = crud.darConexion().createStatement().executeQuery(sql_componentesProv);
 				while(rs_1.next())
 				{
 					String id = rs_1.getString(1);
 					int cantidadInicial = rs_1.getInt(2);
 					Componente c = new Componente(id, cantidadInicial);
-					pComponentes.add(c);
+					prov.addComponente(c);
 				}
 			}
-			Proveedor prov = new Proveedor(pId, pDireccion, pTelefono, pCiudad, pIdRepLegal);
-			prov.setMateriasPrimas(pMateriasPrimas);
-			prov.setComponentes(pComponentes);
-			rta.add(prov);
+			if (prov.getComponentes().size() != 0 || prov.getMateriasPrimas().size() != 0)
+				rta.add(prov);
 		}
 		return rta;
 	}

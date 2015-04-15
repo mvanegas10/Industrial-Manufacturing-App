@@ -14,6 +14,8 @@ public class Pedido {
 
 	private String idProducto;
 	
+	private Producto producto;
+
 	private String idCliente;
 	
 	private int cantidad;
@@ -41,7 +43,7 @@ public class Pedido {
 		return id;
 	}
 	
-	public String getProducto() {
+	public String getIdProducto() {
 		return idProducto;
 	}
 	
@@ -84,7 +86,17 @@ public class Pedido {
 	public void setFechaEntrega(Date fechaEntrega) {
 		this.fechaEntrega = fechaEntrega;
 	}
-	
-	
+
+	public Producto getProducto() {
+		return producto;
+	}
+
+	public void setIdProducto(String idProducto) {
+		this.idProducto = idProducto;
+	}
+
+	public void setProducto(Producto Producto) {
+		this.producto = Producto;
+	}
 	
 }

@@ -117,6 +117,14 @@ public class Proveedor{
 		this.componentes = componentes;
 	}
 	
+	public void addMateriaPrima (MateriaPrima materiaPrima){
+		this.materiasPrimas.add(materiaPrima);
+	}
+	
+	public void addComponente (Componente componente){
+		this.componentes.add(componente);
+	}
+	
 	public String toString (){
 		return "id: " + id + " ciudad: " + ciudad;
 	}

@@ -1,5 +1,7 @@
 package mundo;
 
+import java.util.ArrayList;
+
 public class Usuario {
 	
 	//--------------------------------------------------
@@ -28,6 +30,8 @@ public class Usuario {
 	
 	private String idRepLegal;
 	
+	private ArrayList<Pedido> pedidos;
+	
 	//--------------------------------------------------
 	// CONSTRUCTOR
 	//--------------------------------------------------
@@ -36,6 +40,7 @@ public class Usuario {
 		this.tipo = tipo;
 		this.login = login;
 		this.password = password;
+		this.pedidos = new ArrayList<Pedido>();
 	}
 	
 	public Usuario(String login, String tipo, String password, String nombre,
@@ -48,6 +53,7 @@ public class Usuario {
 		this.telefono = telefono;
 		this.ciudad = ciudad;
 		this.idRepLegal = idRepLegal;
+		this.pedidos = new ArrayList<Pedido>();
 	}
 
 	
@@ -119,6 +125,12 @@ public class Usuario {
 		this.idRepLegal = idRepLegal;
 	}	
 	
+	public ArrayList<Pedido> getPedidos(){
+		return pedidos;
+	}
 	
+	public void addPedido (Pedido pedido){
+		this.pedidos.add(pedido);
+	}
 
 }

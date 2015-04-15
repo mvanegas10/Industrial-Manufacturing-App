@@ -38,7 +38,7 @@ public class ServletIngresar extends ServletAbstract{
 			try
 			{
 				tipo = AplicacionWeb.getInstancia().buscarUsuario(usuario, constrasenia);
-				if (primerLogin != null && primerLogin.equals("primerLogin"))
+				if (primerLogin != null)
 				{
 					String nombre = request.getParameter("nombre");
 					String direccion = request.getParameter("direccion");

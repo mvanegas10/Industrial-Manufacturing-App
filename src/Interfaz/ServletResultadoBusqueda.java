@@ -17,6 +17,10 @@ import mundo.Proveedor;
 import mundo.Usuario;
 
 public class ServletResultadoBusqueda extends ServletAbstract{
+	
+	public static final String VERDADERO = "'1'='1'"; 
+	
+	public static final String FALSO = "'1'='2'"; 
 
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
@@ -107,7 +111,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 	        			respuesta.write( "<h4 align=\"center\">Tienes registrados " + pedidos.size() + " pedidos en total:</h4>" );
 	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 			        for (Pedido ped : pedidos) {
-			        	String producto = AplicacionWeb.getInstancia().darNombreProducto(ped.getProducto());
+			        	String producto = AplicacionWeb.getInstancia().darNombreProducto(ped.getIdProducto());
 			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 			        	respuesta.write( "<tr>" );
 				        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
@@ -136,13 +140,51 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		
 		else if (criterio.equals("darClientes"))
 		{
+			String filtro = request.getParameter("filtro");
+			String atributo = request.getParameter("atributo");
+			String filtroNombre = VERDADERO;
+			String filtroPedido = VERDADERO;
+			String filtroProducto = VERDADERO;
 			ArrayList<Usuario> clientes = new ArrayList<Usuario>();
 			try
 			{
-				clientes = AplicacionWeb.getInstancia().darClientes();
+				if (filtro != null)
+				{
+					if (atributo.equals("nombre"))
+					{
+						filtroNombre = "UPPER(id) LIKE UPPER('%" + filtro + "%')";
+					}
+					else if (atributo.equals("pedido"))
+					{
+						filtroPedido = "UPPER(id_componente) LIKE UPPER('%" + filtro + "%')";
+						filtroProducto = FALSO;
+					}
+					if (atributo.equals("producto"))
+					{
+						filtroProducto = "UPPER(id_materiaPrima) LIKE UPPER('%" + filtro + "%')";
+						filtroPedido = FALSO;
+					}
+				}
+				
+				clientes = AplicacionWeb.getInstancia().darClientes(filtroNombre, filtroPedido, filtroProducto);
 				if (clientes.size() != 0)
 		        {
 	        		respuesta.write( "<h4 align=\"center\">ProdAndes tiene registrados " + clientes.size() + " clientes en total:</h4>" );
+	        		respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\"><input name=\"criterio\" value=\"darClientes\" type=\"hidden\">" );
+	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
+	        		respuesta.write( "<tr>" );
+	        		respuesta.write( "<td><h4 align=\"center\">Filtrar por: </h4></td>" );
+	        		respuesta.write( "<td align=\"center\"><select style=\"font-size: 15px;\" name=\"atributo\" size=\"1\"  class=\"normal\" \">" );
+	        		respuesta.write( "<option value=\"nombre\">Nombre</option>" );
+	        		respuesta.write( "<option value=\"pedido\">Pedido</option>" );
+	    			respuesta.write( "<option value=\"producto\">Producto</option>" );
+	    			respuesta.write( "</select></td>" );
+	    			respuesta.write( "<td align=\"center\"><input name=\"filtro\" value=\"Ingrese un nombre\" type=\"text\"></td>" );
+	    			respuesta.write( "<td align=\"center\"><input name=\"buscar\" value=\"Buscar\" type=\"submit\"></td>" );
+	        		respuesta.write( "</tr>" );
+	        		respuesta.write( "</table>" );
+	        		respuesta.write( "</form>" );
+	        		respuesta.write( "<hr>" );
 	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 			        for (Usuario cliente : clientes) {
 				        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
@@ -176,32 +218,76 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		
 		else if (criterio.equals("darProveedores"))
 		{
+			String filtro = request.getParameter("filtro");
+			String atributo = request.getParameter("atributo");
+			String filtroProveedor = VERDADERO;
+			String filtroMateria = VERDADERO;
+			String filtroComponente = VERDADERO;
 			ArrayList<Proveedor> proveedores = new ArrayList<Proveedor>();
 			try
 			{
-				proveedores = AplicacionWeb.getInstancia().darProveedores();
+				if (filtro != null)
+				{
+					if (atributo.equals("proveedor"))
+					{
+						filtroProveedor = "UPPER(id) LIKE UPPER('%" + filtro + "%')";
+					}
+					else if (atributo.equals("componente"))
+					{
+						filtroComponente = "UPPER(id_componente) LIKE UPPER('%" + filtro + "%')";
+						filtroMateria = FALSO;
+					}
+					if (atributo.equals("materiaPrima"))
+					{
+						filtroMateria = "UPPER(id_materiaPrima) LIKE UPPER('%" + filtro + "%')";
+						filtroComponente = FALSO;
+					}
+				}
+				proveedores = AplicacionWeb.getInstancia().darProveedores(filtroProveedor,filtroMateria,filtroComponente);
 				if (proveedores.size() != 0)
 		        {
-	        		respuesta.write( "<h4 align=\"center\">ProdAndes tiene registrados " + proveedores.size() + " proveedores en total:</h4>" );
+	        		respuesta.write( "<h3 align=\"center\">ProdAndes tiene registrados " + proveedores.size() + " proveedores en total:</h3>" );
+	        		respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\"><input name=\"criterio\" value=\"darProveedores\" type=\"hidden\">" );
+	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
+	        		respuesta.write( "<tr>" );
+	        		respuesta.write( "<td><h4 align=\"center\">Filtrar por: </h4></td>" );
+	        		respuesta.write( "<td align=\"center\"><select style=\"font-size: 15px;\" name=\"atributo\" size=\"1\"  class=\"normal\" \">" );
+	        		respuesta.write( "<option value=\"proveedor\">Proveedor</option>" );
+	        		respuesta.write( "<option value=\"materiaPrima\">Materia Prima</option>" );
+	    			respuesta.write( "<option value=\"componente\">Componente</option>" );
+	    			respuesta.write( "</select></td>" );
+	    			respuesta.write( "<td align=\"center\"><input name=\"filtro\" value=\"Ingrese un nombre\" type=\"text\"></td>" );
+	    			respuesta.write( "<td align=\"center\"><input name=\"buscar\" value=\"Buscar\" type=\"submit\"></td>" );
+	        		respuesta.write( "</tr>" );
+	        		respuesta.write( "</table>" );
+	        		respuesta.write( "</form>" );
+	        		respuesta.write( "<hr>" );
 	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=70%>" );
 			        for (Proveedor proveedor : proveedores) {
 				        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+			        	respuesta.write( "<tr><td align=\"left\"><h3><input value=\"Proveedor: " + proveedor.getId() + "\" style=\"border: none;\" type=\"text\"\"></h3></td></tr>" );
 			        	respuesta.write( "<tr>" );
-				        respuesta.write( "<tr><td><img alt=\"Proveedor\" src=\"imagenes/proveedor.jpg\" name=\"proveedor\"></td>" );
-				        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + proveedor.getId() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Direccion: \" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + proveedor.getDireccion() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Telefono: \" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + proveedor.getTelefono() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Ciudad: \"  style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + proveedor.getCiudad() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Represetante: \"  style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + proveedor.getIdRepLegal() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Materias Primas Asociadas: \"  style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" >" + proveedor.getMateriasPrimas().size() + "</td></tr>" );
-				        for (int i = 0; i < proveedor.getMateriasPrimas().size(); i++) {
-				        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"" + (i+1) + ". \" " + proveedor.getMateriasPrimas().get(i).getId() + "   style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" >: " + proveedor.getMateriasPrimas().get(i).getCantidadInicial() + " " + proveedor.getMateriasPrimas().get(i).getUnidadMedidad() + "</td></tr>" );
-						}
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Componentes Asociados: \"  style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" >" + proveedor.getComponentes().size() + "</td></tr>" );
-				        for (int i = 0; i < proveedor.getComponentes().size(); i++) {
-				        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"" + (i+1) + ". \" " + proveedor.getComponentes().get(i).getId() + "  style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" >: " + proveedor.getComponentes().get(i).getCantidadInicial() + " unidades</td></tr>" );
-						}
+			        	respuesta.write( "<td><img alt=\"Proveedor\" src=\"imagenes/proveedor.jpg\" name=\"proveedor\"></td>" );
+				        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=70%>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + proveedor.getId() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Direccion: \" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + proveedor.getDireccion() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Telefono: \" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + proveedor.getTelefono() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Ciudad: \"  style=\"border: none;\" type=\"text\"\"></h4></td><td ><input value=\"" + proveedor.getCiudad() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Represetante: \"  style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + proveedor.getIdRepLegal() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+				        if (proveedor.getMateriasPrimas().size() != 0)
+				        {
+				        	respuesta.write( "<tr><td align=\"left\"><h4 style=\"padding:1em;\"><input value=\"(" + proveedor.getMateriasPrimas().size() + ") Materias Primas\"  style=\"border: none;\" type=\"text\"\"></h4></td></tr>" );
+					        for (int i = 0; i < proveedor.getMateriasPrimas().size(); i++) {
+					        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"" + (i+1) + ". " + proveedor.getMateriasPrimas().get(i).getId() + "\" style=\"border: none;\" type=\"text\"\"></h4></td><td> <input value=\" : " + proveedor.getMateriasPrimas().get(i).getCantidadInicial() + " " + proveedor.getMateriasPrimas().get(i).getUnidadMedidad() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+							}
+				        }
+				        if (proveedor.getComponentes().size() != 0)
+				        {
+				        	respuesta.write( "<tr><td align=\"left\"><h4 style=\"padding:1em;\"><input value=\"(" + proveedor.getComponentes().size() + ") Componentes\"  style=\"border: none;\" type=\"text\"\"></h4></td></tr>" );
+					        for (int i = 0; i < proveedor.getComponentes().size(); i++) {
+					        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"" + (i+1) + ". " + proveedor.getComponentes().get(i).getId() + "\" style=\"border: none;\" type=\"text\"\"></h4></td><td > <input value=\" : " + proveedor.getComponentes().get(i).getCantidadInicial() + " unidades\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left; \"></td></tr>" );
+							}
+				        }
 				        respuesta.write( "<tr><td align=\"right\"><input value=" + proveedor.getId() + " name=\"idProveedor\" type=\"hidden\"><input value=\"darPedidos\" name=\"criterio\" type=\"hidden\"><input value=\"Ver Pedidos\" size=\"53\" name=\"verPedidos\" type=\"submit\"></td></tr>" );
 				        respuesta.write( "</table></td>" );
 				        respuesta.write( "</tr>" );
@@ -242,7 +328,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 	        		respuesta.write( "<h4 align=\"center\">Tienes registrados " + pedidos.size() + " pedidos en total:</h4>" );
 	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 			        for (Pedido ped : pedidos) {
-			        	String producto = AplicacionWeb.getInstancia().darNombreProducto(ped.getProducto());
+			        	String producto = AplicacionWeb.getInstancia().darNombreProducto(ped.getIdProducto());
 			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 			        	respuesta.write( "<tr>" );
 				        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
@@ -319,11 +405,11 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		        respuesta.write( "</tr>" );
 		        for (Pedido pedido : pedidos) {
 			        respuesta.write( "<tr>" );
-			        respuesta.write( "<td>" + pedido.getProducto() + "</td>" );
+			        respuesta.write( "<td>" + pedido.getIdProducto() + "</td>" );
 			        respuesta.write( "<td>" + pedido.getCantidad() + "</td>" );
 			        respuesta.write( "<td>" + pedido.getFechaEntrega() + "</td>" );
 			        respuesta.write( "<td>" + pedido.getFechaPedido() + "</td>" );
-			        respuesta.write( "<form method=\"POST\" action=\"eliminarPedido.htm\"><td><input type=\"submit\" name=\"eliminar\" value=\"Eliminar Pedido\"><input type=\"hidden\" name=\"pedidoEliminado\" value=" + pedido.getProducto() + "></td></form>" );
+			        respuesta.write( "<form method=\"POST\" action=\"eliminarPedido.htm\"><td><input type=\"submit\" name=\"eliminar\" value=\"Eliminar Pedido\"><input type=\"hidden\" name=\"pedidoEliminado\" value=" + pedido.getIdProducto() + "></td></form>" );
 			        respuesta.write( "</tr>" );
 				}
 		        respuesta.write( "</table>" );
