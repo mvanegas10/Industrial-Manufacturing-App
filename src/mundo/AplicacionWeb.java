@@ -62,9 +62,9 @@ public class AplicacionWeb {
 	public AplicacionWeb() {
 		conexion = new ConexionDAO();
 		conexion.iniciarConexion();
-//		conexion.crearTablas();
+		conexion.crearTablas();
 		crud = new CRUD(conexion);
-//		poblarTablas();
+		poblarTablas();
 		try
 		{
 			Statement s = crud.darConexion().createStatement();
