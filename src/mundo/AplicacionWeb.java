@@ -853,15 +853,16 @@ public class AplicacionWeb {
 				String sql_producto = "SELECT * FROM " + Producto.NOMBRE + " WHERE id = '" + id + "' AND " + condicionProducto;
 				System.out.println(sql_producto);
 				ResultSet rs_producto = crud.darConexion().createStatement().executeQuery(sql_producto);
-				while(rs.next())
+				while(rs_producto.next())
 				{
 					String nombreProducto = rs_producto.getString(2);
 					int precio = rs_producto.getInt(3);
-					Producto producto = new Producto(id, nombre, precio);
+					Producto producto = new Producto(id, nombreProducto, precio);
 					pedido.setProducto(producto);
 				}
 				
-				user.addPedido(pedido);
+				if (pedido.getProducto() != null)
+					user.addPedido(pedido);
 			}
 			rta.add(user);
 		}
