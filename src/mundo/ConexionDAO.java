@@ -484,34 +484,7 @@ public class ConexionDAO
 			
 			
 			// TABLA 14: REGISTROS PRODUCTOS ------------------------------------------------------------
-
-			crearTabla = false;
 			
-			s = conexion.createStatement( );
-			try
-			{
-				// Verificar si ya existe la tabla
-				s.executeQuery( "SELECT * FROM registrosProductos" );
-			}
-			catch( SQLException se )
-			{
-				// La excepci�n se lanza si la tabla no existe
-				crearTabla = true;
-			}
-
-			// Se crea una nueva tabla vac�a
-			if( crearTabla )
-			{
-				s.execute( "CREATE TABLE registrosProductos (id varchar(32), idEtapa varchar(32), idRegistroEstacion varchar(32), idRegistroMateriaPrima varchar(32), idRegistroComponente varchar(32), PRIMARY KEY (id), CONSTRAINT fk_idEtapa FOREIGN KEY (idEtapa) REFERENCES etapas(id), CONSTRAINT fk_idRegistroEstacion FOREIGN KEY (idRegistroEstacion) REFERENCES registrosEstaciones(id), CONSTRAINT fk_idRegistrosMateriaPrima FOREIGN KEY (idRegistroMateriaPrima) REFERENCES registrosMateriasPrimas(id), CONSTRAINT fk_idRegistroComponente FOREIGN KEY (idRegistroComponente) REFERENCES registrosComponentes(id),CONSTRAINT unq_registroEstacion UNIQUE (idRegistroEstacion),CONSTRAINT unq_registroMateriaPrima UNIQUE (idRegistroMateriaPrima),CONSTRAINT unq_registroComponente UNIQUE (idRegistroComponente))" );
-				System.out.println("Se cre� la tabla registrosProductos");
-			}
-			else
-			System.out.println("La tabla registrosProductos ya existe");
-			s.close();
-		
-			
-			// TABLA 15: INVENTARIO PRODUCTOS ------------------------------------------------------------
-
 			crearTabla = false;
 			
 			s = conexion.createStatement( );
@@ -535,8 +508,6 @@ public class ConexionDAO
 			else
 			System.out.println("La tabla pedidos ya existe");
 			s.close();	
-
-			// TABLA 16: PEDIDOS ------------------------------------------------------------
 			
 			crearTabla = false;
 			
@@ -555,11 +526,65 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE inventarioProductos (idRegistro varchar(32), idProducto varchar(32), idPedido varchar(32), PRIMARY KEY (idRegistro), CONSTRAINT fk_idRegistroProdInven FOREIGN KEY (idRegistro) REFERENCES registrosProductos(id), CONSTRAINT fk_idProductoInventario FOREIGN KEY (idProducto) REFERENCES productos(id),CONSTRAINT fk_idPedidoInven FOREIGN KEY (idPedido) REFERENCES pedidos(id))" );
+				s.execute( "CREATE TABLE inventarioProductos (id varchar(32), idProducto varchar(32), idPedido varchar(32), PRIMARY KEY (id), CONSTRAINT fk_idProductoInventario FOREIGN KEY (idProducto) REFERENCES productos(id),CONSTRAINT fk_idPedidoInven FOREIGN KEY (idPedido) REFERENCES pedidos(id))" );
 				System.out.println("Se cre� la tabla inventarioProductos");
 			}
 			else
 			System.out.println("La tabla inventarioProductos ya existe");
+			s.close();
+		
+			
+			// TABLA 15: PEDIDOS ------------------------------------------------------------
+
+			crearTabla = false;
+			
+			s = conexion.createStatement( );
+			try
+			{
+				// Verificar si ya existe la tabla
+				s.executeQuery( "SELECT * FROM inventarioProductos" );
+			}
+			catch( SQLException se )
+			{
+				// La excepci�n se lanza si la tabla no existe
+				crearTabla = true;
+			}
+
+			// Se crea una nueva tabla vac�a
+			if( crearTabla )
+			{
+				s.execute( "CREATE TABLE inventarioProductos (id varchar(32), idProducto varchar(32), idPedido varchar(32), PRIMARY KEY (id), CONSTRAINT fk_idProductoInventario FOREIGN KEY (idProducto) REFERENCES productos(id),CONSTRAINT fk_idPedidoInven FOREIGN KEY (idPedido) REFERENCES pedidos(id))" );
+				System.out.println("Se cre� la tabla inventarioProductos");
+			}
+			else
+			System.out.println("La tabla inventarioProductos ya existe");
+			s.close();	
+			
+
+			// TABLA 16: INVENTARIO PRODUCTOS ------------------------------------------------------------
+			
+			crearTabla = false;
+			
+			s = conexion.createStatement( );
+			try
+			{
+				// Verificar si ya existe la tabla
+				s.executeQuery( "SELECT * FROM registrosProductos" );
+			}
+			catch( SQLException se )
+			{
+				// La excepci�n se lanza si la tabla no existe
+				crearTabla = true;
+			}
+
+			// Se crea una nueva tabla vac�a
+			if( crearTabla )
+			{
+				s.execute( "CREATE TABLE registrosProductos (id varchar(32), idEtapa varchar(32), idInventario varchar(32), idRegistroEstacion varchar(32), idRegistroMateriaPrima varchar(32), idRegistroComponente varchar(32), PRIMARY KEY (id), CONSTRAINT fk_idEtapaReg FOREIGN KEY (idEtapa) REFERENCES etapas(id), CONSTRAINT fk_idInventarioReg FOREIGN KEY (idInventario) REFERENCES inventarioProductos(id), CONSTRAINT fk_idRegistroEstacion FOREIGN KEY (idRegistroEstacion) REFERENCES registrosEstaciones(id), CONSTRAINT fk_idRegistrosMateriaPrima FOREIGN KEY (idRegistroMateriaPrima) REFERENCES registrosMateriasPrimas(id), CONSTRAINT fk_idRegistroComponente FOREIGN KEY (idRegistroComponente) REFERENCES registrosComponentes(id),CONSTRAINT unq_registroEstacion UNIQUE (idRegistroEstacion),CONSTRAINT unq_registroMateriaPrima UNIQUE (idRegistroMateriaPrima),CONSTRAINT unq_registroComponente UNIQUE (idRegistroComponente))" );
+				System.out.println("Se cre� la tabla registrosProductos");
+			}
+			else
+			System.out.println("La tabla registrosProductos ya existe");
 			s.close();
 			
 		}

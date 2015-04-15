@@ -9,22 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author Meili
- *
- */
-/**
- * @author Meili
- *
- */
-/**
- * @author Meili
- *
- */
-/**
- * @author Meili
- *
- */
+
 public class AplicacionWeb {
 
 	//--------------------------------------------------
@@ -276,15 +261,30 @@ public class AplicacionWeb {
 		System.out.println(login + " - " + idProducto + " - " + cantidad + " - " + fechaPedido.toLocaleString());
 		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
 		String idPedido = Integer.toString(darContadorId());
+		
 		conexion.setAutoCommitFalso();
 		Savepoint save = conexion.darConexion().setSavepoint();
+		
 		etapas = obtenerEtapas(idProducto);
 		Date fechaEntrega = null;
 		String[] datosPedido = {idPedido,login,idProducto,Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getMonth()),Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getDay()),Integer.toString(cantidad)};
 		crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datosPedido);
+		
+		ArrayList<String> idInventarios = new ArrayList<String>();
+		for(int i = 0; i < cantidad; i++){
+			try{
+			idInventarios.add(Integer.toString(darContadorId()));
+			String[] datosInventario = {idInventarios.get(i),idProducto,idPedido};
+			crud.insertarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, Producto.COLUMNAS_INVENTARIO_PRODUCTOS, Producto.TIPO_INVENTARIO_PRODUCTOS, datosInventario);
+			}
+			catch(Exception e){
+				conexion.darConexion().rollback(save);
+				e.printStackTrace();
+			}
+		}
 		for(Etapa etapa : etapas){
 			try{
-				fechaEntrega = verificarExistencias(idProducto,etapa,cantidad,etapas.size(),idPedido);
+				fechaEntrega = verificarExistencias(idProducto,etapa,cantidad,etapas.size(),idPedido,idInventarios);
 			}
 			catch(Exception e){
 				conexion.darConexion().rollback(save);
@@ -332,7 +332,7 @@ public class AplicacionWeb {
 	 * @return
 	 * @throws Exception
 	 */
-	public Date verificarExistencias (String idProducto, Etapa etapa, int cantidad, int ultimaEtapa, String idPedido) throws Exception{
+	public Date verificarExistencias (String idProducto, Etapa etapa, int cantidad, int ultimaEtapa, String idPedido, ArrayList<String> idInventarios) throws Exception{
 		
 		String verificarEstacionesText = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion = '" + etapa.getIdEstacion() + "' AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroEstacion = a.id) ORDER BY a.dia,a.mes";
 		System.out.println(verificarEstacionesText);
@@ -353,13 +353,10 @@ public class AplicacionWeb {
 			rs_verificarMateriasPrimas.next();
 			rs_verificarComponentes.next();
 			
-			System.out.println(rs_verificarEstaciones.getString(1));
-			System.out.println(rs_verificarMateriasPrimas.getString(1));
-			System.out.println(rs_verificarComponentes.getString(1));
-			
 			String idRegProd = Integer.toString(darContadorId());
-			String[] datosRegProd = {idRegProd,etapa.getId(),rs_verificarEstaciones.getString(1),rs_verificarMateriasPrimas.getString(1),rs_verificarComponentes.getString(1)};
+			String[] datosRegProd = {idRegProd,etapa.getId(),idInventarios.get(i),rs_verificarEstaciones.getString(1),rs_verificarMateriasPrimas.getString(1),rs_verificarComponentes.getString(1)};
 			crud.insertarTupla(Producto.NOMBRE_REGISTRO_PRODUCTOS, Producto.COLUMNAS_REGISTRO_PRODUCTOS, Producto.TIPO_REGISTRO_PRODUCTOS, datosRegProd);
+			
 			if(etapa.getNumeroSecuencia() == ultimaEtapa){
 				if(i==cantidad-1){
 					String hallarFechaEntregaText = "SELECT a.dia, a.mes FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.id = '" + rs_verificarEstaciones.getString(1) + "'";
@@ -374,8 +371,6 @@ public class AplicacionWeb {
 					String actualizarFechaEntrega = "UPDATE pedidos SET diaEntrega = " + Integer.toString(fechaEntrega.getDay()) + ", mesEntrega = " + Integer.toString(fechaEntrega.getMonth()) + " WHERE id = '" + idPedido + "'";
 					crud.darConexion().createStatement().executeQuery(actualizarFechaEntrega);
 				}
-				String[] datosInventario = {idRegProd,etapa.getIdProducto(),idPedido};
-				crud.insertarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, Producto.COLUMNAS_INVENTARIO_PRODUCTOS, Producto.TIPO_INVENTARIO_PRODUCTOS, datosInventario);
 			}
 		}
 		return fechaEntrega;
@@ -783,6 +778,10 @@ public class AplicacionWeb {
 		Savepoint save = conexion.darConexion().setSavepoint();
 		try
 		{
+			ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT id FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + "WHERE " + "idPedido = '" + idPedido + "'");
+			while(rs.next()){
+				crud.eliminarTupla(Producto.NOMBRE_REGISTRO_PRODUCTOS, "idPedido = '" + rs.getString(1) + "'");
+			}
 			crud.eliminarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, "idPedido = '" + idPedido + "'");
 			crud.eliminarTuplaPorId(Pedido.NOMBRE, idPedido);
 		}

@@ -16,13 +16,13 @@ public class Producto {
 	
 	public static final String NOMBRE_REGISTRO_PRODUCTOS = "registrosProductos";
 	
-	public static final String[] COLUMNAS_REGISTRO_PRODUCTOS = {"id","idEtapa","idRegistroEstacion","idRegistroMateriaPrima","idRegistroComponente"};
+	public static final String[] COLUMNAS_REGISTRO_PRODUCTOS = {"id","idEtapa","idInventario","idRegistroEstacion","idRegistroMateriaPrima","idRegistroComponente"};
 	
-	public static final String[] TIPO_REGISTRO_PRODUCTOS = {"String","String","String","String","String"};
+	public static final String[] TIPO_REGISTRO_PRODUCTOS = {"String","String","String","String","String","String"};
 				
 	public static final String NOMBRE_INVENTARIO_PRODUCTOS = "inventarioProductos";
 	
-	public static final String[] COLUMNAS_INVENTARIO_PRODUCTOS = {"idRegistro","idProducto", "idPedido"};
+	public static final String[] COLUMNAS_INVENTARIO_PRODUCTOS = {"id","idProducto","idPedido"};
 	
 	public static final String[] TIPO_INVENTARIO_PRODUCTOS = {"String","String", "String"};
 

@@ -294,17 +294,6 @@ public class CRUD {
 			e.printStackTrace();
 		}
 		try{
-			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//registrosProductos.csv"));
-			String linea = null;
-			while((linea = reader.readLine())!=null){
-				String[] lineaInsertar = linea.split(",");
-				insertarTupla(Producto.NOMBRE_REGISTRO_PRODUCTOS, Producto.COLUMNAS_REGISTRO_PRODUCTOS, Producto.TIPO_REGISTRO_PRODUCTOS,lineaInsertar);
-			}
-			reader.close();
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		try{
 			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//pedidos.csv"));
 			String linea = null;
 			while((linea = reader.readLine())!=null){
@@ -326,6 +315,16 @@ public class CRUD {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader("data//datosTablas//registrosProductos.csv"));
+			String linea = null;
+			while((linea = reader.readLine())!=null){
+				String[] lineaInsertar = linea.split(",");
+				insertarTupla(Producto.NOMBRE_REGISTRO_PRODUCTOS, Producto.COLUMNAS_REGISTRO_PRODUCTOS, Producto.TIPO_REGISTRO_PRODUCTOS,lineaInsertar);
+			}
+			reader.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
-
 }
