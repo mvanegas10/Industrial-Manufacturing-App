@@ -117,4 +117,8 @@ public class Proveedor{
 		this.componentes = componentes;
 	}
 	
+	public String toString (){
+		return "id: " + id + " ciudad: " + ciudad;
+	}
+	
 }

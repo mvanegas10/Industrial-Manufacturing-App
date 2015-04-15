@@ -751,28 +751,43 @@ public class AplicacionWeb {
 			String pIdRepLegal = rs.getString(5);
 			ArrayList<String> idMateriaPrima = new ArrayList<String>();
 			ArrayList<String> idComponente = new ArrayList<String>();
+			String sql_materias = "SELECT id_materiaPrima FROM " + Proveedor.NOMBRE_RELACION_MATERIA_PRIMA + "";
+			ResultSet rs_materias = crud.darConexion().createStatement().executeQuery(sql_materias);
+			while(rs_materias.next())
+			{
+				idMateriaPrima.add(rs_materias.getString(1));
+			}
+			String sql_componentes = "SELECT id_componente FROM " + Proveedor.NOMBRE_RELACION_COMPONENTE + "";
+			ResultSet rs_componentes = crud.darConexion().createStatement().executeQuery(sql_componentes);
+			while(rs_componentes.next())
+			{
+				idComponente.add(rs_componentes.getString(1));
+			}
 			ArrayList<MateriaPrima> pMateriasPrimas = new ArrayList<MateriaPrima>();
 			ArrayList<Componente> pComponentes = new ArrayList<Componente>();
-			idMateriaPrima = crud.darTuplas(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA);
-			idComponente = crud.darTuplas(Proveedor.NOMBRE_RELACION_COMPONENTE);
 			for (String materiaPrima : idMateriaPrima) {
-				ResultSet rs_1 = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + MateriaPrima.NOMBRE + " WHERE id = '" + materiaPrima + "'");
+				String sql_materiasPrimas = "SELECT * FROM " + MateriaPrima.NOMBRE + " WHERE id = '" + materiaPrima + "'";
+				ResultSet rs_1 = crud.darConexion().createStatement().executeQuery(sql_materiasPrimas);
 				while(rs_1.next())
 				{
 					String id = rs_1.getString(1);
 					String unidadMedida = rs_1.getString(2);
 					int cantidadInicial = rs_1.getInt(3);
 					MateriaPrima m = new MateriaPrima(id, unidadMedida, cantidadInicial);
+					System.out.println(m.toString());
 					pMateriasPrimas.add(m);
 				}
 			}
 			for (String componente : idComponente) {
-				ResultSet rs_1 = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Componente.NOMBRE + " WHERE id = '" + componente + "'");
+				String sql_componentesProv = "SELECT * FROM " + Componente.NOMBRE + " WHERE id = '" + componente + "'";
+
+				ResultSet rs_1 = crud.darConexion().createStatement().executeQuery(sql_componentesProv);
 				while(rs_1.next())
 				{
 					String id = rs_1.getString(1);
 					int cantidadInicial = rs_1.getInt(2);
 					Componente c = new Componente(id, cantidadInicial);
+					System.out.println(c.toString());
 					pComponentes.add(c);
 				}
 			}

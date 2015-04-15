@@ -64,4 +64,7 @@ public class MateriaPrima {
 		this.cantidadInicial = cantidadInicial;
 	}
 
+	public String toString(){
+		return "id: " + id + ", unidadMedida: " + unidadMedidad + ", cantidad; " + cantidadInicial;
+	}
 }

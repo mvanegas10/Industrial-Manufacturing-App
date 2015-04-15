@@ -53,4 +53,7 @@ public class Componente {
 		this.cantidadInicial = cantidadInicial;
 	}
 	
+	public String toString(){
+		return "id: " + id + ", cantidad; " + cantidadInicial;
+	}
 }
