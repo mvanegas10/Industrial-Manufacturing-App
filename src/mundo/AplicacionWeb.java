@@ -661,14 +661,21 @@ public class AplicacionWeb {
 		return rta;
 	}
 
-	private ArrayList<MateriaPrima> darMateriasPrimasProveedor(String idProveedor) throws Exception{
-		ArrayList<String> materiasPrimasPre = crud.darSubTabla("PROOVEDORESMATERIAS", "*", "id_proveedor=idProveedor");
-		ArrayList<MateriaPrima> materiasPrimas = new ArrayList<MateriaPrima>();
-		for(int i = 0; i < materiasPrimasPre.size();i+=MateriaPrima.COLUMNAS.length){
-			MateriaPrima materiaPrima = new MateriaPrima(materiasPrimasPre.get(i),materiasPrimasPre.get(i+1),Integer.parseInt(materiasPrimasPre.get(i+2)));
-			materiasPrimas.add(materiaPrima);
+	public ArrayList<MateriaPrima> darMateriasPrimasProveedor(String idProveedor) throws Exception{
+		ArrayList<String> idsMateriasPrimas = crud.darSubTabla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, "id_materiaPrima", "id_proveedor = '" + idProveedor + "'");
+		ArrayList<MateriaPrima> rta = new ArrayList<MateriaPrima>();
+		for (int i = 0; i < idsMateriasPrimas.size(); i++) {
+			ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + MateriaPrima.NOMBRE + " WHERE id = '" + idsMateriasPrimas.get(i) + "'");
+			while(rs.next())
+			{
+				String id = rs.getString(1);
+				String unidadMedida = rs.getString(2);
+				int cantidad = rs.getInt(3);
+				MateriaPrima estacion = new MateriaPrima(id, unidadMedida, cantidad);
+				rta.add(estacion);
+			}
 		}
-		return materiasPrimas;
+		return rta;
 	}
 
 	/**
@@ -677,13 +684,19 @@ public class AplicacionWeb {
 	 * @throws Exception
 	 */
 	private ArrayList<Componente> darComponentesProveedor(String idProveedor) throws Exception {
-		ArrayList<String> componentesPre = crud.darSubTabla("PROOVEDORESCOMPONENTES", "*", "id_proveedor=idProveedor");
-		ArrayList<Componente> componentes = new ArrayList<Componente>();
-		for(int i = 0; i < componentesPre.size();i+=Componente.COLUMNAS.length){
-			Componente componente = new Componente(componentesPre.get(i),Integer.parseInt(componentesPre.get(i+1)));
-			componentes.add(componente);
+		ArrayList<String> idsComponentes = crud.darSubTabla(Proveedor.NOMBRE_RELACION_COMPONENTE, "id_componente", "id_proveedor = '" + idProveedor + "'");
+		ArrayList<Componente> rta = new ArrayList<Componente>();
+		for (int i = 0; i < idsComponentes.size(); i++) {
+			ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Componente.NOMBRE + " WHERE id = '" + idsComponentes.get(i) + "'");
+			while(rs.next())
+			{
+				String id = rs.getString(1);
+				int cantidad = rs.getInt(2);
+				Componente estacion = new Componente(id, cantidad);
+				rta.add(estacion);
+			}
 		}
-		return componentes;
+		return rta;
 	}
 
 	/**

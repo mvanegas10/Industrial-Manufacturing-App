@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mundo.AplicacionWeb;
+import mundo.Componente;
+import mundo.MateriaPrima;
 import mundo.Pedido;
 import mundo.Producto;
 import mundo.Proveedor;
@@ -170,6 +172,8 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		else if (criterio.equals("darProveedores"))
 		{
 			ArrayList<Proveedor> proveedores = new ArrayList<Proveedor>();
+			ArrayList<MateriaPrima> materiasPrimas = new ArrayList<MateriaPrima>();
+			ArrayList<Componente> componentes = new ArrayList<Componente>();
 			try
 			{
 				proveedores = AplicacionWeb.getInstancia().darProveedores();
@@ -182,11 +186,19 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			        	respuesta.write( "<tr>" );
 				        respuesta.write( "<tr><td><img alt=\"Proveedor\" src=\"imagenes/proveedor.jpg\" name=\"proveedor\"></td>" );
 				        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + proveedor.getId() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Direccion: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + proveedor.getDireccion() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Telefono: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + proveedor.getTelefono() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Ciudad: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + proveedor.getCiudad() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Represetante: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + proveedor.getIdRepLegal() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + proveedor.getId() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Direccion: \" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + proveedor.getDireccion() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Telefono: \" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + proveedor.getTelefono() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Ciudad: \"  style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + proveedor.getCiudad() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Represetante: \"  style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + proveedor.getIdRepLegal() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Materias Primas Asociadas: \"  style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + materiasPrimas.size() + "</td></tr>" );
+				        for (int i = 0; i < materiasPrimas.size(); i++) {
+				        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"" + i + ". \"  style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + materiasPrimas.get(i).getId() + " - Cantidad: " + materiasPrimas.get(i).getCantidadInicial() + "</td></tr>" );
+						}
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Componentes Asociados: \"  style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + componentes.size() + "</td></tr>" );
+				        for (int i = 0; i < componentes.size(); i++) {
+				        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"" + i + ". \"  style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + componentes.get(i).getId() + " - Cantidad: " + componentes.get(i).getCantidadInicial() + "</td></tr>" );
+						}
 				        respuesta.write( "<tr><td align=\"right\"><input value=" + proveedor.getId() + " name=\"idProveedor\" type=\"hidden\"><input value=\"darPedidos\" name=\"criterio\" type=\"hidden\"><input value=\"Ver Pedidos\" size=\"53\" name=\"verPedidos\" type=\"submit\"></td></tr>" );
 				        respuesta.write( "</table></td>" );
 				        respuesta.write( "</tr>" );
