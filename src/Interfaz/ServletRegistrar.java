@@ -34,7 +34,7 @@ public class ServletRegistrar extends ServletAbstract{
 			try
 			{
 				AplicacionWeb.getInstancia().registrarUsuario(usuario, contrasenia, tipo);
-				aceptarIngreso(respuesta, usuario, tipo, productos);
+				aceptarIngreso(respuesta, usuario, contrasenia, tipo, productos);
 			}
 			catch(Exception e)
 			{
@@ -51,7 +51,7 @@ public class ServletRegistrar extends ServletAbstract{
 		
 	}
 
-	public void aceptarIngreso(PrintWriter respuesta, String login, String tipo, ArrayList<Producto> productos){
+	public void aceptarIngreso(PrintWriter respuesta, String login, String contrasenia, String tipo, ArrayList<Producto> productos){
 		
 		if (tipo.equals("admin"))
 		{
@@ -166,90 +166,46 @@ public class ServletRegistrar extends ServletAbstract{
 		}
 		else
 		{
-			try
-			{
-				productos = AplicacionWeb.getInstancia().darCantidadProductos(100);
-				
-
-				respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
-		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td><h3> BIENVENIDO " + tipo.toUpperCase() + ": " + login + "</h3></td>" );
-		        respuesta.write( "</tr>" );
-		        respuesta.write( "</table>" );
-				respuesta.write( "<div></div>" );
-				respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
-		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input type=\"hidden\" value=" + login + " name=\"login\" class=\"normal\"><input type=\"hidden\" value=\"darPedidos\" name=\"criterio\" class=\"normal\"><h4 align=\"left\"><input type=\"submit\" value=\"Consulta los detalles de tus pedidos\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
-		        respuesta.write( "</tr>" );
-		        respuesta.write( "</table>" );
-		        respuesta.write( "<hr>" );
-		        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
-		        respuesta.write( "<tr>" );
-		        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-		        respuesta.write( "<td><input style=\"color=#BFBFBF\" type=\"text\" name=\"nombre\" class=\"normal\" value=\"Ingresa el nombre de un producto que estes buscando\" size=\"110\"></td>" );
-		        respuesta.write( "<input type=\"hidden\" value=" + login + " name=\"login\" class=\"normal\">" );
-		        respuesta.write( "<input type=\"hidden\" value=\"buscarProductoCliente\" name=\"criterio\" class=\"normal\">" );
-		        respuesta.write( "<td><input type=\"submit\" value=\"Buscar Productos\" name=\"BusProd\" class=\"normal\"></td></form>" );
-		        respuesta.write( "</tr>" );
-		        respuesta.write( "</table>" );
-		        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
-		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td><h3> Productos que podrían interesarte </h3></td>" );
-		        respuesta.write( "</tr>" );
-		        respuesta.write( "</table>" );
-		        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
-		        for (int i = 0; i < productos.size(); i++) {
-		        	respuesta.write( "<tr>" );
-		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-			        respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
-			        respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i).getId() + " >" );
-			        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
-		        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i).getId() + "></td>" );
-			        respuesta.write( "<td><input value=" + productos.get(i).getNombre() + " name=\"nombre\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
-			        respuesta.write( "</form>" );
-			        try
-			        {
-			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-			        	respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
-			        	respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i+1).getId() + " >" );
-				        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
-			        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 1).getId() + "></td>" );
-				        respuesta.write( "<td><input value=" + productos.get(i+1).getNombre() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
-				        respuesta.write( "</form>" );
-			        }
-			        catch(Exception e2){	
-			        }
-			        try
-			        {
-			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-			        	respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
-			        	respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i+2).getId() + " >" );
-				        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
-			        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 2).getId() + "></td>" );
-				        respuesta.write( "<td><input value=" + productos.get(i+2).getNombre() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
-				        respuesta.write( "</form>" );
-			        }
-			        catch(Exception e3){	
-			        }
-			        try
-			        {
-			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-			        	respuesta.write( "<input type=\"hidden\" name=\"criterio\" value=\"buscarProductoCliente\" >" );
-			        	respuesta.write( "<input type=\"hidden\" name=\"idProducto\" value=" + productos.get(i+3).getId() + " >" );
-				        respuesta.write( "<input type=\"hidden\" name=\"login\" value=" + login + ">" );
-			        	respuesta.write( "<td><input alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\" name=\"producto\" value=" + productos.get(i + 3).getId() + "></td>" );
-			        	respuesta.write( "<td><input value=" + productos.get(i+3).getNombre() + " name=\"idProducto\" style=\"background: #FFFFFF; border: none;\" type=\"submit\"\"></td>" );
-				        respuesta.write( "</form>" );
-			        }
-			        catch(Exception e4){	
-			        }
-			        respuesta.write( "</tr>" );
-			        i+=4;
-		        }
-		        respuesta.write( "</table>" );
-			}
-			catch (Exception e1){
-			}
+			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
+	        respuesta.write( "<tr>" );
+	        respuesta.write( "<td><h3> BIENVENIDO " + tipo.toUpperCase() + ": " + login + "</h3></td>" );
+	        respuesta.write( "</tr>" );
+	        respuesta.write( "</table>" );
+			respuesta.write( "<div></div>" );
+			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
+	        respuesta.write( "<tr>" );
+	        respuesta.write( "<td><h4 align=\"center\">Por favor ingresa los siguientes datos para completar tu registro.</h4></td>" );
+	        respuesta.write( "</tr>" );
+	        respuesta.write( "</table>" );
+	        respuesta.write( "<hr>" );
+	        
+	        respuesta.write( " <form method=\"POST\" action=\"ingreso.htm\"><input type=\"hidden\" value=\"primerLogin\" name=\"primerLogin\"><input type=\"hidden\" value=" + login + " name=\"usuario\" class=\"normal\"><input type=\"hidden\" value=" + contrasenia + " name=\"contrasenia\" class=\"normal\">" );
+			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"50%\">" );
+			respuesta.write( " <tr>" );
+			respuesta.write( " <td><h3>Nombre</h3></td>" );
+			respuesta.write( " <td><input type=\"text\" name=\"nombre\" size=\"23\" class=\"normal\"></td>" );
+			respuesta.write( " </tr>" );
+			respuesta.write( " <tr>" );
+			respuesta.write( " <td><h3>Direccion</h3></td>" );
+			respuesta.write( " <td><input type=\"text\" name=\"direccion\" size=\"23\" class=\"normal\"></td>" );				
+			respuesta.write( " </tr>" );
+			respuesta.write( " <tr>" );
+			respuesta.write( " <td><h3>Telefono</h3></td>" );
+			respuesta.write( " <td><input type=\"text\" name=\"telefono\" size=\"23\" class=\"normal\"></td>" );
+			respuesta.write( " </tr>" );
+			respuesta.write( " <tr>" );
+			respuesta.write( " <td><h3>Ciudad</h3></td>" );
+			respuesta.write( " <td><input type=\"text\" name=\"ciudad\" size=\"23\" class=\"normal\"></td>" );
+			respuesta.write( " </tr>" );
+			respuesta.write( " <tr>" );
+			respuesta.write( " <td><h3>Id Representante</h3></td>" );
+			respuesta.write( " <td><input type=\"text\" name=\"idRepLegal\" size=\"23\" class=\"normal\"></td>" );
+			respuesta.write( " </tr>" );
+			respuesta.write( " </table>" );
+			respuesta.write( " <p align=center>" );
+			respuesta.write( " <input type=\"submit\" value=\"Continuar\" name=\"B1\" class=\"normal\">" );
+			respuesta.write( " <input type=\"reset\" value=\"Borrar\" name=\"B2\" class=\"normal\"></p>" );
+			respuesta.write( " </form>" );
 		}		
 	}
 	

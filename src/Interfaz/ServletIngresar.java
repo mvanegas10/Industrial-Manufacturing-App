@@ -30,6 +30,7 @@ public class ServletIngresar extends ServletAbstract{
 				
 			String usuario = request.getParameter("usuario");
 			String constrasenia = request.getParameter("contrasenia");
+			String primerLogin = request.getParameter("primerLogin");
 			ArrayList<Producto> productos = new ArrayList<Producto>();
 			String reingreso = "HOLA";
 			String tipo = "HOLA";
@@ -37,7 +38,16 @@ public class ServletIngresar extends ServletAbstract{
 			try
 			{
 				tipo = AplicacionWeb.getInstancia().buscarUsuario(usuario, constrasenia);
-				aceptarIngreso(respuesta, usuario, tipo, reingreso,productos);				
+				if (primerLogin != null && primerLogin.equals("primerLogin"))
+				{
+					String nombre = request.getParameter("nombre");
+					String direccion = request.getParameter("direccion");
+					int telefono = Integer.parseInt(request.getParameter("telefono"));
+					String ciudad = request.getParameter("ciudad");
+					String idRepLegal = request.getParameter("idRepLegal");
+					AplicacionWeb.getInstancia().registrarCliente(usuario, nombre, direccion, telefono, ciudad, idRepLegal);
+				}
+				aceptarIngreso(respuesta, usuario, tipo, reingreso,productos);
 			}
 			catch(Exception e)
 			{
@@ -90,7 +100,7 @@ public class ServletIngresar extends ServletAbstract{
 			respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Proveedores\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr>" );
-			respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Proveedores\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+			respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input value=\"darProveedores\" name=\"criterio\" type=\"hidden\"><input type=\"submit\" value=\"Consultar Proveedores\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr></tr>" );
 			respuesta.write( "</table>" );

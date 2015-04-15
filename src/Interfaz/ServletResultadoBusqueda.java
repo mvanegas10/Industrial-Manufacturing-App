@@ -93,6 +93,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		else if (criterio.equals("darPedidos"))
 		{
 			String login = request.getParameter("login");
+			String admin = request.getParameter("admin");
 			
 			ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 	        try 
@@ -100,7 +101,10 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 	        	pedidos = AplicacionWeb.getInstancia().darPedidosCliente(login);
 	        	if (pedidos.size() != 0)
 		        {
-	        		respuesta.write( "<h4 align=\"center\">Tienes registrados " + pedidos.size() + " pedidos en total:</h4>" );
+	        		if (admin != null)
+	        			respuesta.write( "<h4 align=\"center\">El cliente " + login + " tiene registrados " + pedidos.size() + " pedidos en total:</h4>" );
+	        		else
+	        			respuesta.write( "<h4 align=\"center\">Tienes registrados " + pedidos.size() + " pedidos en total:</h4>" );
 	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 			        for (Pedido ped : pedidos) {
 			        	String producto = AplicacionWeb.getInstancia().darNombreProducto(ped.getProducto());
@@ -112,7 +116,8 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Unidades Pedidas: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + ped.getCantidad() + "</td></tr>" );
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (ped.getFechaPedido().toLocaleString()).substring(0, 10) + "</td></tr>" );
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (ped.getFechaEntrega().toLocaleString()).substring(0, 10) + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"right\"><input value=" + ped.getId() + " name=\"idPedido\" type=\"hidden\"><input value=" + login + " name=\"login\" type=\"hidden\"><input value=\"eliminarPedido\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
+				        if (admin == null)
+				        	respuesta.write( "<tr><td align=\"right\"><input value=" + ped.getId() + " name=\"idPedido\" type=\"hidden\"><input value=" + login + " name=\"login\" type=\"hidden\"><input value=\"eliminarPedido\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
 				        respuesta.write( "</table></td>" );
 				        respuesta.write( "</tr>" );
 				        respuesta.write( "<tr></tr>" );
@@ -150,7 +155,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Telefono: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + cliente.getTelefono() + "</td></tr>" );
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Ciudad: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + cliente.getCiudad() + "</td></tr>" );
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Represetante: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + cliente.getIdRepLegal() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"right\"><input value=" + cliente.getLogin() + " name=\"login\" type=\"hidden\"><input value=\"darPedidos\" name=\"criterio\" type=\"hidden\"><input value=\"Ver Pedidos\" size=\"53\" name=\"verPedidos\" type=\"submit\"></td></tr>" );
+				        respuesta.write( "<tr><td align=\"right\"><input value=" + cliente.getLogin() + " name=\"login\" type=\"hidden\"><input value=\"admin\" name=\"admin\" type=\"hidden\"><input value=\"darPedidos\" name=\"criterio\" type=\"hidden\"><input value=\"Ver Pedidos\" size=\"53\" name=\"verPedidos\" type=\"submit\"></td></tr>" );
 				        respuesta.write( "</table></td>" );
 				        respuesta.write( "</tr>" );
 				        respuesta.write( "<tr></tr>" );

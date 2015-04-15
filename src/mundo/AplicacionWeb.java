@@ -47,9 +47,9 @@ public class AplicacionWeb {
 	public AplicacionWeb() {
 		conexion = new ConexionDAO();
 		conexion.iniciarConexion();
-		conexion.crearTablas();
+//		conexion.crearTablas();
 		crud = new CRUD(conexion);
-		poblarTablas();
+//		poblarTablas();
 		try
 		{
 			Statement s = crud.darConexion().createStatement();
@@ -131,7 +131,23 @@ public class AplicacionWeb {
 		String[] datos = {login, password, tipo, "", "", Integer.toString(0), "", ""}; 
 		crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
 		usuarioActual = login;
-
+	}
+	
+	/**
+	 * 
+	 * @param login
+	 * @param nombre
+	 * @param direccion
+	 * @param telefono
+	 * @param ciudad
+	 * @param idRepLegal
+	 * @throws Exception
+	 */
+	public void registrarCliente (String login, String nombre, String direccion, int telefono, String ciudad, String idRepLegal) throws Exception{
+		System.out.println("El usuario " + login + "ingresa por primera vez. " + nombre + direccion + telefono + ciudad + idRepLegal);
+		String sql = "UPDATE " + Usuario.NOMBRE + " SET nombre = '" + nombre + "', direccion = '" + direccion + "', telefono = " + telefono + ", ciudad = '" + ciudad + "', idRepLegal = '" + idRepLegal + "' WHERE login = '" + login + "'";
+		System.out.println(sql);
+		crud.darConexion().createStatement().executeQuery(sql);
 	}
 	
 	/**
@@ -701,7 +717,9 @@ public class AplicacionWeb {
 	 */
 	public ArrayList<Usuario> darClientes() throws Exception{
 		ArrayList<Usuario> rta = new ArrayList<Usuario>();
-		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Usuario.NOMBRE + " WHERE tipo = 'natural' AND tipo = 'juridica'");
+		String sql = "SELECT * FROM " + Usuario.NOMBRE + " WHERE tipo = 'natural' OR tipo = 'juridica'";
+		System.out.println(sql);
+		ResultSet rs = crud.darConexion().createStatement().executeQuery(sql);
 		while(rs.next())
 		{
 			String login = rs.getString(1);
@@ -804,7 +822,7 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			
+			aplicacionWeb.registrarCliente("clara", "Clara", "Calle 19", 3493939, "Bogota", "111111");
 		}
 		catch (Exception e)
 		{
