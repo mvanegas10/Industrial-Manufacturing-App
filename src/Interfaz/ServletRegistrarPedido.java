@@ -60,6 +60,7 @@ public class ServletRegistrarPedido extends ServletAbstract{
 	        	respuesta.write( "</table>" );
 	        	respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 		        for (Pedido ped : pedidos) {
+		        	System.out.println("El tamaño del arreglo de pedidos es" + pedidos.size());
 		        	String producto = AplicacionWeb.getInstancia().darNombreProducto(ped.getProducto());
 		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 		        	respuesta.write( "<tr>" );

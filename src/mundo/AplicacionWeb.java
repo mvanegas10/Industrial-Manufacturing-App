@@ -526,6 +526,7 @@ public class AplicacionWeb {
 	 * @throws Exception
 	 */
 	public String darNombreProducto (String id) throws Exception{
+		System.out.println("El id del producto es: " + id);
 		return (crud.darSubTabla(Producto.NOMBRE, "nombre", "id = '" + id + "'")).get(0);
 	}
 	
@@ -586,8 +587,8 @@ public class AplicacionWeb {
 		ResultSet rs = s.executeQuery(sql);
 		while(rs.next()){
 			String id = rs.getString(1);
-			String idUsuario = rs.getString(2);
-			String idProducto = rs.getString(3);
+			String idProducto = rs.getString(2);
+			String idUsuario = rs.getString(3);
 			int diaPedido = rs.getInt(4);
 			int mesPedido = rs.getInt(5);
 			int diaEntrega = rs.getInt(6);
