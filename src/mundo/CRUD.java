@@ -138,8 +138,6 @@ public class CRUD {
 		}
 		s.close();
 		System.out.println("Tuplas encontradas: " + contador);
-		if (contador == 0)
-			throw new Exception();
 		return resultado;
 	}
 	

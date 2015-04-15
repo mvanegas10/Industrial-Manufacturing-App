@@ -554,6 +554,14 @@ public class AplicacionWeb {
 	}
 	
 	/**
+	 * 
+	 * @return
+	 */
+	public String darUsuarioActual(){
+		return usuarioActual;
+	}
+	
+	/**
 	 * @return
 	 * @throws Exception
 	 */
@@ -689,10 +697,8 @@ public class AplicacionWeb {
 	 */
 	public ArrayList<Usuario> darClientes() throws Exception{
 		ArrayList<Usuario> rta = new ArrayList<Usuario>();
-		ArrayList<String> datos = new ArrayList<String>();
-		int contador = 0;
 		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Usuario.NOMBRE + " WHERE tipo = 'natural' AND tipo = 'juridica'");
-		while(rs.next() && contador < 30)
+		while(rs.next())
 		{
 			String login = rs.getString(1);
 			String tipo = rs.getString(3);
@@ -703,7 +709,6 @@ public class AplicacionWeb {
 			String idRepLegal = rs.getString(8);
 			Usuario user = new Usuario(login, tipo, "", nombre, direccion, telefono, ciudad, idRepLegal);
 			rta.add(user);
-			contador++;
 		}
 		return rta;
 	}
@@ -714,18 +719,14 @@ public class AplicacionWeb {
 	 */
 	public ArrayList<Proveedor> darProveedores() throws Exception {
 		ArrayList<Proveedor> rta = new ArrayList<Proveedor>();
-		ArrayList<String> datos = new ArrayList<String>();
-		int contador = 0;
 		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Proveedor.NOMBRE );
-		while(rs.next() && contador < 30)
+		while(rs.next())
 		{
 			String pId = rs.getString(1);
 			String pDireccion = rs.getString(2);
 			int pTelefono = Integer.parseInt(rs.getString(3));
 			String pCiudad = rs.getString(4);
 			String pIdRepLegal = rs.getString(5);
-			List<String[]> pMatrizVolTiempoMat = new ArrayList<>();
-			List<String[]> pMatrizVolTiempoComp = new ArrayList<>();
 			ArrayList<String> idMateriaPrima = new ArrayList<String>();
 			ArrayList<String> idComponente = new ArrayList<String>();
 			ArrayList<MateriaPrima> pMateriasPrimas = new ArrayList<MateriaPrima>();
@@ -734,14 +735,27 @@ public class AplicacionWeb {
 			idComponente = crud.darTuplas(Proveedor.NOMBRE_RELACION_COMPONENTE);
 			for (String materiaPrima : idMateriaPrima) {
 				ResultSet rs_1 = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + MateriaPrima.NOMBRE + " WHERE id = '" + materiaPrima + "'");
-
+				while(rs_1.next())
+				{
+					String id = rs_1.getString(1);
+					String unidadMedida = rs_1.getString(2);
+					int cantidadInicial = rs_1.getInt(3);
+					MateriaPrima m = new MateriaPrima(id, unidadMedida, cantidadInicial);
+					pMateriasPrimas.add(m);
+				}
 			}
 			for (String componente : idComponente) {
-
+				ResultSet rs_1 = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Componente.NOMBRE + " WHERE id = '" + componente + "'");
+				while(rs_1.next())
+				{
+					String id = rs_1.getString(1);
+					int cantidadInicial = rs_1.getInt(2);
+					Componente c = new Componente(id, cantidadInicial);
+					pComponentes.add(c);
+				}
 			}
-			Proveedor prov = new Proveedor(pId, pDireccion, pTelefono, pCiudad, pIdRepLegal, pMatrizVolTiempoMat, pMatrizVolTiempoComp, pMateriasPrimas, pComponentes);
+			Proveedor prov = new Proveedor(pId, pDireccion, pTelefono, pCiudad, pIdRepLegal, pMateriasPrimas, pComponentes);
 			rta.add(prov);
-			contador++;
 		}
 		return rta;
 	}

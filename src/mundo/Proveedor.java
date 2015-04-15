@@ -47,7 +47,7 @@ public class Proveedor{
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
-	public Proveedor(String pId, String pDireccion, int pTelefono, String pCiudad, String pIdRepLegal, List<String[]> pMatrizVolTiempoMat, List<String[]> pMatrizVolTiempoComp, ArrayList<MateriaPrima> pMateriasPrimas, ArrayList<Componente> pComponentes) {
+	public Proveedor(String pId, String pDireccion, int pTelefono, String pCiudad, String pIdRepLegal, ArrayList<MateriaPrima> pMateriasPrimas, ArrayList<Componente> pComponentes) {
 		this.id = pId;
 		this.direccion = pDireccion;
 		this.telefono = pTelefono;
