@@ -280,9 +280,11 @@ public class AplicacionWeb {
 		Savepoint save = conexion.darConexion().setSavepoint();
 		etapas = obtenerEtapas(idProducto);
 		Date fechaEntrega = null;
+		String[] datosPedido = {idPedido,login,idProducto,Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getMonth()),Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getDay()),Integer.toString(cantidad)};
+		crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datosPedido);
 		for(Etapa etapa : etapas){
 			try{
-				fechaEntrega = verificarExistencias(idProducto,etapa,cantidad,etapas.size(),login,fechaPedido,idPedido);
+				fechaEntrega = verificarExistencias(idProducto,etapa,cantidad,etapas.size(),idPedido);
 			}
 			catch(Exception e){
 				conexion.darConexion().rollback(save);
@@ -330,7 +332,7 @@ public class AplicacionWeb {
 	 * @return
 	 * @throws Exception
 	 */
-	public Date verificarExistencias (String idProducto, Etapa etapa, int cantidad, int ultimaEtapa, String login, Date fechaPedido, String idPedido) throws Exception{
+	public Date verificarExistencias (String idProducto, Etapa etapa, int cantidad, int ultimaEtapa, String idPedido) throws Exception{
 		
 		String verificarEstacionesText = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion = '" + etapa.getIdEstacion() + "' AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroEstacion = a.id) ORDER BY a.dia,a.mes";
 		System.out.println(verificarEstacionesText);
@@ -365,20 +367,13 @@ public class AplicacionWeb {
 					rs_hallarFechaEntrega.next();				
 					int diaEntrega = Integer.parseInt(rs_hallarFechaEntrega.getString(1));
 					int mesEntrega = Integer.parseInt(rs_hallarFechaEntrega.getString(2));
-					String[] datosPedido = {idPedido,login,idProducto,Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getMonth()),Integer.toString(diaEntrega),Integer.toString(mesEntrega),Integer.toString(cantidad)};
-					System.out.println("El idPedido (debe ser 17) es: " + idPedido);
-					System.out.println("El login es: " + login);
-					System.out.println("El idProducto es: " + idProducto);
-					for (int j = 0; j < datosPedido.length; j++) {
-						System.out.println(datosPedido[i]);
-					}
-					crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datosPedido);
 					Calendar calendario = Calendar.getInstance();
 					calendario.setTime(new Date(2015, mesEntrega, diaEntrega));
 					calendario.add(Calendar.DATE, 1);
 					fechaEntrega = calendario.getTime();
+					String actualizarFechaEntrega = "UPDATE pedidos SET diaEntrega = " + Integer.toString(fechaEntrega.getDay()) + ", mesEntrega = " + Integer.toString(fechaEntrega.getMonth()) + " WHERE id = '" + idPedido + "'";
+					crud.darConexion().createStatement().executeQuery(actualizarFechaEntrega);
 				}
-				System.out.println("La cantidad es: " + (cantidad-1));
 				String[] datosInventario = {idRegProd,etapa.getIdProducto(),idPedido};
 				crud.insertarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, Producto.COLUMNAS_INVENTARIO_PRODUCTOS, Producto.TIPO_INVENTARIO_PRODUCTOS, datosInventario);
 			}
