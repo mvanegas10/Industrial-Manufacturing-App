@@ -152,17 +152,15 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				{
 					if (atributo.equals("nombre"))
 					{
-						filtroNombre = "UPPER(id) LIKE UPPER('%" + filtro + "%')";
+						filtroNombre = "UPPER(nombre) LIKE UPPER('%" + filtro + "%')";
 					}
 					else if (atributo.equals("pedido"))
 					{
-						filtroPedido = "UPPER(id_componente) LIKE UPPER('%" + filtro + "%')";
-						filtroProducto = FALSO;
+						filtroPedido = "UPPER(id) LIKE UPPER('%" + filtro + "%')";
 					}
 					if (atributo.equals("producto"))
 					{
-						filtroProducto = "UPPER(id_materiaPrima) LIKE UPPER('%" + filtro + "%')";
-						filtroPedido = FALSO;
+						filtroProducto = "UPPER(nombre) LIKE UPPER('%" + filtro + "%')";
 					}
 				}
 				
@@ -185,19 +183,52 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 	        		respuesta.write( "</table>" );
 	        		respuesta.write( "</form>" );
 	        		respuesta.write( "<hr>" );
-	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
+	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=70%>" );
 			        for (Usuario cliente : clientes) {
-				        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-			        	respuesta.write( "<tr>" );
-				        respuesta.write( "<tr><td><img alt=\"Cliente\" src=\"imagenes/usuario.jpg\" name=\"usuario\"></td>" );
-				        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + cliente.getNombre() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Usuario: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + cliente.getLogin() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Direccion: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + cliente.getDireccion() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Telefono: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + cliente.getTelefono() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Ciudad: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + cliente.getCiudad() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Represetante: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + cliente.getIdRepLegal() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"right\"><input value=" + cliente.getLogin() + " name=\"login\" type=\"hidden\"><input value=\"admin\" name=\"admin\" type=\"hidden\"><input value=\"darPedidos\" name=\"criterio\" type=\"hidden\"><input value=\"Ver Pedidos\" size=\"53\" name=\"verPedidos\" type=\"submit\"></td></tr>" );
+			        	if (filtro != null && (filtro.equals("producto") || filtro.equals("pedido")))
+			        	{
+			        		if (cliente.getPedidos().size() != 0)
+			        		{
+			        			respuesta.write( "<tr><td align=\"left\"><h3><input value=\"Cliente: " + cliente.getNombre() + " \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h3></td></tr>" );
+						        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+					        	respuesta.write( "<tr>" );
+						        respuesta.write( "<td><img alt=\"Cliente\" src=\"imagenes/usuario.jpg\" name=\"usuario\"></td>" );
+						        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=70%>" );
+						        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getNombre() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+						        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Usuario: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getLogin() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+						        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Direccion: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getDireccion() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+						        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Telefono: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getTelefono() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+						        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Ciudad: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getCiudad() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+						        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Represetante: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getIdRepLegal() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+						        
+			        		}
+			        	}
+			        	else
+			        	{
+			        		respuesta.write( "<tr><td align=\"left\"><h3><input value=\"Cliente: " + cliente.getNombre() + " \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h3></td></tr>" );
+					        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+				        	respuesta.write( "<tr>" );
+					        respuesta.write( "<td><img alt=\"Cliente\" src=\"imagenes/usuario.jpg\" name=\"usuario\"></td>" );
+					        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=70%>" );
+					        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getNombre() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+					        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Usuario: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getLogin() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+					        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Direccion: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getDireccion() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+					        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Telefono: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getTelefono() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+					        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Ciudad: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getCiudad() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+					        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Represetante: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getIdRepLegal() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+					        
+			        	}
+				        if (cliente.getPedidos().size() != 0)
+				        {
+				        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Pedidos: " + cliente.getPedidos().size() + "\" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td></tr>" );
+				        	for (Pedido pedido : cliente.getPedidos()){
+						        respuesta.write( "<tr><td align=\"left\"><h4 style=\"padding:1em;\"><input value=\"Id Pedido: " + pedido.getId() + " \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td></tr>" );
+						        respuesta.write( "<tr><td align=\"left\"><h5><input value=\"Producto: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h3></td><td><input value=\"" + pedido.getProducto().getNombre() + "\" readonly=\"readonly\" style=\"width:100%; font-size: 12.8px; border: none; text-align:left;\"></td></tr>" );
+						        respuesta.write( "<tr><td align=\"left\"><h5><input value=\"Cantidad: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h3></td><td><input value=\"" + pedido.getCantidad() + "\" readonly=\"readonly\" style=\"width:100%; font-size: 12.8px; border: none; text-align:left;\"></td></tr>" );
+						        respuesta.write( "<tr><td align=\"left\"><h5><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h3></td><td><input value=\"" + pedido.getFechaPedido().toLocaleString().substring(0, 10) + "\" readonly=\"readonly\" style=\"width:100%; font-size: 12.8px; border: none; text-align:left;\"></td></tr>" );
+						        respuesta.write( "<tr><td align=\"left\"><h5><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h3></td><td><input value=\"" + pedido.getFechaEntrega().toLocaleString().substring(0, 10) + "\" readonly=\"readonly\" style=\"width:100%; border: none; font-size: 12.8px; text-align:left;\"></td></tr>" );
+				        	}
+				        }
 				        respuesta.write( "</table></td>" );
 				        respuesta.write( "</tr>" );
 				        respuesta.write( "<tr></tr>" );
