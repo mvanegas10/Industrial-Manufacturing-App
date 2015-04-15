@@ -193,16 +193,21 @@ public class AplicacionWeb {
 	 */
 	public void registrarMateriaPrima (String id, String unidadMedida, int cantidadInicial) throws Exception{
 		String[] datosSimples = {id, unidadMedida, Integer.toString(cantidadInicial)};
+		int cantidadActual = cantidadInicial;
 		try{
-			int cantidadActual= Integer.parseInt((crud.darSubTabla(MateriaPrima.NOMBRE, "cantidadInicial", "id='"+id+"'").get(0)));
+			cantidadActual+= Integer.parseInt((crud.darSubTabla(MateriaPrima.NOMBRE, "cantidadInicial", "id='"+id+"'").get(0)));
 			String[] columnas = new String[1];
 			columnas[0] = "cantidadInicial";
 			String[] cantidad = new String[1];
 			cantidad[0] = (Integer.toString(cantidadInicial + cantidadActual));
-			crud.actualizarTupla(MateriaPrima.NOMBRE,columnas,cantidad, "id= '"+id+"'");	
+			crud.actualizarTupla(MateriaPrima.NOMBRE,columnas,cantidad, "id= '"+id+"'");
 		}
 		catch(Exception e){
 			crud.insertarTupla(MateriaPrima.NOMBRE, MateriaPrima.COLUMNAS, MateriaPrima.TIPO, datosSimples);
+		}
+		for (int i = 0; i < cantidadActual; i++) {
+			String[] datosRegistro = {Integer.toString(darContadorId()), id};
+			crud.insertarTupla(MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.COLUMNAS_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.TIPO_REGISTRO_MATERIAS_PRIMAS, datosRegistro);
 		}
 	}
 
@@ -213,8 +218,9 @@ public class AplicacionWeb {
 	 */
 	public void registrarComponente (String id, int cantidadInicial) throws Exception {
 		String[] datosSimples = {id, Integer.toString(cantidadInicial)};
+		int cantidadActual = cantidadInicial;
 		try{
-			int cantidadActual= Integer.parseInt((crud.darSubTabla(Componente.NOMBRE, "cantidadInicial", "id="+id).get(0)));
+			cantidadActual+= Integer.parseInt((crud.darSubTabla(Componente.NOMBRE, "cantidadInicial", "id="+id).get(0)));
 			String[] columnas = new String[1];
 			columnas[0] = "cantidadInicial";
 			String[] cantidad = new String[1];
@@ -223,6 +229,10 @@ public class AplicacionWeb {
 		}
 		catch(Exception e){
 			crud.insertarTupla(Componente.NOMBRE, Componente.COLUMNAS, Componente.TIPO, datosSimples);		}
+		for (int i = 0; i < cantidadActual; i++) {
+			String[] datosRegistro = {Integer.toString(darContadorId()), id};
+			crud.insertarTupla(MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.COLUMNAS_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.TIPO_REGISTRO_MATERIAS_PRIMAS, datosRegistro);
+		}
 	}
 
 	/**
@@ -356,12 +366,19 @@ public class AplicacionWeb {
 					int diaEntrega = Integer.parseInt(rs_hallarFechaEntrega.getString(1));
 					int mesEntrega = Integer.parseInt(rs_hallarFechaEntrega.getString(2));
 					String[] datosPedido = {idPedido,login,idProducto,Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getMonth()),Integer.toString(diaEntrega),Integer.toString(mesEntrega),Integer.toString(cantidad)};
+					System.out.println("El idPedido (debe ser 17) es: " + idPedido);
+					System.out.println("El login es: " + login);
+					System.out.println("El idProducto es: " + idProducto);
+					for (int j = 0; j < datosPedido.length; j++) {
+						System.out.println(datosPedido[i]);
+					}
 					crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datosPedido);
 					Calendar calendario = Calendar.getInstance();
 					calendario.setTime(new Date(2015, mesEntrega, diaEntrega));
 					calendario.add(Calendar.DATE, 1);
 					fechaEntrega = calendario.getTime();
 				}
+				System.out.println("La cantidad es: " + (cantidad-1));
 				String[] datosInventario = {idRegProd,etapa.getIdProducto(),idPedido};
 				crud.insertarTupla(Producto.NOMBRE_INVENTARIO_PRODUCTOS, Producto.COLUMNAS_INVENTARIO_PRODUCTOS, Producto.TIPO_INVENTARIO_PRODUCTOS, datosInventario);
 			}
@@ -765,7 +782,7 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			aplicacionWeb.crud.darSubTabla(Usuario.NOMBRE, "login", "login = 'null' and password='null'");
+			
 		}
 		catch (Exception e)
 		{
