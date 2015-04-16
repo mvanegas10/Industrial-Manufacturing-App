@@ -8,9 +8,9 @@ public class Estacion {
 	
 	public static final String NOMBRE = "estaciones";
 	
-	public static final String[] COLUMNAS = {"id", "nombre"};
+	public static final String[] COLUMNAS = {"id", "nombre", "tipo"};
 	
-	public static final String[] TIPO = {"String", "String"};
+	public static final String[] TIPO = {"String", "String", "String"};
 	
 	public static final String NOMBRE_REGISTRO_ESTACIONES = "registrosEstaciones";
 	

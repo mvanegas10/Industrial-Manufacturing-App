@@ -2,8 +2,11 @@ package mundo;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,9 +52,9 @@ public class AplicacionWeb {
 	public AplicacionWeb() {
 		conexion = new ConexionDAO();
 		conexion.iniciarConexion();
-		conexion.crearTablas();
+		//conexion.crearTablas();
 		crud = new CRUD(conexion);
-		poblarTablas();
+		//poblarTablas();
 		try
 		{
 			Statement s = crud.darConexion().createStatement();
@@ -352,7 +355,7 @@ public class AplicacionWeb {
 	 */
 	public Date verificarExistencias (String idProducto, Etapa etapa, int cantidad, int ultimaEtapa, String idPedido, ArrayList<String> idInventarios) throws Exception{
 		
-		String verificarEstacionesText = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion = '" + etapa.getIdEstacion() + "' AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroEstacion = a.id) ORDER BY a.dia,a.mes";
+		String verificarEstacionesText = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a INNER JOIN " + Estacion.NOMBRE + "b ON " + Estacion.COLUMNAS_REGISTRO_ESTACIONES[2] + "=" + Estacion.COLUMNAS[1] + " WHERE tipo = '" + etapa.getIdEstacion() + "' AND NOT EXISTS (SELECT c.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " c WHERE idRegistroEstacion = a.id) ORDER BY a.dia,a.mes";
 		System.out.println(verificarEstacionesText);
 		ResultSet rs_verificarEstaciones = crud.darConexion().createStatement().executeQuery(verificarEstacionesText);
 		
@@ -976,6 +979,16 @@ public class AplicacionWeb {
 		conexion.setAutoCommitVerdadero();
 	}
 	
+	public void desactivarEstacionProduccion(String idEstacion){
+		try {
+		conexion.setAutoCommitFalso();
+		Savepoint save = conexion.darConexion().setSavepoint();
+		} 
+		catch (SQLException e) {
+		e.printStackTrace();
+		}
+		}
+	
 	//--------------------------------------------------
 	// MAIN
 	//--------------------------------------------------
@@ -987,15 +1000,7 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			ArrayList<Producto> productos = aplicacionWeb.darProductosProveedor("Manantial");
-			for (Producto producto : productos) {
-				System.out.println(producto.getNombre());
-			}
-			
-			ArrayList<Pedido> pedidos = aplicacionWeb.darPedidosProveedor("Manantial");
-			for (Pedido pedido : pedidos) {
-				System.out.println(pedido.toString());
-			}
+
 		}
 		catch (Exception e)
 		{
