@@ -255,6 +255,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				proveedores = AplicacionWeb.getInstancia().darProveedores(filtroProveedor,filtroMateria,filtroComponente);
 				if (proveedores.size() != 0)
 		        {
+					
 	        		respuesta.write( "<h3 align=\"center\">ProdAndes tiene registrados " + proveedores.size() + " proveedores en total:</h3>" );
 	        		respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\"><input name=\"criterio\" value=\"darProveedores\" type=\"hidden\">" );
 	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
@@ -273,6 +274,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 	        		respuesta.write( "<hr>" );
 	        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=70%>" );
 			        for (Proveedor proveedor : proveedores) {
+
 				        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
 			        	respuesta.write( "<tr><td align=\"left\"><h3><input value=\"Proveedor: " + proveedor.getId() + "\" style=\"border: none;\" type=\"text\"\"></h3></td></tr>" );
 			        	respuesta.write( "<tr>" );
@@ -297,11 +299,11 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 					        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"" + (i+1) + ". " + proveedor.getComponentes().get(i).getId() + "\" style=\"border: none;\" type=\"text\"\"></h4></td><td > <input value=\" : " + proveedor.getComponentes().get(i).getCantidadInicial() + " unidades\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left; \"></td></tr>" );
 							}
 				        }
-				        respuesta.write( "<tr><td align=\"right\"><input value=" + proveedor.getId() + " name=\"idProveedor\" type=\"hidden\"><input value=\"darPedidos\" name=\"criterio\" type=\"hidden\"><input value=\"Ver Pedidos\" size=\"53\" name=\"verPedidos\" type=\"submit\"></td></tr>" );
+				        respuesta.write( "<tr><td align=\"right\"><input value=" + proveedor.getId() + " name=\"idProveedor\" type=\"hidden\"><input value=\"darProductosProveedor\" name=\"criterio\" type=\"hidden\"><input value=\"Ver Productos Dependientes\" size=\"53\" name=\"verProductos\" type=\"submit\"></td></tr></form>" );
+				        respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\"><tr><td align=\"right\"><input value=" + proveedor.getId() + " name=\"idProveedor\" type=\"hidden\"><input value=\"darPedidosProveedor\" name=\"criterio\" type=\"hidden\"><input value=\"Ver Pedidos Dependientes\" size=\"53\" name=\"verPedidos\" type=\"submit\"></td></tr></form>" );
 				        respuesta.write( "</table></td>" );
 				        respuesta.write( "</tr>" );
 				        respuesta.write( "<tr></tr>" );
-				        respuesta.write( "</form>" );
 					}
 			        respuesta.write( "</table>" );
 		        }
@@ -316,6 +318,36 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			}
 		}
 		
+		else if (criterio.equals("darProductosProveedor"))
+		{
+			String idProveedor = request.getParameter("idProveedor");
+			ArrayList<Producto> productosProveedor = new ArrayList<Producto>();
+			productosProveedor = AplicacionWeb.getInstancia().darProductosProveedor(idProveedor);
+			if (!productosProveedor.isEmpty())
+			{
+				respuesta.write( "<h3 align=\"center\">Hay " + productosProveedor.size() + " productos relacionados a un pedido que dependen del proveedor " + idProveedor.toUpperCase() + "</h3>" );
+				respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
+				for (int i = 0; i < productosProveedor.size(); i++) {
+					respuesta.write( "<tr><td align=\"left\"><h3><input value=\"Id Producto: " + productosProveedor.get(i).getId() + "\" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h3></td></tr>");
+		        	respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" type=\"image\"></td>" );
+		        	respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=10%>" );
+		        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Producto: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><input value=" + productosProveedor.get(i).getId() + " name=\"idProducto\" type=\"hidden\"><td align=\"right\">" + productosProveedor.get(i).getId() + "</td></tr>" );
+		        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><input value=" + productosProveedor.get(i).getId() + " name=\"idProducto\" type=\"hidden\"><td align=\"right\">" + productosProveedor.get(i).getNombre() + "</td></tr>" );
+			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Precio: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><input value=" + productosProveedor.get(i).getNombre() + " name=\"nombre\" type=\"hidden\"><td align=\"right\">" + productosProveedor.get(i).getPrecio() + "</td></tr>" );
+			        respuesta.write( "<tr><td><table bgcolor=\"#ecf0f1\" width=10%>" );
+			        respuesta.write( "</table></td></tr>" );
+			        respuesta.write( "</table></td>" );
+			        respuesta.write( "</tr>" );
+			        respuesta.write( "</form>" );
+		        }
+				respuesta.write( "</table>" );
+			}
+			
+		}
+		else if (criterio.equals("darPedidosProveedor"))
+		{
+			String idProveedor = request.getParameter("idProveedor");
+		}
 		else if(criterio.equals("eliminarPedido"))
 		{
 			String login = request.getParameter("login");

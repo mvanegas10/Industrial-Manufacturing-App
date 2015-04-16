@@ -99,4 +99,7 @@ public class Pedido {
 		this.producto = Producto;
 	}
 	
+	public String toString(){
+		return "El id del Pedido: " + id + " - producto: " + idProducto + " - cantidad: " + cantidad;
+	}
 }
