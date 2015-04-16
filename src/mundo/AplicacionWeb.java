@@ -54,6 +54,7 @@ public class AplicacionWeb {
 //		poblarTablas();
 		try
 		{
+			conexion.darConexion().createStatement().execute("SET LOCK_TIMEOUT 2000");
 			Statement s = crud.darConexion().createStatement();
 			String sql = "SELECT MAX(id) FROM generadorId";
 			System.out.println(sql);
