@@ -132,5 +132,9 @@ public class Usuario {
 	public void addPedido (Pedido pedido){
 		this.pedidos.add(pedido);
 	}
+	
+	public void addAllPedidos (ArrayList<Pedido> aAgregar){
+		this.pedidos.addAll(aAgregar);
+	}
 
 }

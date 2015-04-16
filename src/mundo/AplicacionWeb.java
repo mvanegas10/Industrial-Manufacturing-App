@@ -285,7 +285,7 @@ public class AplicacionWeb {
 		
 		etapas = obtenerEtapas(idProducto);
 		Date fechaEntrega = null;
-		String[] datosPedido = {idPedido,login,idProducto,Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getMonth()),Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getDay()),Integer.toString(cantidad)};
+		String[] datosPedido = {idPedido,idProducto,login,Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getMonth()),Integer.toString(fechaPedido.getDay()),Integer.toString(fechaPedido.getDay()),Integer.toString(cantidad)};
 		crud.insertarTupla(Pedido.NOMBRE, Pedido.COLUMNAS, Pedido.TIPO, datosPedido);
 		
 		ArrayList<String> idInventarios = new ArrayList<String>();
@@ -818,30 +818,66 @@ public class AplicacionWeb {
 	 */
 	public ArrayList<Usuario> darClientes(String condicionNombre, String condicionPedido, String condicionProducto) throws Exception{
 		ArrayList<Usuario> rta = new ArrayList<Usuario>();
-		String sql = "SELECT * FROM " + Usuario.NOMBRE + " user INNER JOIN (SELECT ped.id, prod.nombre, ped.cantidad, ped.diaPedido, ped.mesPedido, ped.diaEntrega, ped.mesEntrega FROM " + Pedido.NOMBRE + " ped INNER JOIN "  + Producto.NOMBRE + " prod ON ped.idProducto = prod.id) WHERE user.tipo = 'natural' OR user.tipo = 'juridica')";
+		String sql = "SELECT * FROM (SELECT user1.*, proPed.id AS idPedido, proPed.nombre AS nombreProducto, proPed.cantidad AS cantidad, proPed.diaPedido AS diaPedido, proPed.mesPedido AS mesPedido, proPed.diaEntrega AS diaEntrega, proPed.mesEntrega AS mesEntrega FROM usuarios user1 LEFT JOIN (SELECT ped.id, prod.nombre, ped.idUsuario, ped.cantidad, ped.diaPedido, ped.mesPedido, ped.diaEntrega, ped.mesEntrega FROM pedidos ped INNER JOIN productos prod ON ped.idProducto = prod.id) proPed ON user1.login = proPed.idUsuario WHERE user1.tipo = 'natural' OR user1.tipo = 'juridica')  WHERE " + condicionNombre + " AND " + condicionPedido + " AND " + condicionProducto;
 		System.out.println(sql);
 		ResultSet rs = crud.darConexion().createStatement().executeQuery(sql);
 		while(rs.next())
 		{
 			String login = rs.getString(1);
+			
+			System.out.println(login);
+			
 			String tipo = rs.getString(3);
 			String nombre = rs.getString(4);
 			String direccion = rs.getString(5);
-			int telefono = Integer.parseInt(rs.getString(6));
+			int telefono = 0;
+			if (rs.getString(6) != null)
+				telefono = Integer.parseInt(rs.getString(6));
 			String ciudad = rs.getString(7);
 			String idRepLegal = rs.getString(8);
-			String id = rs.getString(9);
+			
+			Usuario user = new Usuario(login, tipo, "", nombre, direccion, telefono, ciudad, idRepLegal);
+						
+			String idPedido = rs.getString(9);
 			String nombreProducto = rs.getString(10);
-			String idUsuario = rs.getString(11);
-			int diaPedido = rs.getInt(12);
-			int mesPedido = rs.getInt(13);
-			int diaEntrega = rs.getInt(14);
-			int mesEntrega = rs.getInt(15);
-			int cantidad = rs.getInt(16);
+			int cantidad = 0;
+			if (rs.getString(11) != null)
+				cantidad = Integer.parseInt(rs.getString(11));
+			int diaPedido = 0;
+			if (rs.getString(12) != null)
+				diaPedido = Integer.parseInt(rs.getString(12));
+			int mesPedido = 0;
+			if (rs.getString(13) != null)
+				mesPedido = Integer.parseInt(rs.getString(13));
+			int diaEntrega = 0;
+			if (rs.getString(14) != null)
+				diaEntrega = Integer.parseInt(rs.getString(14));
+			int mesEntrega = 0;
+			if (rs.getString(15) != null)
+				mesEntrega = Integer.parseInt(rs.getString(15));
+			
 			Date fechaPedido = new Date(2015, mesPedido, diaPedido);
 			Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
-			Pedido pedido = new Pedido(id, nombreProducto, login, cantidad, fechaPedido, fechaEntrega);
-
+			Pedido pedido = null;
+			boolean encontro = false;
+			if (idPedido != null)
+			{
+				pedido = new Pedido(idPedido, nombreProducto, login, cantidad, fechaPedido, fechaEntrega);
+				
+				user.addPedido(pedido);
+				for (int i = 0; i < rta.size() && !encontro; i++) {
+					if (rta.get(i).getLogin().equals(login))
+					{
+						user.addAllPedidos(rta.get(i).getPedidos());
+						rta.remove(rta.get(i));
+						rta.add(user);
+						encontro = true;
+					}	
+				}
+			}
+		
+			if(!encontro)
+				rta.add(user);
 		}
 		return rta;
 	}
@@ -947,7 +983,7 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-			
+			aplicacionWeb.darClientes("'1'='1'", "'1'='1'", "'1'='1'");
 		}
 		catch (Exception e)
 		{

@@ -74,7 +74,7 @@ public class ServletRegistrar extends ServletAbstract{
 			respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Proveedores\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr>" );
-			respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Proveedores\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+			respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input value=\"darProveedores\" name=\"criterio\" type=\"hidden\"><input type=\"submit\" value=\"Consultar Proveedores\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr></tr>" );
 			respuesta.write( "</table>" );
@@ -93,11 +93,12 @@ public class ServletRegistrar extends ServletAbstract{
 			respuesta.write( "<td><form method=\"POST\" action=\"registroLlegadaMaterial.htm\"><h4 ><input value=\"materiaPrima\" name=\"tipo\" type=\"hidden\"><input type=\"submit\" value=\"Registrar Material\" name=\"regMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr>" );
-			respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4><input value=\"componente\" name=\"tipo\" type=\"hidden\"><input type=\"submit\" value=\"Consultar Material\" name=\"consMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+			respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input value=\"darMaterial\" name=\"criterio\" type=\"hidden\"><h4><input type=\"submit\" value=\"Consultar Material\" name=\"consMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr></tr>" );
 			respuesta.write( "</table>" );
 			respuesta.write( "</td>" );
+
 
 //			Siguiente columna
 						
@@ -109,7 +110,7 @@ public class ServletRegistrar extends ServletAbstract{
 			respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Producto\" name=\"regProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr>" );
-			respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Productos\" name=\"consProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+			respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input value=\"darProductos\" name=\"criterio\" type=\"hidden\"><input type=\"submit\" value=\"Consultar Productos\" name=\"consProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr></tr>" );
 			respuesta.write( "</table>" );
