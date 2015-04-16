@@ -818,7 +818,7 @@ public class AplicacionWeb {
 	 */
 	public ArrayList<Usuario> darClientes(String condicionNombre, String condicionPedido, String condicionProducto) throws Exception{
 		ArrayList<Usuario> rta = new ArrayList<Usuario>();
-		String sql = "SELECT * FROM " + Usuario.NOMBRE + " WHERE tipo = 'natural' OR tipo = 'juridica' AND " + condicionNombre;
+		String sql = "SELECT * FROM " + Usuario.NOMBRE + " user INNER JOIN (SELECT ped.id, prod.nombre, ped.cantidad, ped.diaPedido, ped.mesPedido, ped.diaEntrega, ped.mesEntrega FROM " + Pedido.NOMBRE + " ped INNER JOIN "  + Producto.NOMBRE + " prod ON ped.idProducto = prod.id) WHERE user.tipo = 'natural' OR user.tipo = 'juridica')";
 		System.out.println(sql);
 		ResultSet rs = crud.darConexion().createStatement().executeQuery(sql);
 		while(rs.next())
@@ -830,41 +830,18 @@ public class AplicacionWeb {
 			int telefono = Integer.parseInt(rs.getString(6));
 			String ciudad = rs.getString(7);
 			String idRepLegal = rs.getString(8);
-			Usuario user = new Usuario(login, tipo, "", nombre, direccion, telefono, ciudad, idRepLegal);
-			
-			Statement s = crud.darConexion().createStatement();
-			String sql_pedido = "SELECT * FROM " + Pedido.NOMBRE + " WHERE idUsuario = '" + login + "' AND " + condicionPedido;
-			System.out.println(sql_pedido);
-			ResultSet rs_pedido = s.executeQuery(sql_pedido);
-			while(rs_pedido.next()){
-				String id = rs_pedido.getString(1);
-				String idProducto = rs_pedido.getString(2);
-				String idUsuario = rs_pedido.getString(3);
-				int diaPedido = rs_pedido.getInt(4);
-				int mesPedido = rs_pedido.getInt(5);
-				int diaEntrega = rs_pedido.getInt(6);
-				int mesEntrega = rs_pedido.getInt(7);
-				int cantidad = rs_pedido.getInt(8);
-				Date fechaPedido = new Date(2015, mesPedido, diaPedido);
-				Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
-				Pedido pedido = new Pedido(id, idProducto, login, cantidad, fechaPedido, fechaEntrega);
-				System.out.println(pedido.toString());
-				
-				String sql_producto = "SELECT * FROM " + Producto.NOMBRE + " WHERE id = '" + id + "' AND " + condicionProducto;
-				System.out.println(sql_producto);
-				ResultSet rs_producto = crud.darConexion().createStatement().executeQuery(sql_producto);
-				while(rs_producto.next())
-				{
-					String nombreProducto = rs_producto.getString(2);
-					int precio = rs_producto.getInt(3);
-					Producto producto = new Producto(id, nombreProducto, precio);
-					pedido.setProducto(producto);
-				}
-				
-				if (pedido.getProducto() != null)
-					user.addPedido(pedido);
-			}
-			rta.add(user);
+			String id = rs.getString(9);
+			String nombreProducto = rs.getString(10);
+			String idUsuario = rs.getString(11);
+			int diaPedido = rs.getInt(12);
+			int mesPedido = rs.getInt(13);
+			int diaEntrega = rs.getInt(14);
+			int mesEntrega = rs.getInt(15);
+			int cantidad = rs.getInt(16);
+			Date fechaPedido = new Date(2015, mesPedido, diaPedido);
+			Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
+			Pedido pedido = new Pedido(id, nombreProducto, login, cantidad, fechaPedido, fechaEntrega);
+
 		}
 		return rta;
 	}

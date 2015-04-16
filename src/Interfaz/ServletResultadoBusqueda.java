@@ -199,8 +199,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 						        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Direccion: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getDireccion() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
 						        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Telefono: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getTelefono() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
 						        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Ciudad: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getCiudad() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
-						        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Represetante: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getIdRepLegal() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
-						        
+						        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Represetante: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td><input value=\"" + cliente.getIdRepLegal() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );   
 			        		}
 			        	}
 			        	else
