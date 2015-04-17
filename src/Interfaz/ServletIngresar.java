@@ -52,7 +52,10 @@ public class ServletIngresar extends ServletAbstract{
 			catch(Exception e)
 			{
 				reingreso = request.getParameter("reingreso");
-				aceptarIngreso(respuesta, usuario, tipo, reingreso,productos);		
+				if (reingreso != null)
+					aceptarIngreso(respuesta, usuario, tipo, reingreso,productos);		
+				else
+					denegarIngreso(respuesta);
 			}
 		
 		}	
