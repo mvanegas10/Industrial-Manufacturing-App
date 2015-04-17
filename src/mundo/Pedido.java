@@ -18,6 +18,8 @@ public class Pedido {
 
 	private String idCliente;
 	
+	private String nombreCliente;
+	
 	private int cantidad;
 	
 	private Date fechaPedido;
@@ -38,6 +40,26 @@ public class Pedido {
 		this.fechaPedido = fechaPedido;
 		this.fechaEntrega = fechaEntrega;
 	}
+	
+	/**
+	 * 
+	 * @param id
+	 * @param producto
+	 * @param idCliente
+	 * @param nombreCliente
+	 * @param cantidad
+	 * @param fechaPedido
+	 * @param fechaEntrega
+	 */
+	public Pedido(String id, String producto, String idCliente, String nombreCliente, int cantidad, Date fechaPedido, Date fechaEntrega){
+	this.id = id;
+	this.idProducto = producto;
+	this.idCliente = idCliente;
+	this.nombreCliente = nombreCliente;
+	this.cantidad = cantidad;
+	this.fechaPedido = fechaPedido;
+	this.fechaEntrega = fechaEntrega;
+}
 
 	public String getId() {
 		return id;
@@ -102,4 +124,14 @@ public class Pedido {
 	public String toString(){
 		return "El id del Pedido: " + id + " - producto: " + idProducto + " - cantidad: " + cantidad;
 	}
+
+	public String getNombreCliente() {
+		return nombreCliente;
+	}
+
+	public void setNombreCliente(String nombreCliente) {
+		this.nombreCliente = nombreCliente;
+	}
+	
+	
 }

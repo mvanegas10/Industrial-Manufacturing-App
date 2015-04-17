@@ -21,11 +21,11 @@ public class ServletRegistrarMateriaPrimaProveedor extends ServletAbstract {
 	public void escribirContenido(HttpServletRequest request,HttpServletResponse response) throws IOException {
 
 		PrintWriter respuesta = response.getWriter( );
+		String idProveedor = request.getParameter("id");
 		String ciudad = request.getParameter("ciudad");
 		String direccion = request.getParameter("direccion");
 		int telefono = Integer.parseInt(request.getParameter("telefono"));
 		String idRepLegal = request.getParameter("idRepLegal");
-		String idProveedor = Integer.toString(AplicacionWeb.getInstancia().darContadorId());
 		
 		try
 		{

@@ -355,7 +355,7 @@ public class AplicacionWeb {
 	 */
 	public Date verificarExistencias (String idProducto, Etapa etapa, int cantidad, int ultimaEtapa, String idPedido, ArrayList<String> idInventarios) throws Exception{
 		
-		String verificarEstacionesText = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a INNER JOIN " + Estacion.NOMBRE + "b ON " + Estacion.COLUMNAS_REGISTRO_ESTACIONES[2] + "=" + Estacion.COLUMNAS[1] + " WHERE tipo = '" + etapa.getIdEstacion() + "' AND NOT EXISTS (SELECT c.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " c WHERE idRegistroEstacion = a.id) ORDER BY a.dia,a.mes";
+		String verificarEstacionesText = "SELECT a.id AS idRegistroEstacion FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a INNER JOIN " + Estacion.NOMBRE + " b ON a." + Estacion.COLUMNAS_REGISTRO_ESTACIONES[1] + "=b." + Estacion.COLUMNAS[0] + " WHERE b.tipo = '" + etapa.getIdEstacion() + "' AND NOT EXISTS (SELECT c.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " c WHERE idRegistroEstacion = a.id) ORDER BY a.dia,a.mes";
 		System.out.println(verificarEstacionesText);
 		ResultSet rs_verificarEstaciones = crud.darConexion().createStatement().executeQuery(verificarEstacionesText);
 		
@@ -514,24 +514,29 @@ public class AplicacionWeb {
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<Pedido> buscarPedidos (Date pedido, boolean pedido1, Date entrega, boolean entrega1) throws Exception{
-		ArrayList<String> prod;
+	public ArrayList<Pedido> darPedidos (String condicionPedido, String condicionNombreCliente, String condicionLoginCliente, String condicionProducto) throws Exception{
 		ArrayList<Pedido> rta = new ArrayList<Pedido>();
-		if (pedido1 && entrega1)
+		String sql = "SELECT * FROM (SELECT user1.login AS login, user1.nombre AS nombreCliente, proPed.id AS idPedido, proPed.nombre AS nombreProducto, proPed.cantidad AS cantidad, proPed.diaPedido AS diaPedido, proPed.mesPedido AS mesPedido, proPed.diaEntrega AS diaEntrega, proPed.mesEntrega AS mesEntrega FROM usuarios user1 INNER JOIN (SELECT ped.id, prod.nombre, ped.idUsuario, ped.cantidad, ped.diaPedido, ped.mesPedido, ped.diaEntrega, ped.mesEntrega FROM pedidos ped INNER JOIN productos prod ON ped.idProducto = prod.id) proPed ON user1.login = proPed.idUsuario WHERE user1.tipo = 'natural' OR user1.tipo = 'juridica')  WHERE " + condicionNombreCliente + " AND "+ condicionLoginCliente + " AND " + condicionPedido + " AND " + condicionProducto;
+		System.out.println(sql);
+		ResultSet rs = crud.darConexion().createStatement().executeQuery(sql);
+		while(rs.next())
 		{
-			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaPedido = " + pedido.getDate() +  "mesPedido = " + pedido.getMonth() + "diaEntrega = " + entrega.getDate() +  "mesEntrega = " + pedido.getMonth());
-		}
-		else if (pedido1)
-		{
-			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaPedido = " + pedido.getDate() +  "mesPedido = " + pedido.getMonth());
-		}
-		else
-		{
-			prod = crud.darSubTabla(Pedido.NOMBRE, "idProducto", "idCliente = " + usuarioActual + "diaEntrega = " + entrega.getDate() +  "mesEntrega = " + pedido.getMonth());
-		}
-		for (int i = 0; i < prod.size(); i++) {
-			//			Pedido p = new Pedido(usuarioActual, prod.get(i), 2, pedido, entrega);
-			//			rta.add(p);
+			String login = rs.getString(1);		
+			String nombre = rs.getString(2);
+						
+			String idPedido = rs.getString(3);
+			String nombreProducto = rs.getString(4);
+			int cantidad = Integer.parseInt(rs.getString(5));
+			int diaPedido = Integer.parseInt(rs.getString(6));
+			int mesPedido = Integer.parseInt(rs.getString(7));
+			int diaEntrega = Integer.parseInt(rs.getString(8));
+			int mesEntrega = Integer.parseInt(rs.getString(9));
+			
+			Date fechaPedido = new Date(2015, mesPedido, diaPedido);
+			Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
+			Pedido pedido = new Pedido(idPedido, nombreProducto, login, nombre, cantidad, fechaPedido, fechaEntrega);
+			System.out.println(pedido.getNombreCliente());
+			rta.add(pedido);
 		}
 		return rta;
 	}
@@ -695,43 +700,17 @@ public class AplicacionWeb {
 		return rta;
 	}
 	
-	public ArrayList<Producto> darProductosProveedor(String idProveedor){
+	public ArrayList<Producto> darProductosProveedor(String idProveedor) throws Exception{
 		
-		try{
-			Set<Producto> setProductosProveedorMateriasPrimas = new HashSet<Producto>();
-			
-			ResultSet rsIdMateriasPrimas = crud.darConexion().createStatement().executeQuery("SELECT id_materiaPrima FROM " + Proveedor.NOMBRE_RELACION_MATERIA_PRIMA + " WHERE id_Proveedor = '" + idProveedor + "'");
-			while(rsIdMateriasPrimas.next()){
-				String idMateriaPrima = rsIdMateriasPrimas.getString(1);
-				ResultSet rsIdRegistroMP = crud.darConexion().createStatement().executeQuery("SELECT id FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " WHERE idMateriaPrima = '" + idMateriaPrima + "'");
-				while(rsIdRegistroMP.next()){
-					String idRegMateriaPrima = rsIdRegistroMP.getString(1);
-					ResultSet rsIdInventarios = crud.darConexion().createStatement().executeQuery("SELECT idInventario FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " WHERE idRegistroMateriaPrima = '" + idRegMateriaPrima + "'");
-					while(rsIdInventarios.next()){
-						String idInventario = rsIdInventarios.getString(1);
-						ResultSet rsIdProductos = crud.darConexion().createStatement().executeQuery("SELECT idProducto FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " WHERE id = '" + idInventario + "'");
-						while(rsIdProductos.next()){
-							String idProducto = rsIdProductos.getString(1);
-							ResultSet rsProductos = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Producto.NOMBRE + " WHERE id = '" + idProducto + "'");
-							while(rsProductos.next())
-							{
-								String id = rsProductos.getString(1);
-								String nombre = rsProductos.getString(2);
-								int precio = rsProductos.getInt(3);
-								Producto producto = new Producto(id, nombre, precio);
-								setProductosProveedorMateriasPrimas.add(producto);
-							}
-						}
-					}
-				}	
-			}
-			
-			Set<Producto> setProductosProveedorComponentes = new HashSet<Producto>();
-			
-			ResultSet rsIdComponentes = crud.darConexion().createStatement().executeQuery("SELECT id_Componente FROM " + Proveedor.NOMBRE_RELACION_COMPONENTE + " WHERE id_Proveedor = '" + idProveedor + "'");
-			while(rsIdComponentes.next()){
-				String idComponente = rsIdComponentes.getString(1);
-				ResultSet rsIdInventarios = crud.darConexion().createStatement().executeQuery("SELECT idInventario FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " WHERE idComponente = '" + idComponente + "'");
+		Set<Producto> setProductosProveedorMateriasPrimas = new HashSet<Producto>();
+		
+		ResultSet rsIdMateriasPrimas = crud.darConexion().createStatement().executeQuery("SELECT id_materiaPrima FROM " + Proveedor.NOMBRE_RELACION_MATERIA_PRIMA + " WHERE id_Proveedor = '" + idProveedor + "'");
+		while(rsIdMateriasPrimas.next()){
+			String idMateriaPrima = rsIdMateriasPrimas.getString(1);
+			ResultSet rsIdRegistroMP = crud.darConexion().createStatement().executeQuery("SELECT id FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " WHERE idMateriaPrima = '" + idMateriaPrima + "'");
+			while(rsIdRegistroMP.next()){
+				String idRegMateriaPrima = rsIdRegistroMP.getString(1);
+				ResultSet rsIdInventarios = crud.darConexion().createStatement().executeQuery("SELECT idInventario FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " WHERE idRegistroMateriaPrima = '" + idRegMateriaPrima + "'");
 				while(rsIdInventarios.next()){
 					String idInventario = rsIdInventarios.getString(1);
 					ResultSet rsIdProductos = crud.darConexion().createStatement().executeQuery("SELECT idProducto FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " WHERE id = '" + idInventario + "'");
@@ -744,21 +723,41 @@ public class AplicacionWeb {
 							String nombre = rsProductos.getString(2);
 							int precio = rsProductos.getInt(3);
 							Producto producto = new Producto(id, nombre, precio);
-							setProductosProveedorComponentes.add(producto);
+							setProductosProveedorMateriasPrimas.add(producto);
 						}
 					}
 				}
-
+			}	
+		}
+		
+		Set<Producto> setProductosProveedorComponentes = new HashSet<Producto>();
+		
+		ResultSet rsIdComponentes = crud.darConexion().createStatement().executeQuery("SELECT id_Componente FROM " + Proveedor.NOMBRE_RELACION_COMPONENTE + " WHERE id_Proveedor = '" + idProveedor + "'");
+		while(rsIdComponentes.next()){
+			String idComponente = rsIdComponentes.getString(1);
+			ResultSet rsIdInventarios = crud.darConexion().createStatement().executeQuery("SELECT idInventario FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " WHERE idComponente = '" + idComponente + "'");
+			while(rsIdInventarios.next()){
+				String idInventario = rsIdInventarios.getString(1);
+				ResultSet rsIdProductos = crud.darConexion().createStatement().executeQuery("SELECT idProducto FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " WHERE id = '" + idInventario + "'");
+				while(rsIdProductos.next()){
+					String idProducto = rsIdProductos.getString(1);
+					ResultSet rsProductos = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Producto.NOMBRE + " WHERE id = '" + idProducto + "'");
+					while(rsProductos.next())
+					{
+						String id = rsProductos.getString(1);
+						String nombre = rsProductos.getString(2);
+						int precio = rsProductos.getInt(3);
+						Producto producto = new Producto(id, nombre, precio);
+						setProductosProveedorComponentes.add(producto);
+					}
+				}
 			}
-			ArrayList<Producto> productosProveedor = new ArrayList<Producto>();
-			productosProveedor.addAll(setProductosProveedorMateriasPrimas);
-			productosProveedor.addAll(setProductosProveedorComponentes);
-			return productosProveedor;
+
 		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
+		ArrayList<Producto> productosProveedor = new ArrayList<Producto>();
+		productosProveedor.addAll(setProductosProveedorMateriasPrimas);
+		productosProveedor.addAll(setProductosProveedorComponentes);
+		return productosProveedor;
 	}
 	
 	public ArrayList<Pedido> darPedidosProveedor(String idProveedor){
@@ -1000,7 +999,8 @@ public class AplicacionWeb {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try
 		{
-
+			Date dia = new Date();
+			aplicacionWeb.registrarPedido("Mangou", "2", 1, dia);
 		}
 		catch (Exception e)
 		{
