@@ -2,11 +2,13 @@ package Interfaz;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mundo.AplicacionWeb;
+import mundo.Proveedor;
 
 public class ServletRegistrarLlegadaMaterial extends ServletAbstract{
 
@@ -24,6 +26,10 @@ public class ServletRegistrarLlegadaMaterial extends ServletAbstract{
 				
 			String llegadaMaterial = request.getParameter("tipo");
 			
+			ArrayList<Proveedor> proveedores = new ArrayList<Proveedor>();
+			
+			proveedores = AplicacionWeb.getInstancia().darProveedores(ServletResultadoBusqueda.VERDADERO, ServletResultadoBusqueda.VERDADERO, ServletResultadoBusqueda.VERDADERO);
+			
 			respuesta.write( " <form method=\"POST\" action=\"registroMaterial.htm\">" );
 			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
 			respuesta.write( " <tr>" );
@@ -33,7 +39,8 @@ public class ServletRegistrarLlegadaMaterial extends ServletAbstract{
 				respuesta.write( " <td><h3>Fecha</h3></td>" );
 				respuesta.write( " <td><h3>Nombre</h3></td>" );
 				respuesta.write( " <td><h3>Unidad de Medida</h3></td>" );
-				respuesta.write( " <td><h3>Cantidad Inicial</h3></td>" );
+				respuesta.write( " <td><h3>Cantidad</h3></td>" );
+				respuesta.write( " <td><h3>Proveedor</h3></td>" );
 				respuesta.write( " </tr>" );
 				respuesta.write( " <tr>" );
 				respuesta.write( " <td><h4><input size=\"23\" type=\"hidden\" id=\"date\"/ name=\"fecha\"> " );
@@ -45,14 +52,21 @@ public class ServletRegistrarLlegadaMaterial extends ServletAbstract{
 				respuesta.write( " <td><input type=\"text\" name=\"nombre\" size=\"23\" class=\"normal\"></td>" );
 				respuesta.write( " <td><input type=\"text\" name=\"unidadMedida\" size=\"23\" class=\"normal\"></td>" );				
 				respuesta.write( " <td><input type=\"text\" name=\"cantInicial\" size=\"23\" class=\"normal\"></td>" );
-
+				respuesta.write( "<td>" );
+		        respuesta.write( "<select size=\"1\" name=\"idProveedor\" class=\"normal\" style=\"border: none;\">" );
+		        for (Proveedor proveedor : proveedores) {
+		        	respuesta.write( "<option value=\"" + proveedor.getId() + "\">" + proveedor.getId() + "</option>" );
+				}
+		        respuesta.write( "</select>" );
+		        respuesta.write( "</td>");
 
 			}
 			else
 			{
 				respuesta.write( " <td><h3>Fecha a Registrar</h3></td>" );
 				respuesta.write( " <td><h3>Nombre</h3></td>" );
-				respuesta.write( " <td><h3>Cantidad Inicial</h3></td>" );
+				respuesta.write( " <td><h3>Cantidad</h3></td>" );
+				respuesta.write( " <td><h3>Proveedor</h3></td>" );
 				respuesta.write( " </tr>" );
 				respuesta.write( " <tr>" );
 				respuesta.write( " <td><h4><input size=\"23\" type=\"hidden\" id=\"date\"/ name=\"fecha\"> " );
@@ -63,7 +77,13 @@ public class ServletRegistrarLlegadaMaterial extends ServletAbstract{
 				respuesta.write( " <form method=\"POST\" action=\"registroMaterial.htm\">" );
 				respuesta.write( " <td><input type=\"text\" name=\"nombre\" size=\"23\" class=\"normal\"></td>" );		
 				respuesta.write( " <td><input type=\"text\" name=\"cantInicial\" size=\"23\" class=\"normal\"></td>" );
-
+				respuesta.write( "<td>" );
+		        respuesta.write( "<select size=\"1\" name=\"idProveedor\" class=\"normal\" style=\"border: none;\">" );
+		        for (Proveedor proveedor : proveedores) {
+		        	respuesta.write( "<option value=\"" + proveedor.getId() + "\">" + proveedor.getId() + "</option>" );
+				}
+		        respuesta.write( "</select>" );
+		        respuesta.write( "</td>");
 			}
 			
 			respuesta.write( " </form>" );

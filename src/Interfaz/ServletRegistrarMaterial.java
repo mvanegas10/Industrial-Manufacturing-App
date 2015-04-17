@@ -26,6 +26,7 @@ public class ServletRegistrarMaterial extends ServletAbstract{
 		String nombre = request.getParameter("nombre");
 		String unidadMedida = request.getParameter("unidadMedida");
 		int cantInicial = Integer.parseInt(request.getParameter("cantInicial"));
+		String idProveedor = request.getParameter("idProveedor");
 		String fecha = "" + request.getParameter("fecha");
 		String tipo;
 		

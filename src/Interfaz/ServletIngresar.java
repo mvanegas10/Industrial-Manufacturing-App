@@ -32,8 +32,8 @@ public class ServletIngresar extends ServletAbstract{
 			String constrasenia = request.getParameter("contrasenia");
 			String primerLogin = request.getParameter("primerLogin");
 			ArrayList<Producto> productos = new ArrayList<Producto>();
-			String reingreso = "HOLA";
-			String tipo = "HOLA";
+			String reingreso = "";
+			String tipo = "";
 						
 			try
 			{
@@ -112,14 +112,14 @@ public class ServletIngresar extends ServletAbstract{
 //			Siguiente columna
 			
 			respuesta.write( "<td><table align=\"center\" width=\"50%\">" );
-			respuesta.write( "<tr>" );
+			respuesta.write( "<tr><form method=\"POST\" action=\"registroLlegadaMaterial.htm\">" );
 			respuesta.write( "<tr><td><table align=\"right\" style=\"padding-left: 5em;\" width=\"50%\"><h3 style=\"padding:0.5em;\"> Materiales</h3></td>" );
-			respuesta.write( "<td><select style=\"font-size: 20px;\" name=\"tipo\" size=\"1\"  class=\"normal\" \">" );
+			respuesta.write( "<td><select style=\"font-size: 16px;\" name=\"tipo\" size=\"1\"  class=\"normal\" \">" );
 			respuesta.write( "<option value=\"materiaPrima\">Materia Prima</option>" );
 			respuesta.write( "<option value=\"componente\">Componente</option>" );
 			respuesta.write( "</select></td></tr></table></td>" );
 			respuesta.write( "<tr>" );
-			respuesta.write( "<td><form method=\"POST\" action=\"registroLlegadaMaterial.htm\"><h4 align=\"left\"><input value=\"materiaPrima\" name=\"tipo\" type=\"hidden\"><input type=\"submit\" value=\"Registrar Material\" name=\"regMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+			respuesta.write( "<td><h4 align=\"left\"><input value=\"materiaPrima\" name=\"tipo\" type=\"hidden\"><input type=\"submit\" value=\"Registrar Material\" name=\"regMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr>" );
 			respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input value=\"darMaterial\" name=\"criterio\" type=\"hidden\"><h4><input type=\"submit\" value=\"Consultar Material\" name=\"consMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
