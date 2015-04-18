@@ -373,7 +373,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			        {
 			        	respuesta.write( "<tr><td align=\"left\"><h4 style=\"padding:1em;\"><input value=\"(" + proveedor.getMateriasPrimas().size() + ") Materias Primas\"  style=\"border: none;\" type=\"text\"\"></h4></td></tr>" );
 				        for (int i = 0; i < proveedor.getMateriasPrimas().size(); i++) {
-				        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"" + (i+1) + ". " + proveedor.getMateriasPrimas().get(i).getId() + "\" style=\"border: none;\" type=\"text\"\"></h4></td><td> <input value=\" : " + proveedor.getMateriasPrimas().get(i).getCantidadInicial() + " " + proveedor.getMateriasPrimas().get(i).getUnidadMedidad() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
+				        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"" + (i+1) + ". " + proveedor.getMateriasPrimas().get(i).getId() + "\" style=\"border: none;\" type=\"text\"\"></h4></td><td> <input value=\" : " + proveedor.getMateriasPrimas().get(i).getCantidadInicial() + " " + proveedor.getMateriasPrimas().get(i).getUnidadMedida() + "\" readonly=\"readonly\" style=\"width:100%; border: none; text-align:left;\"></td></tr>" );
 						}
 			        }
 			        if (proveedor.getComponentes().size() != 0)

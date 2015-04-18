@@ -2,7 +2,7 @@ package mundo;
 
 import java.util.ArrayList;
 
-public class Componente {
+public class Componente{
 	
 	//--------------------------------------------------
 	// ATRIBUTOS
@@ -10,9 +10,9 @@ public class Componente {
 	
 	public static final String NOMBRE = "COMPONENTES";
 	
-	public static final String[] COLUMNAS = {"id","cantidadInicial"};
+	public static final String[] COLUMNAS = {"id","unidadMedida","cantidadInicial"};
 	
-	public static final String[] TIPO = {"String","int"};
+	public static final String[] TIPO = {"String","String","int"};
 	
 	public static final String NOMBRE_REGISTRO_COMPONENTES = "registrosComponentes";
 	
@@ -22,15 +22,21 @@ public class Componente {
 	
 	private String id;
 	
+	private String unidadMedida;
+	
 	private int cantidadInicial;
+	
+	private String tipo;
 	
 	//--------------------------------------------------
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
-	public Componente(String pId, int pCantidadInicial) {
-		this.id = pId;
-		this.cantidadInicial = pCantidadInicial;
+	public Componente(String pId, String unidadMedida, int pCantidadInicial) {
+		id = pId;
+		unidadMedida = unidadMedida;
+		cantidadInicial = pCantidadInicial;
+		this.tipo = "Materia Prima";
 	}
 	
 	//--------------------------------------------------
@@ -53,6 +59,22 @@ public class Componente {
 		this.cantidadInicial = cantidadInicial;
 	}
 	
+	public String getUnidadMedida() {
+		return unidadMedida;
+	}
+
+	public void setUnidadMedida(String unidadMedida) {
+		this.unidadMedida = unidadMedida;
+	}
+	
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
 	public String toString(){
 		return "id: " + id + ", cantidad; " + cantidadInicial;
 	}

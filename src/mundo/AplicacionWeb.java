@@ -264,7 +264,7 @@ public class AplicacionWeb {
 	 * @throws Exception
 	 */
 	public void registrarComponente (String id, int cantidadInicial, String idProveedor) throws Exception {
-		String[] datosSimples = {id.toLowerCase(), Integer.toString(cantidadInicial)};
+		String[] datosSimples = {id.toLowerCase(),"unidades", Integer.toString(cantidadInicial)};
 		int cantidadActual = cantidadInicial;
 		
 		conexion.setAutoCommitFalso();
@@ -593,6 +593,20 @@ public class AplicacionWeb {
 		return rta;
 	}
 
+	public ArrayList<MateriaPrima> darMateriasPrimas (String tipo) throws Exception{
+		ArrayList<MateriaPrima> materiales = new ArrayList<MateriaPrima>();
+		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + MateriaPrima.NOMBRE + "");
+		while(rs.next())
+		{
+			String id = rs.getString(1);
+			String unidadMedida = rs.getString(2);
+			int cantidad = Integer.parseInt(rs.getString(3));
+			MateriaPrima material = new MateriaPrima(id, unidadMedida, cantidad);
+			materiales.add(material);
+		}
+		return materiales;
+	}
+	
 	/**
 	 * @param pedido
 	 * @param pedido1
@@ -765,8 +779,9 @@ public class AplicacionWeb {
 		while(rs.next())
 		{
 			String id = rs.getString(1);
-			int cantidad = rs.getInt(2);
-			Componente estacion = new Componente(id, cantidad);
+			String unidadMedida = rs.getString(2);
+			int cantidad = rs.getInt(3);
+			Componente estacion = new Componente(id,unidadMedida, cantidad);
 			rta.add(estacion);
 		}
 		return rta;
@@ -899,8 +914,9 @@ public class AplicacionWeb {
 			while(rs.next())
 			{
 				String id = rs.getString(1);
-				int cantidad = rs.getInt(2);
-				Componente estacion = new Componente(id, cantidad);
+				String unidadMedida = rs.getString(2);
+				int cantidad = rs.getInt(3);
+				Componente estacion = new Componente(id, unidadMedida, cantidad);
 				rta.add(estacion);
 			}
 		}
@@ -1029,8 +1045,9 @@ public class AplicacionWeb {
 				while(rs_1.next())
 				{
 					String id = rs_1.getString(1);
-					int cantidadInicial = rs_1.getInt(2);
-					Componente c = new Componente(id, cantidadInicial);
+					String unidadMedida = rs_1.getString(2);
+					int cantidadInicial = rs_1.getInt(3);
+					Componente c = new Componente(id, unidadMedida, cantidadInicial);
 					prov.addComponente(c);
 				}
 			}
@@ -1091,13 +1108,9 @@ public class AplicacionWeb {
 	 */
 	public static void main(String[] args) {
 		AplicacionWeb aplicacionWeb = getInstancia();
-		try
-		{
-			Date dia = new Date();
-			aplicacionWeb.registrarPedido("Mangou", "2", 1, dia);
+		try{
 		}
-		catch (Exception e)
-		{
+		catch (Exception e){
 			e.printStackTrace();
 		}
 	}

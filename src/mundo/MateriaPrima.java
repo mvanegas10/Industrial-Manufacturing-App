@@ -22,9 +22,11 @@ public class MateriaPrima {
 	
 	private String id;
 	
-	private String unidadMedidad;
+	private String unidadMedida;
 	
 	private int cantidadInicial;
+	
+	private String tipo;
 	
 	//--------------------------------------------------
 	// CONSTRUCTOR
@@ -32,8 +34,9 @@ public class MateriaPrima {
 
 	public MateriaPrima(String pId, String pUnidadMedidad, int pCantidadInicial) {
 		this.id = pId;
-		this.unidadMedidad = pUnidadMedidad;
+		this.unidadMedida = pUnidadMedidad;
 		this.cantidadInicial = pCantidadInicial;
+		this.tipo = "Materia Prima";
 	}
 	
 	//--------------------------------------------------
@@ -48,12 +51,13 @@ public class MateriaPrima {
 		this.id = id;
 	}
 
-	public String getUnidadMedidad() {
-		return unidadMedidad;
+	public String getUnidadMedida() {
+		return unidadMedida;
 	}
 
-	public void setUnidadMedidad(String unidadMedidad) {
-		this.unidadMedidad = unidadMedidad;
+	public void setUnidadMedida(String unidadMedida) {
+		this.unidadMedida = unidadMedida;
+		
 	}
 
 	public int getCantidadInicial() {
@@ -63,8 +67,17 @@ public class MateriaPrima {
 	public void setCantidadInicial(int cantidadInicial) {
 		this.cantidadInicial = cantidadInicial;
 	}
+	
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
 
 	public String toString(){
-		return "id: " + id + ", unidadMedida: " + unidadMedidad + ", cantidad; " + cantidadInicial;
+		return "id: " + id + ", unidadMedida: " + unidadMedida + ", cantidad; " + cantidadInicial;
 	}
+
 }

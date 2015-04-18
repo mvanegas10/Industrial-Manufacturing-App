@@ -259,7 +259,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE componentes (id varchar(32), cantidadInicial int, PRIMARY KEY (id))" );
+				s.execute( "CREATE TABLE componentes (id varchar(32), unidadMedida varchar(32), cantidadInicial int, PRIMARY KEY (id))" );
 				System.out.println("Se cre� la tabla componentes");
 			}
 			else
