@@ -137,9 +137,21 @@ public class AplicacionWeb {
 	 */
 	public void registrarUsuario (String login, String password, String tipo) throws Exception{
 		//		columnas de Usuario: login, password, tipo, nombre, direccion, telefono, ciudad, idRepLegal
-		String[] datos = {login, password, tipo, "", "", Integer.toString(0), "", ""}; 
-		crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
-		usuarioActual = login;
+		
+		conexion.setAutoCommitFalso();
+		Savepoint save = conexion.darConexion().setSavepoint();
+		
+		try{
+			String[] datos = {login, password, tipo, "", "", Integer.toString(0), "", ""}; 
+			crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
+			usuarioActual = login;
+		}
+		catch (Exception rollBack){
+			conexion.darConexion().rollback(save);
+			throw new Exception();
+		}
+		conexion.darConexion().commit();
+		conexion.setAutoCommitVerdadero();
 	}
 	
 	/**
@@ -156,7 +168,19 @@ public class AplicacionWeb {
 		System.out.println("El usuario " + login + "ingresa por primera vez. " + nombre + direccion + telefono + ciudad + idRepLegal);
 		String sql = "UPDATE " + Usuario.NOMBRE + " SET nombre = '" + nombre + "', direccion = '" + direccion + "', telefono = " + telefono + ", ciudad = '" + ciudad + "', idRepLegal = '" + idRepLegal + "' WHERE login = '" + login + "'";
 		System.out.println(sql);
-		crud.darConexion().createStatement().executeQuery(sql);
+		
+		conexion.setAutoCommitFalso();
+		Savepoint save = conexion.darConexion().setSavepoint();
+		
+		try{
+			crud.darConexion().createStatement().executeQuery(sql);
+		}
+		catch (Exception rollBack){
+			conexion.darConexion().rollback(save);
+			throw new Exception();
+		}
+		conexion.darConexion().commit();
+		conexion.setAutoCommitVerdadero();
 	}
 	
 	/**
@@ -170,8 +194,21 @@ public class AplicacionWeb {
 	public void registrarProveedor (String idProveedor, String direccion, int telefono, String ciudad, String idRepLegal) throws Exception{
 		String[] id = {idProveedor};
 		String[] datosSimples = {id[0],direccion, Integer.toString(telefono) ,ciudad,idRepLegal};
-		crud.insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO, datosSimples);
-	}
+			
+		conexion.setAutoCommitFalso();
+		Savepoint save = conexion.darConexion().setSavepoint();
+		
+		try{
+			crud.insertarTupla(Proveedor.NOMBRE, Proveedor.COLUMNAS, Proveedor.TIPO, datosSimples);
+		}
+		catch (Exception rollBack){
+			conexion.darConexion().rollback(save);
+			throw new Exception();
+		}
+		conexion.darConexion().commit();
+		conexion.setAutoCommitVerdadero();
+		
+		}
 
 	/**
 	 * @param id
@@ -182,30 +219,43 @@ public class AplicacionWeb {
 	public void registrarMateriaPrima (String id, String unidadMedida, int cantidadInicial, String idProveedor) throws Exception{
 		String[] datosSimples = {id.toLowerCase(), unidadMedida, Integer.toString(cantidadInicial)};
 		int cantidadActual = cantidadInicial;
-		try{
-			cantidadActual+= Integer.parseInt((crud.darSubTabla(MateriaPrima.NOMBRE, "cantidadInicial", "UPPER(id)=UPPER('"+id+"')").get(0)));
-			String[] columnas = new String[1];
-			columnas[0] = "cantidadInicial";
-			String[] cantidad = new String[1];
-			cantidad[0] = (Integer.toString(cantidadInicial + cantidadActual));
-			crud.actualizarTupla(MateriaPrima.NOMBRE,columnas,cantidad, "UPPER(id)= UPPER('"+id+"')");
-			
-			ArrayList<String> relacion = crud.darSubTabla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, "id_Proveedor", "id_Proveedor = '" + idProveedor + "' AND UPPER(id_MateriaPrima) = UPPER('" + id + "')");
-			if (relacion.isEmpty())
-			{
+		
+		conexion.setAutoCommitFalso();
+		Savepoint save = conexion.darConexion().setSavepoint();
+		
+		try
+		{
+			try{
+				cantidadActual+= Integer.parseInt((crud.darSubTabla(MateriaPrima.NOMBRE, "cantidadInicial", "UPPER(id)=UPPER('"+id+"')").get(0)));
+				String[] columnas = new String[1];
+				columnas[0] = "cantidadInicial";
+				String[] cantidad = new String[1];
+				cantidad[0] = (Integer.toString(cantidadInicial + cantidadActual));
+				crud.actualizarTupla(MateriaPrima.NOMBRE,columnas,cantidad, "UPPER(id)= UPPER('"+id+"')");
+				
+				ArrayList<String> relacion = crud.darSubTabla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, "id_Proveedor", "id_Proveedor = '" + idProveedor + "' AND UPPER(id_MateriaPrima) = UPPER('" + id + "')");
+				if (relacion.isEmpty())
+				{
+					String[] datosRelacion = {idProveedor,id.toLowerCase()}; 
+					crud.insertarTupla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, Proveedor.COLUMNAS_RELACION_MATERIA_PRIMA, Proveedor.TIPO_RELACION_MATERIA_PRIMA, datosRelacion);
+				}
+			}
+			catch(Exception e){
+				crud.insertarTupla(MateriaPrima.NOMBRE, MateriaPrima.COLUMNAS, MateriaPrima.TIPO, datosSimples);
 				String[] datosRelacion = {idProveedor,id.toLowerCase()}; 
 				crud.insertarTupla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, Proveedor.COLUMNAS_RELACION_MATERIA_PRIMA, Proveedor.TIPO_RELACION_MATERIA_PRIMA, datosRelacion);
 			}
+			for (int i = 0; i < cantidadInicial; i++) {
+				String[] datosRegistro = {Integer.toString(darContadorId()), id.toLowerCase()};
+				crud.insertarTupla(MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.COLUMNAS_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.TIPO_REGISTRO_MATERIAS_PRIMAS, datosRegistro);
+			}
 		}
-		catch(Exception e){
-			crud.insertarTupla(MateriaPrima.NOMBRE, MateriaPrima.COLUMNAS, MateriaPrima.TIPO, datosSimples);
-			String[] datosRelacion = {idProveedor,id.toLowerCase()}; 
-			crud.insertarTupla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, Proveedor.COLUMNAS_RELACION_MATERIA_PRIMA, Proveedor.TIPO_RELACION_MATERIA_PRIMA, datosRelacion);
+		catch (Exception rollBack){
+			conexion.darConexion().rollback(save);
+			throw new Exception();
 		}
-		for (int i = 0; i < cantidadInicial; i++) {
-			String[] datosRegistro = {Integer.toString(darContadorId()), id.toLowerCase()};
-			crud.insertarTupla(MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.COLUMNAS_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.TIPO_REGISTRO_MATERIAS_PRIMAS, datosRegistro);
-		}
+		conexion.darConexion().commit();
+		conexion.setAutoCommitVerdadero();
 	}
 
 	/**
@@ -216,30 +266,43 @@ public class AplicacionWeb {
 	public void registrarComponente (String id, int cantidadInicial, String idProveedor) throws Exception {
 		String[] datosSimples = {id.toLowerCase(), Integer.toString(cantidadInicial)};
 		int cantidadActual = cantidadInicial;
-		try{
-			cantidadActual+= Integer.parseInt((crud.darSubTabla(Componente.NOMBRE, "cantidadInicial", "UPPER(id)=UPPER('"+id+"')").get(0)));
-			String[] columnas = new String[1];
-			columnas[0] = "cantidadInicial";
-			String[] cantidad = new String[1];
-			cantidad[0] = (Integer.toString(cantidadInicial + cantidadActual));
-			crud.actualizarTupla(Componente.NOMBRE,columnas,cantidad, "UPPER(id)=UPPER('"+id+"')");
-			
-			ArrayList<String> relacion = crud.darSubTabla(Proveedor.NOMBRE_RELACION_COMPONENTE, "id_Proveedor", "id_Proveedor = '" + idProveedor + "' AND UPPER(id_Componente) = UPPER('" + id + "')");
-			if (relacion.isEmpty())
-			{
+		
+		conexion.setAutoCommitFalso();
+		Savepoint save = conexion.darConexion().setSavepoint();
+		
+		try
+		{
+			try{
+				cantidadActual+= Integer.parseInt((crud.darSubTabla(Componente.NOMBRE, "cantidadInicial", "UPPER(id)=UPPER('"+id+"')").get(0)));
+				String[] columnas = new String[1];
+				columnas[0] = "cantidadInicial";
+				String[] cantidad = new String[1];
+				cantidad[0] = (Integer.toString(cantidadInicial + cantidadActual));
+				crud.actualizarTupla(Componente.NOMBRE,columnas,cantidad, "UPPER(id)=UPPER('"+id+"')");
+				
+				ArrayList<String> relacion = crud.darSubTabla(Proveedor.NOMBRE_RELACION_COMPONENTE, "id_Proveedor", "id_Proveedor = '" + idProveedor + "' AND UPPER(id_Componente) = UPPER('" + id + "')");
+				if (relacion.isEmpty())
+				{
+					String[] datosRelacion = {idProveedor,id.toLowerCase()}; 
+					crud.insertarTupla(Proveedor.NOMBRE_RELACION_COMPONENTE, Proveedor.COLUMNAS_RELACION_COMPONENTE, Proveedor.TIPO_RELACION_COMPONENTE, datosRelacion);
+				}
+			}
+			catch(Exception e){
+				crud.insertarTupla(Componente.NOMBRE, Componente.COLUMNAS, Componente.TIPO, datosSimples);
 				String[] datosRelacion = {idProveedor,id.toLowerCase()}; 
 				crud.insertarTupla(Proveedor.NOMBRE_RELACION_COMPONENTE, Proveedor.COLUMNAS_RELACION_COMPONENTE, Proveedor.TIPO_RELACION_COMPONENTE, datosRelacion);
 			}
+			for (int i = 0; i < cantidadInicial; i++) {
+				String[] datosRegistro = {Integer.toString(darContadorId()), id.toLowerCase()};
+				crud.insertarTupla(Componente.NOMBRE_REGISTRO_COMPONENTES, Componente.COLUMNAS_REGISTRO_COMPONENTES, Componente.TIPO_REGISTRO_COMPONENTES, datosRegistro);
+			}
 		}
-		catch(Exception e){
-			crud.insertarTupla(Componente.NOMBRE, Componente.COLUMNAS, Componente.TIPO, datosSimples);
-			String[] datosRelacion = {idProveedor,id.toLowerCase()}; 
-			crud.insertarTupla(Proveedor.NOMBRE_RELACION_COMPONENTE, Proveedor.COLUMNAS_RELACION_COMPONENTE, Proveedor.TIPO_RELACION_COMPONENTE, datosRelacion);
+		catch (Exception rollBack){
+			conexion.darConexion().rollback(save);
+			throw new Exception();
 		}
-		for (int i = 0; i < cantidadInicial; i++) {
-			String[] datosRegistro = {Integer.toString(darContadorId()), id.toLowerCase()};
-			crud.insertarTupla(Componente.NOMBRE_REGISTRO_COMPONENTES, Componente.COLUMNAS_REGISTRO_COMPONENTES, Componente.TIPO_REGISTRO_COMPONENTES, datosRegistro);
-		}
+		conexion.darConexion().commit();
+		conexion.setAutoCommitVerdadero();
 	}
 
 	/**
@@ -251,8 +314,19 @@ public class AplicacionWeb {
 	public void registrarProducto (String id, String nombre, int precio) throws Exception{
 		String[] id1 = {id};
 		String[] datos = {id, nombre, Integer.toString(precio)};
-		crud.insertarTupla(Producto.NOMBRE, Producto.COLUMNAS, Producto.TIPO, datos);
-		System.out.println("Se registro " + datos);
+		conexion.setAutoCommitFalso();
+		Savepoint save = conexion.darConexion().setSavepoint();
+		
+		try{
+			crud.insertarTupla(Producto.NOMBRE, Producto.COLUMNAS, Producto.TIPO, datos);
+			System.out.println("Se registro " + datos);
+		}
+		catch (Exception rollBack){
+			conexion.darConexion().rollback(save);
+			throw new Exception();
+		}
+		conexion.darConexion().commit();
+		conexion.setAutoCommitVerdadero();
 	}
 
 	/**
@@ -268,7 +342,19 @@ public class AplicacionWeb {
 	 */
 	public void registrarEtapaProduccion  (String id, String idProducto, String idEstacion, String idMateriaPrima, String idComponente, int duracion, int numeroSecuencia, String idAnterior) throws Exception{
 		String[] datos = {id, idProducto, idEstacion, idMateriaPrima, idComponente, Integer.toString(duracion), Integer.toString(numeroSecuencia), idAnterior};
-		crud.insertarTupla(Etapa.NOMBRE, Etapa.COLUMNAS, Etapa.TIPO, datos);
+		conexion.setAutoCommitFalso();
+		Savepoint save = conexion.darConexion().setSavepoint();
+		
+		try{
+			crud.insertarTupla(Etapa.NOMBRE, Etapa.COLUMNAS, Etapa.TIPO, datos);
+		}
+		catch (Exception rollBack){
+			conexion.darConexion().rollback(save);
+			throw new Exception();
+		}
+		conexion.darConexion().commit();
+		conexion.setAutoCommitVerdadero();
+		
 	}
 	
 	/**
@@ -310,7 +396,7 @@ public class AplicacionWeb {
 			}
 			catch(Exception e){
 				conexion.darConexion().rollback(save);
-				e.printStackTrace();
+				throw new Exception();
 			}
 		}
 		conexion.darConexion().commit();
@@ -980,7 +1066,7 @@ public class AplicacionWeb {
 		}
 		catch(Exception e){
 			conexion.darConexion().rollback(save);
-			e.printStackTrace();
+			throw new Exception();
 		}
 		conexion.darConexion().commit();
 		conexion.setAutoCommitVerdadero();
