@@ -62,7 +62,7 @@ public class ServletRegistrarPedido extends ServletAbstract{
 		        for (Pedido ped : pedidos) {
 		        	System.out.println("El tamaño del arreglo de pedidos es" + pedidos.size());
 		        	String producto = AplicacionWeb.getInstancia().darNombreProducto(ped.getIdProducto());
-		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+		        	respuesta.write( "<form method=\"POST\" action=\"eliminar.htm\">" );
 		        	respuesta.write( "<tr>" );
 			        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
 			        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );

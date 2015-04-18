@@ -35,11 +35,11 @@ public class ServletRegistrarMaterial extends ServletAbstract{
 			if (!unidadMedida.equals(""))
 			{
 				tipo = "Materia Prima";
-				AplicacionWeb.getInstancia().registrarMateriaPrima(nombre, unidadMedida, cantInicial);
+				AplicacionWeb.getInstancia().registrarMateriaPrima(nombre, unidadMedida, cantInicial, idProveedor);
 			}
 			else{
 				tipo = "Componente";
-				AplicacionWeb.getInstancia().registrarComponente(nombre, cantInicial);
+				AplicacionWeb.getInstancia().registrarComponente(nombre, cantInicial, idProveedor);
 			}
 			respuesta.write( " <table align=\"center\" bgcolor=\"#ecf0f1\" width=\"50%\">" );
 			respuesta.write( " <tr>" );

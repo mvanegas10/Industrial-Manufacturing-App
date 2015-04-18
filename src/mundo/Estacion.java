@@ -26,16 +26,16 @@ public class Estacion {
 	
 	private String nombre;
 	
-	private ArrayList<Etapa> etapasProduccion;
-	
+	private String tipo;
+		
 	//--------------------------------------------------
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
-	public Estacion(String pId, String pNombre) {
+	public Estacion(String pId, String pNombre, String pTipo) {
 		this.id = pId;
 		this.nombre = pNombre;
-		this.etapasProduccion = new ArrayList<Etapa>();
+		this.tipo = pTipo;
 	}
 	
 	//--------------------------------------------------
@@ -58,11 +58,13 @@ public class Estacion {
 		this.nombre = idNombre;
 	}
 
-	public ArrayList<Etapa> getEtapasProduccion() {
-		return etapasProduccion;
+	public String getTipo() {
+		return tipo;
 	}
 
-	public void setEtapasProduccion(ArrayList<Etapa> etapasProduccion) {
-		this.etapasProduccion = etapasProduccion;
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
+	
+	
 }

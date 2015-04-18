@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import mundo.AplicacionWeb;
 import mundo.Componente;
+import mundo.Estacion;
 import mundo.MateriaPrima;
 import mundo.Pedido;
 import mundo.Producto;
@@ -55,8 +56,8 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		else if (criterio.equals("consultarPedidos"))
 			consultarPedidos(request, respuesta);
 		
-		else if(criterio.equals("eliminarPedido"))
-			eliminarPedido(request, respuesta);
+		else if (criterio.equals("darEstaciones"))
+			darEstaciones(request, respuesta);
 	}
 	
 	public void noHayPedidos(String login, PrintWriter respuesta){
@@ -112,7 +113,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		        catch(Exception e4){	
 		        }
 		        respuesta.write( "</tr>" );
-		        i+=4;
+		        i+=3;
 	        }
 	        respuesta.write( "</table>" );
 		}
@@ -196,7 +197,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
         		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
 		        for (Pedido ped : pedidos) {
 		        	String producto = AplicacionWeb.getInstancia().darNombreProducto(ped.getIdProducto());
-		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+		        	respuesta.write( "<form method=\"POST\" action=\"eliminar.htm\">" );
 		        	respuesta.write( "<tr>" );
 			        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
 			        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
@@ -546,57 +547,41 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		}
 	}
 	
-	public void eliminarPedido (HttpServletRequest request, PrintWriter respuesta){
-		String login = request.getParameter("login");
-		String idPedido = request.getParameter("idPedido");
-		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+	public void darEstaciones (HttpServletRequest request, PrintWriter respuesta){
+		ArrayList<Estacion> estaciones = new ArrayList<Estacion>();
 		try
 		{
-			AplicacionWeb.getInstancia().eliminarPedidoCliente(login, idPedido);
-		}
-		catch (Exception e)
-		{
-			error(respuesta);
-		}
-		try 
-        {
-        	pedidos = AplicacionWeb.getInstancia().darPedidosCliente(login);
-        	if (pedidos.size() != 0)
-	        {
-        		respuesta.write( "<h4 align=\"center\">Tienes registrados " + pedidos.size() + " pedidos en total:</h4>" );
-        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
-		        for (Pedido ped : pedidos) {
-		        	String producto = AplicacionWeb.getInstancia().darNombreProducto(ped.getIdProducto());
+			estaciones = AplicacionWeb.getInstancia().darEstaciones();
+			if (!estaciones.isEmpty()){
+				respuesta.write( "<h4 align=\"center\">ProdAndes tiene registrados " + estaciones.size() + " estaciones en total:</h4>" );
+        		respuesta.write( "<form method=\"POST\" action=\"eliminar.htm\"><input name=\"criterio\" value=\"consultarPedidos\" type=\"hidden\">" );
+        		respuesta.write( "<hr>" );
+				respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=20%>" );
+		        for (Estacion estacion: estaciones) {
 		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
-		        	respuesta.write( "<tr>" );
-			        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
-			        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
-			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto Pedido: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + producto + "</td></tr>" );
-			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Unidades Pedidas: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + ped.getCantidad() + "</td></tr>" );
-			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (ped.getFechaPedido().toLocaleString()).substring(0, 10) + "</td></tr>" );
-			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (ped.getFechaEntrega().toLocaleString()).substring(0, 10) + "</td></tr>" );
-			        respuesta.write( "<tr><td align=\"right\"><input value=" + ped.getId() + " name=\"idPedido\" type=\"hidden\"><input value=" + login + " name=\"login\" type=\"hidden\"><input value=\"eliminarPedido\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Pedido\" size=\"53\" name=\"eliminar\" type=\"submit\"></td></tr>" );
-			        respuesta.write( "</table></td>" );
-			        respuesta.write( "</tr>" );
+		        	respuesta.write( "<tr><td><h3>Estacion: " + estacion.getId() + " -  Tipo: " + estacion.getTipo() + "</h3></td></tr>" );
+			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Estacion: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getId() + "</td></tr>" );
+			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getNombre() + "</td></tr>" );
+			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Tipo: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getTipo() + "</td></tr>" );
+			        respuesta.write( "<tr><td align=\"right\"><input value=\"eliminarEstacion\" name=\"criterio\" type=\"hidden\"><input value=\"Eliminar Estacion\" name=\"eliEsta\" type=\"submit\"></td></tr>");
 			        respuesta.write( "<tr></tr>" );
 			        respuesta.write( "</form>" );
-				}
+		        }
 		        respuesta.write( "</table>" );
-	        }
-        	else
-        		noHayPedidos(login, respuesta);
-        }
-		catch (Exception e)
-        {
-        	noHayPedidos(login, respuesta);
-        }
+			}
+			else
+				respuesta.write( "<h3 align=\"center\">No hay estaciones registradas en ProdAndes.</h3>" );			
+		}
+		catch (Exception e){
+			respuesta.write( "<td><h3 align=\"center\">No hay estaciones registradas en ProdAndes.</h3></td>" );
+		}
 	}
 	
 	public void error(PrintWriter respuesta){
 		
 		respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
 	    respuesta.write( "<tr>" );
-	    respuesta.write( "<td><h3>Oops! Hubo un error, lo sentimos, vuelve a intentarlo nuevamente.</FONT></td>" );
+	    respuesta.write( "<td><h3>Oops! Hubo un error, lo sentimos, vuelve a intentarlo nuevamente.</h3></td>" );
 	    respuesta.write( "</tr>" );
 	    respuesta.write( "</table>" );
 			

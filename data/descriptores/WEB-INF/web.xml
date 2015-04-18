@@ -56,6 +56,10 @@
   <servlet-name>Producto</servlet-name>
   <servlet-class>Interfaz.ServletProducto</servlet-class>
  </servlet>
+ <servlet>
+  <servlet-name>Eliminar</servlet-name>
+  <servlet-class>Interfaz.ServletEliminar</servlet-class>
+ </servlet>
  <!-- MAPPING -->
  <servlet-mapping>
   <servlet-name>Ingreso</servlet-name>
@@ -108,6 +112,10 @@
  <servlet-mapping>
   <servlet-name>Producto</servlet-name>
   <url-pattern>/mostrarProducto.htm</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>Eliminar</servlet-name>
+  <url-pattern>/eliminar.htm</url-pattern>
  </servlet-mapping>
  <login-config>
   <auth-method>BASIC</auth-method>

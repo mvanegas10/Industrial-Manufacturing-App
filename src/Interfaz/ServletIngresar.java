@@ -148,7 +148,24 @@ public class ServletIngresar extends ServletAbstract{
 			
 //			Siguiente Fila
 			
+			respuesta.write( "<td>" );
+			respuesta.write( "<table align=\"right\" width=\"30%\">" );
 			respuesta.write( "<tr>" );
+			respuesta.write( "<td><h3> Estaciones</h3></td>" );
+			respuesta.write( "</tr>" );
+			respuesta.write( "<tr>" );
+			respuesta.write( "<td><form method=\"POST\" action=\"registrarEstacion.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Estacion\" name=\"regEst\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+			respuesta.write( "</tr>" );
+			respuesta.write( "<tr>" );
+			respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input type=\"hidden\" value=\"darEstaciones\" name=\"criterio\"><input type=\"submit\" value=\"Consultar Estaciones\" name=\"consEst\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+			respuesta.write( "</tr>" );
+			respuesta.write( "<tr></tr>" );
+			respuesta.write( "</table>" );
+			respuesta.write( "</td>" );
+			
+//			Siguiente columna
+						
+			respuesta.write( "<td>" );
 			respuesta.write( "<td><table align=\"left\" width=\"30%\">" );
 			respuesta.write( "<tr>" );
 			respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Clientes</h3></td>" );
@@ -173,24 +190,7 @@ public class ServletIngresar extends ServletAbstract{
 			respuesta.write( "</table>" );
 			respuesta.write( "</td>" );
 			
-//			Siguiente columna
-			
-			respuesta.write( "<td>" );
-			respuesta.write( "<table align=\"right\" width=\"30%\">" );
-//			respuesta.write( "<tr>" );
-//			respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Productos</h3></td>" );
-//			respuesta.write( "</tr>" );
-//			respuesta.write( "<tr>" );
-//			respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Producto\" name=\"regProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
-//			respuesta.write( "</tr>" );
-//			respuesta.write( "<tr>" );
-//			respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Productos\" name=\"consProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
-//			respuesta.write( "</tr>" );
-//			respuesta.write( "<tr></tr>" );
-			respuesta.write( "</table>" );
-			respuesta.write( "</td>" );
-			respuesta.write( "</tr>" );
-			
+			respuesta.write("</tr>");
 			respuesta.write( "</table>" );
 		}
 		else
@@ -273,7 +273,7 @@ public class ServletIngresar extends ServletAbstract{
 			        catch(Exception e4){	
 			        }
 			        respuesta.write( "</tr>" );
-			        i+=4;
+			        i+=3;
 		        }
 		        respuesta.write( "</table>" );
 			}
