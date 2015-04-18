@@ -32,7 +32,7 @@ public class ServletRegistrarMaterial extends ServletAbstract{
 		
 		try
 		{			
-			if (!unidadMedida.equals(""))
+			if (unidadMedida != null)
 			{
 				tipo = "Materia Prima";
 				AplicacionWeb.getInstancia().registrarMateriaPrima(nombre, unidadMedida, cantInicial, idProveedor);

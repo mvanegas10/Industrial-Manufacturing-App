@@ -336,6 +336,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				}
 			}
 			proveedores = AplicacionWeb.getInstancia().darProveedores(filtroProveedor,filtroMateria,filtroComponente);
+			System.out.println(proveedores.size());
 			if (proveedores.size() != 0)
 	        {
 				
@@ -397,6 +398,8 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		}
 		catch (Exception e)
 		{
+			System.out.println("llega al catch");
+			e.printStackTrace();
 			respuesta.write( "<h4 align=\"center\">No hay proveedores registrados en ProdAndes</h4>" );
 		}
 	}

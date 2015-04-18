@@ -20,6 +20,10 @@ public class AplicacionWeb {
 	//--------------------------------------------------
 	// ATRIBUTOS
 	//--------------------------------------------------
+	
+	public static final String VERDADERO = "'1'='1'"; 
+	
+	public static final String FALSO = "'1'='2'"; 
 
 	public static final String ID = "generadorId";
 
@@ -52,9 +56,9 @@ public class AplicacionWeb {
 	public AplicacionWeb() {
 		conexion = new ConexionDAO();
 		conexion.iniciarConexion();
-		//conexion.crearTablas();
+//		conexion.crearTablas();
 		crud = new CRUD(conexion);
-		//poblarTablas();
+//		poblarTablas();
 		try
 		{
 			Statement s = crud.darConexion().createStatement();
@@ -176,32 +180,30 @@ public class AplicacionWeb {
 	 * @throws Exception
 	 */
 	public void registrarMateriaPrima (String id, String unidadMedida, int cantidadInicial, String idProveedor) throws Exception{
-		String[] datosSimples = {id, unidadMedida, Integer.toString(cantidadInicial)};
+		String[] datosSimples = {id.toLowerCase(), unidadMedida, Integer.toString(cantidadInicial)};
 		int cantidadActual = cantidadInicial;
 		try{
-			ArrayList<String> resultado = new ArrayList<String>();
-			resultado = crud.darSubTabla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, "id_proveedor", "id_proveedor = '" + idProveedor + "' AND id_materiaPrima = '" + id + "'");
-			if (resultado.isEmpty()){
-				String[] datosRelacion = {idProveedor,id}; 
-				crud.insertarTupla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, Proveedor.COLUMNAS_RELACION_MATERIA_PRIMA, Proveedor.TIPO_RELACION_MATERIA_PRIMA, datosRelacion);
-			}
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
-		try{
-			cantidadActual+= Integer.parseInt((crud.darSubTabla(MateriaPrima.NOMBRE, "cantidadInicial", "id='"+id+"'").get(0)));
+			cantidadActual+= Integer.parseInt((crud.darSubTabla(MateriaPrima.NOMBRE, "cantidadInicial", "UPPER(id)=UPPER('"+id+"')").get(0)));
 			String[] columnas = new String[1];
 			columnas[0] = "cantidadInicial";
 			String[] cantidad = new String[1];
 			cantidad[0] = (Integer.toString(cantidadInicial + cantidadActual));
-			crud.actualizarTupla(MateriaPrima.NOMBRE,columnas,cantidad, "id= '"+id+"'");
+			crud.actualizarTupla(MateriaPrima.NOMBRE,columnas,cantidad, "UPPER(id)= UPPER('"+id+"')");
+			
+			ArrayList<String> relacion = crud.darSubTabla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, "id_Proveedor", "id_Proveedor = '" + idProveedor + "' AND UPPER(id_MateriaPrima) = UPPER('" + id + "')");
+			if (relacion.isEmpty())
+			{
+				String[] datosRelacion = {idProveedor,id.toLowerCase()}; 
+				crud.insertarTupla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, Proveedor.COLUMNAS_RELACION_MATERIA_PRIMA, Proveedor.TIPO_RELACION_MATERIA_PRIMA, datosRelacion);
+			}
 		}
 		catch(Exception e){
 			crud.insertarTupla(MateriaPrima.NOMBRE, MateriaPrima.COLUMNAS, MateriaPrima.TIPO, datosSimples);
+			String[] datosRelacion = {idProveedor,id.toLowerCase()}; 
+			crud.insertarTupla(Proveedor.NOMBRE_RELACION_MATERIA_PRIMA, Proveedor.COLUMNAS_RELACION_MATERIA_PRIMA, Proveedor.TIPO_RELACION_MATERIA_PRIMA, datosRelacion);
 		}
 		for (int i = 0; i < cantidadInicial; i++) {
-			String[] datosRegistro = {Integer.toString(darContadorId()), id};
+			String[] datosRegistro = {Integer.toString(darContadorId()), id.toLowerCase()};
 			crud.insertarTupla(MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.COLUMNAS_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.TIPO_REGISTRO_MATERIAS_PRIMAS, datosRegistro);
 		}
 	}
@@ -212,32 +214,31 @@ public class AplicacionWeb {
 	 * @throws Exception
 	 */
 	public void registrarComponente (String id, int cantidadInicial, String idProveedor) throws Exception {
-		String[] datosSimples = {id, Integer.toString(cantidadInicial)};
+		String[] datosSimples = {id.toLowerCase(), Integer.toString(cantidadInicial)};
 		int cantidadActual = cantidadInicial;
 		try{
-			ArrayList<String> resultado = new ArrayList<String>();
-			resultado = crud.darSubTabla(Proveedor.NOMBRE_RELACION_COMPONENTE, "id_proveedor", "id_proveedor = '" + idProveedor + "' AND id_componente = '" + id + "'");
-			if (resultado.isEmpty()){
-				String[] datosRelacion = {idProveedor,id}; 
-				crud.insertarTupla(Proveedor.NOMBRE_RELACION_COMPONENTE, Proveedor.COLUMNAS_RELACION_COMPONENTE, Proveedor.TIPO_RELACION_COMPONENTE, datosRelacion);
-			}
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
-		try{
-			cantidadActual+= Integer.parseInt((crud.darSubTabla(Componente.NOMBRE, "cantidadInicial", "id="+id).get(0)));
+			cantidadActual+= Integer.parseInt((crud.darSubTabla(Componente.NOMBRE, "cantidadInicial", "UPPER(id)=UPPER('"+id+"')").get(0)));
 			String[] columnas = new String[1];
 			columnas[0] = "cantidadInicial";
 			String[] cantidad = new String[1];
 			cantidad[0] = (Integer.toString(cantidadInicial + cantidadActual));
-			crud.actualizarTupla(MateriaPrima.NOMBRE,columnas,cantidad, "id="+id);
+			crud.actualizarTupla(Componente.NOMBRE,columnas,cantidad, "UPPER(id)=UPPER('"+id+"')");
+			
+			ArrayList<String> relacion = crud.darSubTabla(Proveedor.NOMBRE_RELACION_COMPONENTE, "id_Proveedor", "id_Proveedor = '" + idProveedor + "' AND UPPER(id_Componente) = UPPER('" + id + "')");
+			if (relacion.isEmpty())
+			{
+				String[] datosRelacion = {idProveedor,id.toLowerCase()}; 
+				crud.insertarTupla(Proveedor.NOMBRE_RELACION_COMPONENTE, Proveedor.COLUMNAS_RELACION_COMPONENTE, Proveedor.TIPO_RELACION_COMPONENTE, datosRelacion);
+			}
 		}
 		catch(Exception e){
-			crud.insertarTupla(Componente.NOMBRE, Componente.COLUMNAS, Componente.TIPO, datosSimples);		}
+			crud.insertarTupla(Componente.NOMBRE, Componente.COLUMNAS, Componente.TIPO, datosSimples);
+			String[] datosRelacion = {idProveedor,id.toLowerCase()}; 
+			crud.insertarTupla(Proveedor.NOMBRE_RELACION_COMPONENTE, Proveedor.COLUMNAS_RELACION_COMPONENTE, Proveedor.TIPO_RELACION_COMPONENTE, datosRelacion);
+		}
 		for (int i = 0; i < cantidadInicial; i++) {
-			String[] datosRegistro = {Integer.toString(darContadorId()), id};
-			crud.insertarTupla(MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.COLUMNAS_REGISTRO_MATERIAS_PRIMAS, MateriaPrima.TIPO_REGISTRO_MATERIAS_PRIMAS, datosRegistro);
+			String[] datosRegistro = {Integer.toString(darContadorId()), id.toLowerCase()};
+			crud.insertarTupla(Componente.NOMBRE_REGISTRO_COMPONENTES, Componente.COLUMNAS_REGISTRO_COMPONENTES, Componente.TIPO_REGISTRO_COMPONENTES, datosRegistro);
 		}
 	}
 
@@ -911,12 +912,14 @@ public class AplicacionWeb {
 			ArrayList<String> idComponente = new ArrayList<String>();
 			
 			String sql_materias = "SELECT * FROM " + Proveedor.NOMBRE_RELACION_MATERIA_PRIMA + " WHERE id_proveedor = '" + prov.getId() + "' AND " + condicionMateriasPrimas;
+			System.out.println(sql_materias);
 			ResultSet rs_materias = crud.darConexion().createStatement().executeQuery(sql_materias);
 			while(rs_materias.next())
 			{
 				idMateriaPrima.add(rs_materias.getString(2));
 			}
 			String sql_componentes = "SELECT * FROM " + Proveedor.NOMBRE_RELACION_COMPONENTE + " WHERE id_proveedor = '" + prov.getId() + "' AND " + condicionComponentes;
+			System.out.println(sql_componentes);
 			ResultSet rs_componentes = crud.darConexion().createStatement().executeQuery(sql_componentes);
 			while(rs_componentes.next())
 			{
@@ -945,8 +948,11 @@ public class AplicacionWeb {
 					prov.addComponente(c);
 				}
 			}
-			if (prov.getComponentes().size() != 0 || prov.getMateriasPrimas().size() != 0)
+			if (prov.getComponentes().size() != 0 || prov.getMateriasPrimas().size() != 0 || (condicionComponentes.equals(VERDADERO) && condicionMateriasPrimas.equals(VERDADERO) && condicionProveedores.equals(VERDADERO)))
+			{
+				System.out.println(prov.getId());
 				rta.add(prov);
+			}
 		}
 		return rta;
 	}

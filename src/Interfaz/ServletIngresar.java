@@ -68,9 +68,9 @@ public class ServletIngresar extends ServletAbstract{
 
 	public void aceptarIngreso(PrintWriter respuesta, String login, String tipo, String reingreso, ArrayList<Producto> productos){
 		
-		if (tipo.equals("admin"))
+		if (tipo.equals("admin") || tipo.equals(""))
 		{
-			if (reingreso != null && !reingreso.equals("HOLA"))
+			if (reingreso != null && !reingreso.equals(""))
 			{
 				respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
 				respuesta.write( "<tr>" );
@@ -80,7 +80,7 @@ public class ServletIngresar extends ServletAbstract{
 				respuesta.write( "</table>" );
 			}
 			
-			else if(reingreso.equals("HOLA"))
+			else if(reingreso.equals(""))
 			{
 				respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=\"80%\">" );
 				respuesta.write( "<tr>" );
