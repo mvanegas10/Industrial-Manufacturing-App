@@ -66,6 +66,8 @@ public class ServletRegistrar extends ServletAbstract{
 			
 			respuesta.write( "<table align=\"center\" style=\"border: 2px solid #a1a1a1; padding: 10px 40px;border-radius: 25px;\" width=\"90%\">" );
 			respuesta.write( "<tr>" );
+			
+			
 			respuesta.write( "<td><table align=\"left\" width=\"30%\">" );
 			respuesta.write( "<tr>" );
 			respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Proveedores</h3></td>" );
@@ -82,13 +84,13 @@ public class ServletRegistrar extends ServletAbstract{
 
 //			Siguiente columna
 			
-			respuesta.write( "<td><table align=\"center\" width=\"50%\">" );
-			respuesta.write( "<tr><form method=\"POST\" action=\"registroLlegadaMaterial.htm\">" );
-			respuesta.write( "<tr><td><table align=\"right\" style=\"padding-left: 5em;\" width=\"50%\"><h3 style=\"padding:0.5em;\"> Materiales</h3></td>" );
-			respuesta.write( "<td><select style=\"font-size: 16px;\" name=\"tipo\" size=\"1\"  class=\"normal\" \">" );
+			respuesta.write( "<td><table align=\"center\" width=\"30%\">" );
+			respuesta.write( "<form method=\"POST\" action=\"registroLlegadaMaterial.htm\">" );
+			respuesta.write( "<tr><td><table align=\"center\" width=\"30%\"><td><h3 style=\"padding:0.5em;\"> Materiales</h3></td>" );
+			respuesta.write( "<td><select style=\"font-size: 16px;\" name=\"tipo\" size=\"1\"  class=\"normal\">" );
 			respuesta.write( "<option value=\"materiaPrima\">Materia Prima</option>" );
 			respuesta.write( "<option value=\"componente\">Componente</option>" );
-			respuesta.write( "</select></td></tr></table></td>" );
+			respuesta.write( "</select></td></tr></table></td></tr>" );
 			respuesta.write( "<tr>" );
 			respuesta.write( "<td><h4 align=\"left\"><input value=\"materiaPrima\" name=\"tipo\" type=\"hidden\"><input type=\"submit\" value=\"Registrar Material\" name=\"regMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 			respuesta.write( "</tr>" );
@@ -119,10 +121,10 @@ public class ServletRegistrar extends ServletAbstract{
 			
 //			Siguiente Fila
 			
-			respuesta.write( "<td>" );
-			respuesta.write( "<table align=\"right\" width=\"30%\">" );
+			respuesta.write( "<tr><td>" );
+			respuesta.write( "<table align=\"left\" width=\"30%\">" );
 			respuesta.write( "<tr>" );
-			respuesta.write( "<td><h3> Estaciones</h3></td>" );
+			respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Estaciones</h3></td>" );
 			respuesta.write( "</tr>" );
 			respuesta.write( "<tr>" );
 			respuesta.write( "<td><form method=\"POST\" action=\"registrarEstacion.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Estacion\" name=\"regEst\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
@@ -137,7 +139,7 @@ public class ServletRegistrar extends ServletAbstract{
 //			Siguiente columna
 						
 			respuesta.write( "<td>" );
-			respuesta.write( "<td><table align=\"left\" width=\"30%\">" );
+			respuesta.write( "<td><table align=\"center\" width=\"30%\">" );
 			respuesta.write( "<tr>" );
 			respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Clientes</h3></td>" );
 			respuesta.write( "</tr>" );
@@ -150,7 +152,7 @@ public class ServletRegistrar extends ServletAbstract{
 			
 //			Siguiente columna
 			
-			respuesta.write( "<td><table align=\"left\" width=\"50%\">" );
+			respuesta.write( "<td><table align=\"right\" width=\"30%\">" );
 			respuesta.write( "<tr>" );
 			respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Pedidos</h3></td>" );
 			respuesta.write( "</tr>" );
