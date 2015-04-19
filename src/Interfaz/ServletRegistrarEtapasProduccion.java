@@ -15,6 +15,10 @@ import mundo.MateriaPrima;
 
 public class ServletRegistrarEtapasProduccion extends ServletAbstract{
 
+	public static final String VERDADERO = "'1'='1'"; 
+	
+	public static final String FALSO = "'1'='2'"; 
+	
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
 		return "Registrar Etapa de Produccion";
@@ -43,7 +47,7 @@ public class ServletRegistrarEtapasProduccion extends ServletAbstract{
 		
 		String criterio = request.getParameter("criterio");
 		
-		String idActual;
+		String idActual = Integer.toString(AplicacionWeb.getInstancia().darContadorId());
 		
 		ArrayList<Estacion> estaciones = new ArrayList<Estacion>();
 		
@@ -53,13 +57,12 @@ public class ServletRegistrarEtapasProduccion extends ServletAbstract{
 		
 		try
 		{
-			AplicacionWeb.getInstancia().registrarEtapaProduccion(idAnterior, idProducto, idEstacion, idMateriaPrima, idComponente, duracion, numeroSecuencia, idAnterior);
+			AplicacionWeb.getInstancia().registrarEtapaProduccion(idActual, nombre, idProducto, idEstacion, idMateriaPrima, idComponente, duracion, numeroSecuencia, idAnterior);
 			if (criterio.contains("Siguiente"))
 			{				
 				estaciones = AplicacionWeb.getInstancia().darEstaciones();
-				materiasPrimas = AplicacionWeb.getInstancia().darMateriasPrimas();
-				componentes = AplicacionWeb.getInstancia().darComponentes();
-				idActual = Integer.toString(AplicacionWeb.getInstancia().darContadorId());
+				materiasPrimas = AplicacionWeb.getInstancia().darMateriasPrimas(VERDADERO);
+				componentes = AplicacionWeb.getInstancia().darComponentes(VERDADERO);
 				respuesta.write( "<form method=\"POST\" action=\"registroEtapasProduccion.htm\"><input type=\"hidden\" value=" + idProducto + " name=\"idProducto\"><input type=\"hidden\" value=" + idActual + " name=\"idAnterior\">" );
 				respuesta.write( "<table align= center bgcolor=\"#ecf0f1\" width=\"45%\">" );
 				respuesta.write( "<tr>" );
@@ -114,10 +117,10 @@ public class ServletRegistrarEtapasProduccion extends ServletAbstract{
 			{
 				respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td><h3>El producto y las etapas de produccion se han registrado correctamente.</h3></td>" );
+		        respuesta.write( "<td align=\"center\"><h3>Se registraron correctamente el producto (" + idProducto + ") y sus respectivas estapas de produccion.</h3></td>" );
 		        respuesta.write( "</tr>" );
 		        respuesta.write( "<tr>" );
-		        respuesta.write( "<td><form method=\"POST\" action=\"ingreso.htm\"><input type=\"hidden\" value=\"reingreso\" name=\"reingreso\"><input type=\"submit\" value=\"Volver\" size=\"33\" name=\"reingreso\" class=\"normal\"></form></td>" );
+		        respuesta.write( "<td align=\"center\"><form method=\"POST\" action=\"ingreso.htm\"><input type=\"hidden\" value=\"admin\" name=\"reingreso\"><input type=\"submit\" value=\"Volver\" size=\"33\" name=\"reingreso\" class=\"normal\"></form></td>" );
 		        respuesta.write( "</tr>" );
 		        respuesta.write( "</table>" );
 			}

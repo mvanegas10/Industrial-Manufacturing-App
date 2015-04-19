@@ -33,7 +33,7 @@ public class ServletEliminar extends ServletAbstract{
 		if (criterio.equals("eliminarPedido"))
 			eliminarPedido(request, respuesta);
 		
-		else if (criterio.equals("eliminarEstacion"))
+		else if (criterio.equals("desactivarEstacion"))
 			eliminarEstacion(request, respuesta);
 		
 

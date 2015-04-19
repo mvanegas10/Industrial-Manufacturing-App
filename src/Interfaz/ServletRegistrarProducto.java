@@ -15,6 +15,10 @@ import mundo.MateriaPrima;
 
 public class ServletRegistrarProducto extends ServletAbstract{
 
+	public static final String VERDADERO = "'1'='1'"; 
+	
+	public static final String FALSO = "'1'='2'"; 
+	
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
 		return "Registro Producto";
@@ -44,10 +48,10 @@ public class ServletRegistrarProducto extends ServletAbstract{
 			AplicacionWeb.getInstancia().registrarProducto(idProducto,producto, precio);
 			
 			estaciones = AplicacionWeb.getInstancia().darEstaciones();
-			materiasPrimas = AplicacionWeb.getInstancia().darMateriasPrimas();
-			componentes = AplicacionWeb.getInstancia().darComponentes();
+			materiasPrimas = AplicacionWeb.getInstancia().darMateriasPrimas(VERDADERO);
+			componentes = AplicacionWeb.getInstancia().darComponentes(VERDADERO);
 			idActual = Integer.toString(AplicacionWeb.getInstancia().darContadorId());
-			respuesta.write( "<form method=\"POST\" action=\"registroEtapasProduccion.htm\"><input type=\"hidden\" value=" + idProducto + " name=\"idProducto\"><input type=\"hidden\" value=" + idActual + " name=\"idAnterior\">" );
+			respuesta.write( "<form method=\"POST\" action=\"registroEtapasProduccion.htm\"><input type=\"hidden\" value=\"" + idProducto + "\" name=\"idProducto\"><input type=\"hidden\" value=\"" + idActual + "\" name=\"idActual\"><input type=\"hidden\" value=\"" + 0 + "\" name=\"idAnterior\">" );
 			respuesta.write( "<table align= center bgcolor=\"#ecf0f1\" width=\"45%\">" );
 			respuesta.write( "<tr>" );
 			respuesta.write( "<td><h4>Nombre Etapa (descripcion): </h4></td>" );

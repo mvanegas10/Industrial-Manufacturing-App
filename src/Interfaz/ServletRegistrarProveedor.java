@@ -30,17 +30,23 @@ public class ServletRegistrarProveedor extends ServletAbstract{
 		try
 		{
 			AplicacionWeb.getInstancia().registrarProveedor(idProveedor, direccion, telefono, ciudad, idRepLegal);
-	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><h3>Se pudo agregar el proveedor con el id " + idProveedor + " de manera correcta</h3></td>" );
+	        respuesta.write( "<td align=\"center\"><h3>Se agrego el proveedor " + idProveedor + " correctamente.</h3></td>" );
+	        respuesta.write( "</tr>" );
+	        respuesta.write( "<tr>" );
+	        respuesta.write( "<td align=\"center\"><form method=\"POST\" action=\"ingreso.htm\"><input type=\"hidden\" value=\"admin\" name=\"reingreso\"><input type=\"submit\" value=\"Volver\" size=\"33\" name=\"reingreso\" class=\"normal\"></form></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
 		catch (Exception e)
 		{
-	        respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
+			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><h3>No se pudo registrar el proveedor</h3></td>" );
+	        respuesta.write( "<td align=\"center\"><h3>Hubo un error al agregar el proveedor, intentelo nuevamente.</h3></td>" );
+	        respuesta.write( "</tr>" );
+	        respuesta.write( "<tr>" );
+	        respuesta.write( "<td align=\"center\"><form method=\"POST\" action=\"ingreso.htm\"><input type=\"hidden\" value=\"admin\" name=\"reingreso\"><input type=\"submit\" value=\"Volver\" size=\"33\" name=\"reingreso\" class=\"normal\"></form></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}

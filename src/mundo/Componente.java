@@ -33,9 +33,9 @@ public class Componente{
 	//--------------------------------------------------
 
 	public Componente(String pId, String unidadMedida, int pCantidadInicial) {
-		id = pId;
-		unidadMedida = unidadMedida;
-		cantidadInicial = pCantidadInicial;
+		this.id = pId;
+		this.unidadMedida = unidadMedida;
+		this.cantidadInicial = pCantidadInicial;
 		this.tipo = "Materia Prima";
 	}
 	

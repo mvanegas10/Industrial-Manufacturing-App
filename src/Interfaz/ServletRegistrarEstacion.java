@@ -2,48 +2,46 @@ package Interfaz;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import mundo.AplicacionWeb;
 import mundo.Componente;
+import mundo.Estacion;
 import mundo.MateriaPrima;
 
-public class ServletRegistrarMaterial extends ServletAbstract{
+public class ServletRegistrarEstacion extends ServletAbstract{
 
+	public static final String VERDADERO = "'1'='1'"; 
+	
+	public static final String FALSO = "'1'='2'"; 
+	
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
-		return "Registro Material";
+		return "Registro Estacion";
 	}
 
 	@Override
 	public void escribirContenido(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+		
 		PrintWriter respuesta = response.getWriter( );
 		
-		String nombre = request.getParameter("nombre");
-		String unidadMedida = request.getParameter("unidadMedida");
-		int cantInicial = Integer.parseInt(request.getParameter("cantInicial"));
-		String idProveedor = request.getParameter("idProveedor");
-		String fecha = "" + request.getParameter("fecha");
-		String tipo;
+		String idEstacion = Integer.toString(AplicacionWeb.getInstancia().darContadorId());
 		
+		String nombre = request.getParameter("nombre");
+		
+		String tipo = request.getParameter("tipo");
+				
 		try
-		{			
-			if (unidadMedida != null)
-			{
-				tipo = "Materia Prima";
-				AplicacionWeb.getInstancia().registrarMateriaPrima(nombre, unidadMedida, cantInicial, idProveedor);
-			}
-			else{
-				tipo = "Componente";
-				AplicacionWeb.getInstancia().registrarComponente(nombre, cantInicial, idProveedor);
-			}
+		{
+			AplicacionWeb.getInstancia().registrarEstacion(idEstacion,nombre, tipo);
+			
 			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td align=\"center\"><h3>Se agrego correctamente el material " + nombre + " al sistema.</h3></td>" );
+	        respuesta.write( "<td align=\"center\"><h3>La estacion " + nombre + " de tipo " + tipo + " se registro correctamente.</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<td align=\"center\"><form method=\"POST\" action=\"ingreso.htm\"><input type=\"hidden\" value=\"admin\" name=\"reingreso\"><input type=\"submit\" value=\"Volver\" size=\"33\" name=\"reingreso\" class=\"normal\"></form></td>" );
@@ -53,13 +51,14 @@ public class ServletRegistrarMaterial extends ServletAbstract{
 		catch (Exception e){
 			respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td align=\"center\"><h3>Hubo un error al agregar el material " + nombre + " al sistema, intentelo nuevamente.</h3></td>" );
+	        respuesta.write( "<td align=\"center\"><h3>Hubo un error en el registro de estaciones, intentelo nuevamente.</h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "<tr>" );
 	        respuesta.write( "<td align=\"center\"><form method=\"POST\" action=\"ingreso.htm\"><input type=\"hidden\" value=\"admin\" name=\"reingreso\"><input type=\"submit\" value=\"Volver\" size=\"33\" name=\"reingreso\" class=\"normal\"></form></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 		}
+				
 	}
 
 }

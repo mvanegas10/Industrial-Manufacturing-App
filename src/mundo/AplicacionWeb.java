@@ -74,7 +74,6 @@ public class AplicacionWeb {
 		catch (Exception e){
 			contadorId = 1004;
 		}
-		usuarioActual = "";
 	}
 
 	//--------------------------------------------------
@@ -145,6 +144,7 @@ public class AplicacionWeb {
 			String[] datos = {login, password, tipo, "", "", Integer.toString(0), "", ""}; 
 			crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
 			usuarioActual = login;
+			System.out.println("El usuario actual es:" + usuarioActual);
 		}
 		catch (Exception rollBack){
 			conexion.darConexion().rollback(save);
@@ -312,7 +312,6 @@ public class AplicacionWeb {
 	 * @throws Exception
 	 */
 	public void registrarProducto (String id, String nombre, int precio) throws Exception{
-		String[] id1 = {id};
 		String[] datos = {id, nombre, Integer.toString(precio)};
 		conexion.setAutoCommitFalso();
 		Savepoint save = conexion.darConexion().setSavepoint();
@@ -320,6 +319,32 @@ public class AplicacionWeb {
 		try{
 			crud.insertarTupla(Producto.NOMBRE, Producto.COLUMNAS, Producto.TIPO, datos);
 			System.out.println("Se registro " + datos);
+		}
+		catch (Exception rollBack){
+			conexion.darConexion().rollback(save);
+			throw new Exception();
+		}
+		conexion.darConexion().commit();
+		conexion.setAutoCommitVerdadero();
+	}
+	
+	public void registrarEstacion (String id, String nombre, String tipo) throws Exception {
+		String[] datos = {id, nombre, tipo};
+		conexion.setAutoCommitFalso();
+		Savepoint save = conexion.darConexion().setSavepoint();
+		
+		try{
+			crud.insertarTupla(Estacion.NOMBRE, Estacion.COLUMNAS, Estacion.TIPO, datos);
+			System.out.println("Se registro " + datos);
+			Date hoy = new Date();
+			for (int i = 0; i < 30; i++){
+				String[] datosRegistros = {Integer.toString(darContadorId()), id, Integer.toString(hoy.getDate()), Integer.toString(hoy.getMonth())};
+				crud.insertarTupla(Estacion.NOMBRE_REGISTRO_ESTACIONES, Estacion.COLUMNAS_REGISTRO_ESTACIONES, Estacion.TIPO_REGISTRO_ESTACIONES, datosRegistros);
+				Calendar calendario = Calendar.getInstance();
+				calendario.setTime(hoy);
+				calendario.add(Calendar.DATE, 1);
+				hoy = calendario.getTime();
+			}
 		}
 		catch (Exception rollBack){
 			conexion.darConexion().rollback(save);
@@ -340,8 +365,8 @@ public class AplicacionWeb {
 	 * @param idAnterior
 	 * @throws Exception
 	 */
-	public void registrarEtapaProduccion  (String id, String idProducto, String idEstacion, String idMateriaPrima, String idComponente, int duracion, int numeroSecuencia, String idAnterior) throws Exception{
-		String[] datos = {id, idProducto, idEstacion, idMateriaPrima, idComponente, Integer.toString(duracion), Integer.toString(numeroSecuencia), idAnterior};
+	public void registrarEtapaProduccion  (String id, String nombre, String idProducto, String idEstacion, String idMateriaPrima, String idComponente, int duracion, int numeroSecuencia, String idAnterior) throws Exception{
+		String[] datos = {id, nombre, idProducto, idEstacion, idMateriaPrima, idComponente, Integer.toString(duracion), Integer.toString(numeroSecuencia), idAnterior};
 		conexion.setAutoCommitFalso();
 		Savepoint save = conexion.darConexion().setSavepoint();
 		
@@ -499,6 +524,7 @@ public class AplicacionWeb {
 	public String buscarUsuario (String login, String password) throws Exception{
 		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "tipo", "login = '" + login + "' AND password = '" + password + "'");
 		usuarioActual = login;
+		System.out.println("El usuario actual es:" + usuarioActual);
 		if ( usuario.get(0) != null )
 			return usuario.get(0);
 		return "";
@@ -593,9 +619,9 @@ public class AplicacionWeb {
 		return rta;
 	}
 
-	public ArrayList<MateriaPrima> darMateriasPrimas (String tipo) throws Exception{
+	public ArrayList<MateriaPrima> darMateriasPrimas (String condicion) throws Exception{
 		ArrayList<MateriaPrima> materiales = new ArrayList<MateriaPrima>();
-		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + MateriaPrima.NOMBRE + "");
+		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + MateriaPrima.NOMBRE + " WHERE " + condicion);
 		while(rs.next())
 		{
 			String id = rs.getString(1);
@@ -750,38 +776,21 @@ public class AplicacionWeb {
 		}
 		return rta;
 	}
-
+	
 	/**
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<MateriaPrima> darMateriasPrimas( ) throws Exception {
-		ArrayList<MateriaPrima> rta = new ArrayList<MateriaPrima>();
-		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + MateriaPrima.NOMBRE + "");
-		while(rs.next())
-		{
-			String id = rs.getString(1);
-			String unidadMedida = rs.getString(2);
-			int cantidad = rs.getInt(3);
-			MateriaPrima estacion = new MateriaPrima(id, unidadMedida, cantidad);
-			rta.add(estacion);
-		}
-		return rta;
-	}
-
-	/**
-	 * @return
-	 * @throws Exception
-	 */
-	public ArrayList<Componente> darComponentes( ) throws Exception {
+	public ArrayList<Componente> darComponentes( String condicion ) throws Exception {
 		ArrayList<Componente> rta = new ArrayList<Componente>();
-		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Componente.NOMBRE + "");
+		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Componente.NOMBRE + " WHERE " + condicion);
 		while(rs.next())
 		{
 			String id = rs.getString(1);
 			String unidadMedida = rs.getString(2);
-			int cantidad = rs.getInt(3);
+			int cantidad = Integer.parseInt(rs.getString(3));
 			Componente estacion = new Componente(id,unidadMedida, cantidad);
+			System.out.println(estacion.toString());
 			rta.add(estacion);
 		}
 		return rta;
@@ -864,40 +873,34 @@ public class AplicacionWeb {
 		return productosProveedor;
 	}
 	
-	public ArrayList<Pedido> darPedidosProveedor(String idProveedor){
+	public ArrayList<Pedido> darPedidosProveedor(String idProveedor) throws Exception{
+
+		ArrayList<Producto> productosProveedor = darProductosProveedor(idProveedor);
 		
-		try{
-			ArrayList<Producto> productosProveedor = darProductosProveedor(idProveedor);
-			
-			Set<Pedido> setPedidosProveedor = new HashSet<Pedido>();
-			for(int i = 0; i < productosProveedor.size(); i++){
-				Producto productoActual = productosProveedor.get(i);
-				String idProductoActual = productoActual.getId();
-				ResultSet rsPedidos = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Pedido.NOMBRE + " WHERE idProducto = '" + idProductoActual + "'");
-				while(rsPedidos.next()){
-					String id = rsPedidos.getString(1);
-					String idProducto = rsPedidos.getString(2);
-					String idUsuario = rsPedidos.getString(3);
-					int diaPedido = rsPedidos.getInt(4);
-					int mesPedido = rsPedidos.getInt(5);
-					int diaEntrega = rsPedidos.getInt(6);
-					int mesEntrega = rsPedidos.getInt(7);
-					int cantidad = rsPedidos.getInt(8);
-					Date fechaPedido = new Date(2015, mesPedido, diaPedido);
-					Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
-					Pedido pedido = new Pedido(id, idProducto, idUsuario, cantidad, fechaPedido, fechaEntrega);	
-					setPedidosProveedor.add(pedido);
-				}
+		Set<Pedido> setPedidosProveedor = new HashSet<Pedido>();
+		for(int i = 0; i < productosProveedor.size(); i++){
+			Producto productoActual = productosProveedor.get(i);
+			String idProductoActual = productoActual.getId();
+			ResultSet rsPedidos = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Pedido.NOMBRE + " WHERE idProducto = '" + idProductoActual + "'");
+			while(rsPedidos.next()){
+				String id = rsPedidos.getString(1);
+				String idProducto = rsPedidos.getString(2);
+				String idUsuario = rsPedidos.getString(3);
+				int diaPedido = rsPedidos.getInt(4);
+				int mesPedido = rsPedidos.getInt(5);
+				int diaEntrega = rsPedidos.getInt(6);
+				int mesEntrega = rsPedidos.getInt(7);
+				int cantidad = rsPedidos.getInt(8);
+				Date fechaPedido = new Date(2015, mesPedido, diaPedido);
+				Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
+				Pedido pedido = new Pedido(id, idProducto, idUsuario, cantidad, fechaPedido, fechaEntrega);	
+				setPedidosProveedor.add(pedido);
 			}
-			ArrayList<Pedido> pedidosProveedor = new ArrayList<Pedido>();
-			pedidosProveedor.addAll(setPedidosProveedor);
-			pedidosProveedor.addAll(setPedidosProveedor);
-			return pedidosProveedor;	
 		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
+		ArrayList<Pedido> pedidosProveedor = new ArrayList<Pedido>();
+		pedidosProveedor.addAll(setPedidosProveedor);
+		pedidosProveedor.addAll(setPedidosProveedor);
+		return pedidosProveedor;	
 	}
 	
 
@@ -1109,6 +1112,7 @@ public class AplicacionWeb {
 	public static void main(String[] args) {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try{
+			aplicacionWeb.darCantidadProductos(10);
 		}
 		catch (Exception e){
 			e.printStackTrace();
