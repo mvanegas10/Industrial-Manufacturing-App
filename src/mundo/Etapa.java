@@ -4,9 +4,9 @@ public class Etapa {
 	
 	public static final String NOMBRE = "etapas";
 	
-	public static final String[] COLUMNAS = {"id", "nombre", "idProducto", "idEstacion", "idMateriaPrima", "idComponente", "duracion", "numeroSecuencia", "idAnterior"};
+	public static final String[] COLUMNAS = {"id", "nombre", "idProducto", "idEstacion", "idMateriaPrima", "idComponente", "duracion", "numeroSecuencia", "idAnterior", "activada"};
 	
-	public static final String[] TIPO = {"String", "String", "String", "String", "String", "String", "int", "int", "String"};
+	public static final String[] TIPO = {"String", "String", "String", "String", "String", "String", "int", "int", "String", "boolean"};
 	
 	//--------------------------------------------------
 	// ATRIBUTOS
@@ -29,6 +29,7 @@ public class Etapa {
 	private int numeroSecuencia;
 	
 	private String idAnterior;
+
 	
 	//--------------------------------------------------
 	// CONSTRUCTOR
@@ -127,11 +128,12 @@ public class Etapa {
 	public void setProducto(String idProducto) {
 		this.idProducto = idProducto;
 	}
+
 	
 	//--------------------------------------------------
 	// MÉTODOS
 	//--------------------------------------------------
-	
+
 	public String toString(){
 		return COLUMNAS[0] + " : " + id + " , " + COLUMNAS[1] + " : " + nombre + " , " + COLUMNAS[2] + " : " + idProducto + " , " + COLUMNAS[3] + " : " + idEstacion + " , " + COLUMNAS[4] + " : " + idMateriaPrima + " , " + COLUMNAS[5] + " : " + idComponente + " , " + COLUMNAS[6] + " : " + duracion + " , " + COLUMNAS[7] + " : " + numeroSecuencia + " , " + COLUMNAS[8] + " : " + idAnterior;
 	}

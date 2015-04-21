@@ -1105,16 +1105,23 @@ public class AplicacionWeb {
 				rsPedidos.next();
 				idPedidosAfectados.add(rsPedidos.getString(1));
 				rsRegistrosEstaciones.next();
+				String estacionActivar = rsRegistrosEstaciones.getString(2);
 				String sql = "UPDATE " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " SET idRegistroEstacion = '" + rsRegistrosEstaciones.getString(1) + "' WHERE id = '" + rsRegistrosProductos.getString(1) + "'";
 				System.out.println(sql);
 				crud.darConexion().createStatement().executeUpdate(sql);
+				String sql_activar = "UPDATE " + Estacion.NOMBRE + " SET activada = true WHERE id = '" + estacionActivar + "'";
+				System.out.println(sql_activar);
+				crud.darConexion().createStatement().executeQuery(sql_activar);
 			}
 			crud.darConexion().createStatement().executeUpdate("DELETE FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " WHERE idEstacion = '" + idEstacion + "'");
 			verificarFechasEntregaPedidos(idPedidosAfectados);
+			String sql_desactivar = "UPDATE " + Estacion.NOMBRE + " SET activada = false WHERE id = '" + idEstacion + "'";
+			System.out.println(sql_desactivar);
+			crud.darConexion().createStatement().executeQuery(sql_desactivar);
 		} 
 		catch (Exception e) {
-			e.printStackTrace();
 			conexion.darConexion().rollback(save);
+			throw new Exception();
 		}
 		conexion.darConexion().commit();
 	}

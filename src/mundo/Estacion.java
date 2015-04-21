@@ -8,9 +8,9 @@ public class Estacion {
 	
 	public static final String NOMBRE = "estaciones";
 	
-	public static final String[] COLUMNAS = {"id", "nombre", "tipo"};
+	public static final String[] COLUMNAS = {"id", "nombre", "tipo", "activada"};
 	
-	public static final String[] TIPO = {"String", "String", "String"};
+	public static final String[] TIPO = {"String", "String", "String", "boolean"};
 	
 	public static final String NOMBRE_REGISTRO_ESTACIONES = "registrosEstaciones";
 	
@@ -27,6 +27,8 @@ public class Estacion {
 	private String nombre;
 	
 	private String tipo;
+	
+	private boolean activada;
 		
 	//--------------------------------------------------
 	// CONSTRUCTOR
@@ -66,5 +68,12 @@ public class Estacion {
 		this.tipo = tipo;
 	}
 	
+	public boolean isActivada() {
+		return activada;
+	}
+
+	public void setActivada(boolean activada) {
+		this.activada = activada;
+	}
 	
 }

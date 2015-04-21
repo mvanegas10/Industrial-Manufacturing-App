@@ -58,7 +58,13 @@ public class CRUD {
 				else if(tipos[i].equals("int")){
 					statement.setInt(i+1, Integer.parseInt(datos[i]));
 					System.out.println(Integer.parseInt(datos[i]));
-				}	
+				}
+				else if(tipos[i].equals("boolean")){
+					boolean dato = false;
+					dato = datos[i].equals("true");
+					statement.setBoolean(i+1, dato);
+					System.out.println(datos[i]);
+				}
 			}
 			System.out.println(sql);
 			
