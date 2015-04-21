@@ -473,6 +473,7 @@ public class ConexionDAO
 			}
 
 			// Se crea una nueva tabla vac�a
+	
 			if( crearTabla )
 			{
 				s.execute( "CREATE TABLE etapas (id varchar(32),nombre varchar(32), idProducto varchar(32), idEstacion varchar(32), idMateriaPrima varchar(32), idComponente varchar(32), duracion int, numeroSecuencia int, idAnterior varchar(32), PRIMARY KEY (id), CONSTRAINT fk_idProductoEtapa FOREIGN KEY (idProducto) REFERENCES productos(id), CONSTRAINT fk_idEstacionEtapa FOREIGN KEY (idEstacion) REFERENCES estaciones(id), CONSTRAINT fk_idMateriaPrimaEtapa FOREIGN KEY (idMateriaPrima) REFERENCES materiasPrimas(id), CONSTRAINT fk_idComponenteEtapa FOREIGN KEY (idComponente) REFERENCES componentes(id), CONSTRAINT unq_ofertaUnicaEtapa UNIQUE (idProducto,numeroSecuencia))" );

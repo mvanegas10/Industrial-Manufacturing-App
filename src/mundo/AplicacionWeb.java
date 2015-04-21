@@ -57,9 +57,9 @@ public class AplicacionWeb {
 	public AplicacionWeb() {
 		conexion = new ConexionDAO();
 		conexion.iniciarConexion();
-		conexion.crearTablas();
+		//conexion.crearTablas();
 		crud = new CRUD(conexion);
-		poblarTablas();
+		//poblarTablas();
 		try
 		{
 			Statement s = crud.darConexion().createStatement();
@@ -330,7 +330,7 @@ public class AplicacionWeb {
 	}
 	
 	public void registrarEstacion (String id, String nombre, String tipo) throws Exception {
-		String[] datos = {id, nombre, tipo};
+		String[] datos = {id, nombre, tipo, Integer.toString(1)};
 		conexion.setAutoCommitFalso();
 		Savepoint save = conexion.darConexion().setSavepoint();
 		
@@ -349,7 +349,7 @@ public class AplicacionWeb {
 		}
 		catch (Exception rollBack){
 			conexion.darConexion().rollback(save);
-			throw new Exception();
+			rollBack.printStackTrace();
 		}
 		conexion.darConexion().commit();
 		conexion.setAutoCommitVerdadero();
@@ -722,7 +722,9 @@ public class AplicacionWeb {
 			String id = rs.getString(1);
 			String nombre = rs.getString(2);
 			String tipo = rs.getString(3);
-			Estacion estacion = new Estacion(id, nombre, tipo);
+			int enteroAct = Integer.parseInt(rs.getString(4));
+			boolean activada = enteroAct == 1;
+			Estacion estacion = new Estacion(id, nombre, tipo, activada);
 			rta.add(estacion);
 		}
 		return rta;
@@ -1102,20 +1104,26 @@ public class AplicacionWeb {
 		Savepoint save = conexion.darConexion().setSavepoint();
 		try {
 			Set<String> idPedidosAfectados = new HashSet<String>();
-			ResultSet rsRegistrosProductos = crud.darConexion().createStatement().executeQuery("SELECT a.id, a.idInventario FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " a INNER JOIN " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " b ON a.idRegistroEstacion = b.id WHERE b.idEstacion = '" + idEstacion + "' ORDER BY a.id");
-			ResultSet rsRegistrosEstaciones = crud.darConexion().createStatement().executeQuery("SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion != '" + idEstacion + "' AND ((SELECT tipo FROM " + Estacion.NOMBRE + " b WHERE b.id = a.idEstacion) = (SELECT tipo FROM " + Estacion.NOMBRE + " WHERE id = '" + idEstacion + "')) AND NOT EXISTS (SELECT c.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " c WHERE idRegistroEstacion = a.id) ORDER BY a.id");
+			String sql_regProd = "SELECT a.id, a.idInventario FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " a INNER JOIN " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " b ON a.idRegistroEstacion = b.id WHERE b.idEstacion = '" + idEstacion + "' ORDER BY  cast(a.id as int)";
+			System.out.println(sql_regProd);
+			ResultSet rsRegistrosProductos = crud.darConexion().createStatement().executeQuery(sql_regProd);
+			String sql_regEsta = "SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion != '" + idEstacion + "' AND ((SELECT tipo FROM " + Estacion.NOMBRE + " b WHERE b.id = a.idEstacion) = (SELECT tipo FROM " + Estacion.NOMBRE + " WHERE id = '" + idEstacion + "')) AND NOT EXISTS (SELECT c.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " c WHERE idRegistroEstacion = a.id) ORDER BY cast(a.id as int)";
+			System.out.println(sql_regEsta);
+			ResultSet rsRegistrosEstaciones = crud.darConexion().createStatement().executeQuery(sql_regEsta);
 			while(rsRegistrosProductos.next()){
-				ResultSet rsPedidos = crud.darConexion().createStatement().executeQuery("SELECT a.idPedido FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " a WHERE a.id = '" + rsRegistrosProductos.getString(2) + "'");	
+				String sql_pedido = "SELECT a.idPedido FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " a WHERE a.id = '" + rsRegistrosProductos.getString(2) + "'";
+				System.out.println(sql_pedido);
+				ResultSet rsPedidos = crud.darConexion().createStatement().executeQuery(sql_pedido);	
 				rsPedidos.next();
 				idPedidosAfectados.add(rsPedidos.getString(1));
 				rsRegistrosEstaciones.next();
-				String estacionActivar = rsRegistrosEstaciones.getString(2);
+				//String estacionActivar = rsRegistrosEstaciones.getString(2);
 				String sql = "UPDATE " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " SET idRegistroEstacion = '" + rsRegistrosEstaciones.getString(1) + "' WHERE id = '" + rsRegistrosProductos.getString(1) + "'";
 				System.out.println(sql);
 				crud.darConexion().createStatement().executeUpdate(sql);
-				String sql_activar = "UPDATE " + Estacion.NOMBRE + " SET activada = 1 WHERE id = '" + estacionActivar + "'";
-				System.out.println(sql_activar);
-				crud.darConexion().createStatement().executeQuery(sql_activar);
+				//String sql_activar = "UPDATE " + Estacion.NOMBRE + " SET activada = 1 WHERE id = '" + estacionActivar + "'";
+				//System.out.println(sql_activar);
+				//crud.darConexion().createStatement().executeQuery(sql_activar);
 			}
 			crud.darConexion().createStatement().executeUpdate("DELETE FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " WHERE idEstacion = '" + idEstacion + "'");
 			verificarFechasEntregaPedidos(idPedidosAfectados);
@@ -1125,7 +1133,7 @@ public class AplicacionWeb {
 		} 
 		catch (Exception e) {
 			conexion.darConexion().rollback(save);
-			throw new Exception();
+			throw new Exception(e.getMessage());
 		}
 		conexion.darConexion().commit();
 	}
@@ -1178,7 +1186,7 @@ public class AplicacionWeb {
 	public static void main(String[] args) {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try{
-			//aplicacionWeb.desactivarEstacionProduccion("1");
+			aplicacionWeb.desactivarEstacionProduccion("1");
 		}
 		catch (Exception e){
 			e.printStackTrace();

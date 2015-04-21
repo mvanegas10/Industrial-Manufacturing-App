@@ -4,9 +4,9 @@ public class Etapa {
 	
 	public static final String NOMBRE = "etapas";
 	
-	public static final String[] COLUMNAS = {"id", "nombre", "idProducto", "idEstacion", "idMateriaPrima", "idComponente", "duracion", "numeroSecuencia", "idAnterior", "activada"};
+	public static final String[] COLUMNAS = {"id", "nombre", "idProducto", "idEstacion", "idMateriaPrima", "idComponente", "duracion", "numeroSecuencia", "idAnterior"};
 	
-	public static final String[] TIPO = {"String", "String", "String", "String", "String", "String", "int", "int", "String", "boolean"};
+	public static final String[] TIPO = {"String", "String", "String", "String", "String", "String", "int", "int", "String"};
 	
 	//--------------------------------------------------
 	// ATRIBUTOS

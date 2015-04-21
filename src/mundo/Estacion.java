@@ -34,10 +34,11 @@ public class Estacion {
 	// CONSTRUCTOR
 	//--------------------------------------------------
 
-	public Estacion(String pId, String pNombre, String pTipo) {
+	public Estacion(String pId, String pNombre, String pTipo, boolean activada) {
 		this.id = pId;
 		this.nombre = pNombre;
 		this.tipo = pTipo;
+		this.activada = activada;
 	}
 	
 	//--------------------------------------------------

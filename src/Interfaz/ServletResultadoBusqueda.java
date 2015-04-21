@@ -498,16 +498,20 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			estaciones = AplicacionWeb.getInstancia().darEstaciones();
 			if (!estaciones.isEmpty()){
 				respuesta.write( "<h4 align=\"center\">ProdAndes tiene registrados " + estaciones.size() + " estaciones en total:</h4>" );
-        		respuesta.write( "<form method=\"POST\" action=\"eliminar.htm\"><input name=\"criterio\" value=\"consultarPedidos\" type=\"hidden\">" );
+        		respuesta.write( "<form method=\"POST\" action=\"eliminar.htm\">" );
         		respuesta.write( "<hr>" );
 				respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=20%>" );
 		        for (Estacion estacion: estaciones) {
-		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+		        	String activada = "Desactivada";
+		        	if( estacion.isActivada() )
+		        		activada = "Activada";
 		        	respuesta.write( "<tr><td><h3>Estacion: " + estacion.getId() + " -  Tipo: " + estacion.getTipo() + "</h3></td></tr>" );
 			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Estacion: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getId() + "</td></tr>" );
 			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getNombre() + "</td></tr>" );
 			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Tipo: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getTipo() + "</td></tr>" );
-			        respuesta.write( "<tr><td align=\"right\"><input value=\"desactivarEstacion\" name=\"criterio\" type=\"hidden\"><input value=\"Desactivar Estacion\" name=\"eliEsta\" type=\"submit\"></td></tr>");
+			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Estado: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + activada + "</td></tr>" );
+			        if (activada.equals("Activada"))
+			        	respuesta.write( "<tr><input value=\"" + estacion.getId() + "\" name=\"idEstacion\" type=\"hidden\"><td align=\"right\"><input value=\"desactivarEstacion\" name=\"criterio\" type=\"hidden\"><input value=\"Desactivar Estacion\" name=\"eliEsta\" type=\"submit\"></td></tr>");
 			        respuesta.write( "<tr></tr>" );
 			        respuesta.write( "</form>" );
 		        }

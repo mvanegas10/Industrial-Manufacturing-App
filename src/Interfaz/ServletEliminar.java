@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import mundo.AplicacionWeb;
 import mundo.Componente;
+import mundo.Estacion;
 import mundo.MateriaPrima;
 import mundo.Pedido;
 import mundo.Producto;
@@ -29,12 +30,13 @@ public class ServletEliminar extends ServletAbstract{
 		PrintWriter respuesta = response.getWriter( );
 	
 		String criterio = request.getParameter("criterio");
+		System.out.println("El criterio es: " + criterio);
 				
 		if (criterio.equals("eliminarPedido"))
 			eliminarPedido(request, respuesta);
 		
 		else if (criterio.equals("desactivarEstacion"))
-			eliminarEstacion(request, respuesta);
+			desactivarEstacion(request, respuesta);
 		
 
 	}
@@ -49,7 +51,7 @@ public class ServletEliminar extends ServletAbstract{
 		}
 		catch (Exception e)
 		{
-			error(respuesta);
+			error(respuesta, "Lo sentimos, hubo un error, por favor intentalo nuevamente.", "cliente");
 		}
 		try 
         {
@@ -85,8 +87,48 @@ public class ServletEliminar extends ServletAbstract{
         }
 	}
 	
-	public void eliminarEstacion(HttpServletRequest request, PrintWriter respuesta){
-		
+	public void desactivarEstacion(HttpServletRequest request, PrintWriter respuesta){
+		String idEstacion = request.getParameter("idEstacion");
+		System.out.println("La estacion a desactivar es: " + idEstacion);
+		try{
+			AplicacionWeb.getInstancia().desactivarEstacionProduccion(idEstacion);
+			ArrayList<Estacion> estaciones = new ArrayList<Estacion>();
+			try
+			{
+				estaciones = AplicacionWeb.getInstancia().darEstaciones();
+				if (!estaciones.isEmpty()){
+					respuesta.write( "<h4 align=\"center\">ProdAndes tiene registrados " + estaciones.size() + " estaciones en total:</h4>" );
+	        		respuesta.write( "<form method=\"POST\" action=\"eliminar.htm\"><input name=\"criterio\" value=\"consultarPedidos\" type=\"hidden\">" );
+	        		respuesta.write( "<hr>" );
+					respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=20%>" );
+			        for (Estacion estacion: estaciones) {
+			        	String activada = "Desctivada";
+			        	if( estacion.isActivada() )
+			        		activada = "Activada";
+			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+			        	respuesta.write( "<tr><td><h3>Estacion: " + estacion.getId() + " -  Tipo: " + estacion.getTipo() + "</h3></td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Estacion: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getId() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getNombre() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Tipo: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getTipo() + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Estado: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + activada + "</td></tr>" );
+				        respuesta.write( "<tr><td align=\"right\"><input value=\"" + estacion.getId() + "\" name=\"idEstacion\" type=\"hidden\"><td align=\"right\"><input value=\"desactivarEstacion\" name=\"criterio\" type=\"hidden\"><input value=\"Desactivar Estacion\" name=\"eliEsta\" type=\"submit\"></td></tr>");
+				        respuesta.write( "<tr></tr>" );
+				        respuesta.write( "</form>" );
+			        }
+			        respuesta.write( "</table>" );
+				}
+				else
+					error(respuesta, "No hay estaciones registradas en ProdAndes.", "admin");	
+			}
+			catch (Exception e1){
+				error(respuesta, "No hay estaciones registradas en ProdAndes.", "admin");
+				e1.printStackTrace();
+			}
+		}
+		catch(Exception e){
+			error(respuesta, "No se puede desactivar la estación, no hay estaciones suficientes para satisfacer los pedidos actuales.", "admin");
+			e.printStackTrace();
+		}
 	}
 	
 	public void noHayPedidos(String login, PrintWriter respuesta){
@@ -150,13 +192,16 @@ public class ServletEliminar extends ServletAbstract{
 		}
 	}
 		
-	public void error(PrintWriter respuesta){
+	public void error(PrintWriter respuesta, String mensaje, String tipo){
 		
-		respuesta.write( "<table bgcolor=\"#ecf0f1\" width=80%>" );
-	    respuesta.write( "<tr>" );
-	    respuesta.write( "<td><h3>Oops! Hubo un error, lo sentimos. No se pudo eliminar.</h3></td>" );
-	    respuesta.write( "</tr>" );
-	    respuesta.write( "</table>" );
+		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
+        respuesta.write( "<tr>" );
+        respuesta.write( "<td align=\"center\"><h3>" + mensaje + "</h3></td>" );
+        respuesta.write( "</tr>" );
+        respuesta.write( "<tr>" );
+        respuesta.write( "<td align=\"center\"><form method=\"POST\" action=\"ingreso.htm\"><input type=\"hidden\" value=\"" + tipo + "\" name=\"reingreso\"><input type=\"submit\" value=\"Volver\" size=\"33\" name=\"reingreso\" class=\"normal\"></form></td>" );
+        respuesta.write( "</tr>" );
+        respuesta.write( "</table>" );
 			
 	}
 }
