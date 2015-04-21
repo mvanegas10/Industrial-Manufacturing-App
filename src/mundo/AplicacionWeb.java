@@ -746,11 +746,11 @@ public class AplicacionWeb {
 			String id = rs.getString(1);
 			String idProducto = rs.getString(2);
 			String idUsuario = rs.getString(3);
-			int diaPedido = rs.getInt(4);
-			int mesPedido = rs.getInt(5);
-			int diaEntrega = rs.getInt(6);
-			int mesEntrega = rs.getInt(7);
-			int cantidad = rs.getInt(8);
+			int diaPedido = Integer.parseInt(rs.getString(4));
+			int mesPedido = Integer.parseInt(rs.getString(5));
+			int diaEntrega = Integer.parseInt(rs.getString(6));
+			int mesEntrega = Integer.parseInt(rs.getString(7));
+			int cantidad = Integer.parseInt(rs.getString(8));
 			Date fechaPedido = new Date(2015, mesPedido, diaPedido);
 			Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
 			Pedido pedido = new Pedido(id, idProducto, login, cantidad, fechaPedido, fechaEntrega);

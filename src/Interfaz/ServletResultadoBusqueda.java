@@ -499,13 +499,13 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			estaciones = AplicacionWeb.getInstancia().darEstaciones();
 			if (!estaciones.isEmpty()){
 				respuesta.write( "<h4 align=\"center\">ProdAndes tiene registrados " + estaciones.size() + " estaciones en total:</h4>" );
-        		respuesta.write( "<form method=\"POST\" action=\"eliminar.htm\">" );
         		respuesta.write( "<hr>" );
 				respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=20%>" );
 		        for (Estacion estacion: estaciones) {
 		        	String activada = "Desactivada";
 		        	if( estacion.isActivada() )
 		        		activada = "Activada";
+		        	respuesta.write( "<form method=\"POST\" action=\"eliminar.htm\">" );
 		        	respuesta.write( "<tr><td><h3>Estacion: " + estacion.getId() + " -  Tipo: " + estacion.getTipo() + "</h3></td></tr>" );
 			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Estacion: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getId() + "</td></tr>" );
 			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getNombre() + "</td></tr>" );
