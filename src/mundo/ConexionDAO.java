@@ -367,7 +367,7 @@ public class ConexionDAO
 			// Se crea una nueva tabla vac�a
 			if( crearTabla )
 			{
-				s.execute( "CREATE TABLE estaciones (id varchar(32), nombre varchar(32), tipo varchar(32), activada boolean, PRIMARY KEY (id))" );
+				s.execute( "CREATE TABLE estaciones (id varchar(32), nombre varchar(32), tipo varchar(32), activada int, PRIMARY KEY (id))" );
 				System.out.println("Se cre� la tabla estaciones");
 			}
 			else

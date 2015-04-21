@@ -490,6 +490,10 @@ public class AplicacionWeb {
 			String idRegProd = Integer.toString(darContadorId());
 			String[] datosRegProd = {idRegProd,etapa.getId(),idInventarios.get(i),rs_verificarEstaciones.getString(1),rs_verificarMateriasPrimas.getString(1),rs_verificarComponentes.getString(1)};
 			crud.insertarTupla(Producto.NOMBRE_REGISTRO_PRODUCTOS, Producto.COLUMNAS_REGISTRO_PRODUCTOS, Producto.TIPO_REGISTRO_PRODUCTOS, datosRegProd);
+			String estacionActivar = rs_verificarEstaciones.getString(2);
+			String sql_activar = "UPDATE " + Estacion.NOMBRE + " SET activada = 1 WHERE id = '" + estacionActivar + "'";
+			System.out.println(sql_activar);
+			crud.darConexion().createStatement().executeQuery(sql_activar);
 			
 			if(etapa.getNumeroSecuencia() == ultimaEtapa){
 				if(i==cantidad-1){
@@ -1109,13 +1113,13 @@ public class AplicacionWeb {
 				String sql = "UPDATE " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " SET idRegistroEstacion = '" + rsRegistrosEstaciones.getString(1) + "' WHERE id = '" + rsRegistrosProductos.getString(1) + "'";
 				System.out.println(sql);
 				crud.darConexion().createStatement().executeUpdate(sql);
-				String sql_activar = "UPDATE " + Estacion.NOMBRE + " SET activada = true WHERE id = '" + estacionActivar + "'";
+				String sql_activar = "UPDATE " + Estacion.NOMBRE + " SET activada = 1 WHERE id = '" + estacionActivar + "'";
 				System.out.println(sql_activar);
 				crud.darConexion().createStatement().executeQuery(sql_activar);
 			}
 			crud.darConexion().createStatement().executeUpdate("DELETE FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " WHERE idEstacion = '" + idEstacion + "'");
 			verificarFechasEntregaPedidos(idPedidosAfectados);
-			String sql_desactivar = "UPDATE " + Estacion.NOMBRE + " SET activada = false WHERE id = '" + idEstacion + "'";
+			String sql_desactivar = "UPDATE " + Estacion.NOMBRE + " SET activada = 0 WHERE id = '" + idEstacion + "'";
 			System.out.println(sql_desactivar);
 			crud.darConexion().createStatement().executeQuery(sql_desactivar);
 		} 

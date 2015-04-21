@@ -10,7 +10,7 @@ public class Estacion {
 	
 	public static final String[] COLUMNAS = {"id", "nombre", "tipo", "activada"};
 	
-	public static final String[] TIPO = {"String", "String", "String", "boolean"};
+	public static final String[] TIPO = {"String", "String", "String", "int"};
 	
 	public static final String NOMBRE_REGISTRO_ESTACIONES = "registrosEstaciones";
 	
