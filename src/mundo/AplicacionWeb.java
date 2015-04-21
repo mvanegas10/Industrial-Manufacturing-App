@@ -422,6 +422,7 @@ public class AplicacionWeb {
 			}
 			catch(Exception e){
 				conexion.darConexion().rollback(save);
+				e.printStackTrace();
 				throw new Exception();
 			}
 		}
@@ -490,10 +491,10 @@ public class AplicacionWeb {
 			String idRegProd = Integer.toString(darContadorId());
 			String[] datosRegProd = {idRegProd,etapa.getId(),idInventarios.get(i),rs_verificarEstaciones.getString(1),rs_verificarMateriasPrimas.getString(1),rs_verificarComponentes.getString(1)};
 			crud.insertarTupla(Producto.NOMBRE_REGISTRO_PRODUCTOS, Producto.COLUMNAS_REGISTRO_PRODUCTOS, Producto.TIPO_REGISTRO_PRODUCTOS, datosRegProd);
-			String estacionActivar = rs_verificarEstaciones.getString(2);
-			String sql_activar = "UPDATE " + Estacion.NOMBRE + " SET activada = 1 WHERE id = '" + estacionActivar + "'";
-			System.out.println(sql_activar);
-			crud.darConexion().createStatement().executeQuery(sql_activar);
+//			String estacionActivar = rs_verificarEstaciones.getString(2);
+//			String sql_activar = "UPDATE " + Estacion.NOMBRE + " SET activada = 1 WHERE id = '" + estacionActivar + "'";
+//			System.out.println(sql_activar);
+//			crud.darConexion().createStatement().executeQuery(sql_activar);
 			
 			if(etapa.getNumeroSecuencia() == ultimaEtapa){
 				if(i==cantidad-1){
@@ -855,24 +856,28 @@ public class AplicacionWeb {
 		ResultSet rsIdComponentes = crud.darConexion().createStatement().executeQuery("SELECT id_Componente FROM " + Proveedor.NOMBRE_RELACION_COMPONENTE + " WHERE id_Proveedor = '" + idProveedor + "'");
 		while(rsIdComponentes.next()){
 			String idComponente = rsIdComponentes.getString(1);
-			ResultSet rsIdInventarios = crud.darConexion().createStatement().executeQuery("SELECT idInventario FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " WHERE idComponente = '" + idComponente + "'");
-			while(rsIdInventarios.next()){
-				String idInventario = rsIdInventarios.getString(1);
-				ResultSet rsIdProductos = crud.darConexion().createStatement().executeQuery("SELECT idProducto FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " WHERE id = '" + idInventario + "'");
-				while(rsIdProductos.next()){
-					String idProducto = rsIdProductos.getString(1);
-					ResultSet rsProductos = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Producto.NOMBRE + " WHERE id = '" + idProducto + "'");
-					while(rsProductos.next())
-					{
-						String id = rsProductos.getString(1);
-						String nombre = rsProductos.getString(2);
-						int precio = rsProductos.getInt(3);
-						Producto producto = new Producto(id, nombre, precio);
-						setProductosProveedorComponentes.add(producto);
+			ResultSet rsIDRegistroC = crud.darConexion().createStatement().executeQuery("SELECT id FROM " + Componente.NOMBRE_REGISTRO_COMPONENTES + " WHERE idComponente = '" + idComponente + "'");
+			while (rsIDRegistroC.next()){
+				String idRegComponente = rsIDRegistroC.getString(1);
+				ResultSet rsIdInventarios = crud.darConexion().createStatement().executeQuery("SELECT idInventario FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " WHERE idRegistroComponente = '" + idRegComponente + "'");
+				while(rsIdInventarios.next()){
+					String idInventario = rsIdInventarios.getString(1);
+					ResultSet rsIdProductos = crud.darConexion().createStatement().executeQuery("SELECT idProducto FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " WHERE id = '" + idInventario + "'");
+					while(rsIdProductos.next()){
+						String idProducto = rsIdProductos.getString(1);
+						ResultSet rsProductos = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Producto.NOMBRE + " WHERE id = '" + idProducto + "'");
+						while(rsProductos.next())
+						{
+							String id = rsProductos.getString(1);
+							String nombre = rsProductos.getString(2);
+							int precio = rsProductos.getInt(3);
+							Producto producto = new Producto(id, nombre, precio);
+							setProductosProveedorComponentes.add(producto);
+						}
 					}
 				}
-			}
 
+			}
 		}
 		ArrayList<Producto> productosProveedor = new ArrayList<Producto>();
 		productosProveedor.addAll(setProductosProveedorMateriasPrimas);
