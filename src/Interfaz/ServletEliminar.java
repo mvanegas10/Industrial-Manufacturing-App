@@ -102,7 +102,7 @@ public class ServletEliminar extends ServletAbstract{
 	        		respuesta.write( "<hr>" );
 					respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=20%>" );
 			        for (Estacion estacion: estaciones) {
-			        	String activada = "Desctivada";
+			        	String activada = "Desactivada";
 			        	if( estacion.isActivada() )
 			        		activada = "Activada";
 			        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
@@ -110,7 +110,8 @@ public class ServletEliminar extends ServletAbstract{
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Id Estacion: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getId() + "</td></tr>" );
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Nombre: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getNombre() + "</td></tr>" );
 				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Tipo: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + estacion.getTipo() + "</td></tr>" );
-				        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Estado: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + activada + "</td></tr>" );
+				        if (activada.equals("Activada"))
+				        	respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Estado: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + activada + "</td></tr>" );
 				        respuesta.write( "<tr><td align=\"right\"><input value=\"" + estacion.getId() + "\" name=\"idEstacion\" type=\"hidden\"><td align=\"right\"><input value=\"desactivarEstacion\" name=\"criterio\" type=\"hidden\"><input value=\"Desactivar Estacion\" name=\"eliEsta\" type=\"submit\"></td></tr>");
 				        respuesta.write( "<tr></tr>" );
 				        respuesta.write( "</form>" );
