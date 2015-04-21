@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -56,9 +57,9 @@ public class AplicacionWeb {
 	public AplicacionWeb() {
 		conexion = new ConexionDAO();
 		conexion.iniciarConexion();
-//		conexion.crearTablas();
+		conexion.crearTablas();
 		crud = new CRUD(conexion);
-//		poblarTablas();
+		poblarTablas();
 		try
 		{
 			Statement s = crud.darConexion().createStatement();
@@ -467,7 +468,7 @@ public class AplicacionWeb {
 	 */
 	public Date verificarExistencias (String idProducto, Etapa etapa, int cantidad, int ultimaEtapa, String idPedido, ArrayList<String> idInventarios) throws Exception{
 		
-		String verificarEstacionesText = "SELECT a.id AS idRegistroEstacion FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a INNER JOIN " + Estacion.NOMBRE + " b ON a." + Estacion.COLUMNAS_REGISTRO_ESTACIONES[1] + "=b." + Estacion.COLUMNAS[0] + " WHERE b.tipo = '" + etapa.getIdEstacion() + "' AND NOT EXISTS (SELECT c.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " c WHERE idRegistroEstacion = a.id) ORDER BY a.dia,a.mes";
+		String verificarEstacionesText = "SELECT a.id AS idRegistroEstacion FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a INNER JOIN " + Estacion.NOMBRE + " b ON a." + Estacion.COLUMNAS_REGISTRO_ESTACIONES[1] + "=b." + Estacion.COLUMNAS[0] + " WHERE b.tipo = '" + etapa.getIdEstacion() + "' AND NOT EXISTS (SELECT c.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " c WHERE idRegistroEstacion = a.id)";
 		System.out.println(verificarEstacionesText);
 		ResultSet rs_verificarEstaciones = crud.darConexion().createStatement().executeQuery(verificarEstacionesText);
 		
@@ -1092,15 +1093,69 @@ public class AplicacionWeb {
 		conexion.setAutoCommitVerdadero();
 	}
 	
-	public void desactivarEstacionProduccion(String idEstacion){
-		try {
+	public void desactivarEstacionProduccion(String idEstacion) throws Exception{
 		conexion.setAutoCommitFalso();
 		Savepoint save = conexion.darConexion().setSavepoint();
+		try {
+			Set<String> idPedidosAfectados = new HashSet<String>();
+			ResultSet rsRegistrosProductos = crud.darConexion().createStatement().executeQuery("SELECT a.id, a.idInventario FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " a INNER JOIN " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " b ON a.idRegistroEstacion = b.id WHERE b.idEstacion = '" + idEstacion + "' ORDER BY a.id");
+			ResultSet rsRegistrosEstaciones = crud.darConexion().createStatement().executeQuery("SELECT a.id FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a WHERE a.idEstacion != '" + idEstacion + "' AND ((SELECT tipo FROM " + Estacion.NOMBRE + " b WHERE b.id = a.idEstacion) = (SELECT tipo FROM " + Estacion.NOMBRE + " WHERE id = '" + idEstacion + "')) AND NOT EXISTS (SELECT c.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " c WHERE idRegistroEstacion = a.id) ORDER BY a.id");
+			while(rsRegistrosProductos.next()){
+				ResultSet rsPedidos = crud.darConexion().createStatement().executeQuery("SELECT a.idPedido FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " a WHERE a.id = '" + rsRegistrosProductos.getString(2) + "'");	
+				rsPedidos.next();
+				idPedidosAfectados.add(rsPedidos.getString(1));
+				rsRegistrosEstaciones.next();
+				String sql = "UPDATE " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " SET idRegistroEstacion = '" + rsRegistrosEstaciones.getString(1) + "' WHERE id = '" + rsRegistrosProductos.getString(1) + "'";
+				System.out.println(sql);
+				crud.darConexion().createStatement().executeUpdate(sql);
+			}
+			crud.darConexion().createStatement().executeUpdate("DELETE FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " WHERE idEstacion = '" + idEstacion + "'");
+			verificarFechasEntregaPedidos(idPedidosAfectados);
 		} 
-		catch (SQLException e) {
-		e.printStackTrace();
+		catch (Exception e) {
+			e.printStackTrace();
+			conexion.darConexion().rollback(save);
 		}
+		conexion.darConexion().commit();
+	}
+	
+	public void verificarFechasEntregaPedidos(Set<String> idPedidosAfectados) throws Exception{
+		System.out.println(idPedidosAfectados.size());
+		for(String idPedido : idPedidosAfectados){
+			String sql = "SELECT a.id, a.diaEntrega, a.mesEntrega, d.dia, d.mes FROM ((Pedidos a INNER JOIN InventarioProductos b ON a.id = b.idPedido) INNER JOIN RegistrosProductos c ON b.id = c.idInventario) INNER JOIN RegistrosEstaciones d ON d.id = c.idRegistroEstacion WHERE a.id = '" + idPedido + "'";
+			ResultSet mesesYDiasEstacionesAsignadas = crud.darConexion().createStatement().executeQuery(sql);
+			ArrayList<Integer> dias = new ArrayList<Integer>();
+			ArrayList<Integer> meses = new ArrayList<Integer>();
+			while(mesesYDiasEstacionesAsignadas.next()){
+				dias.add(Integer.parseInt(mesesYDiasEstacionesAsignadas.getString(4)));
+				System.out.println("Dia estacion " + mesesYDiasEstacionesAsignadas.getString(4));
+				meses.add(Integer.parseInt(mesesYDiasEstacionesAsignadas.getString(5)));
+				System.out.println("Mes Estacion" + mesesYDiasEstacionesAsignadas.getString(5));
+			}
+			Integer mayorMes = meses.get(0);
+			for(int m = 0; m < meses.size(); m++){
+				if(meses.get(m)>mayorMes){
+					mayorMes = meses.get(m);
+				}
+			}
+			System.out.println("tamano meses: " + meses.size());
+			System.out.println("tamano dias: " + dias.size());
+			System.out.println(mayorMes);
+			for(int i = 0; i < meses.size(); i++){
+				System.out.println("El dia en " + i + " es " + dias.get(i));
+				System.out.println("El mes en " + i + " es " + meses.get(i));
+				if(meses.get(i)!=mayorMes){
+					dias.set(i, 0);
+					System.out.println(dias.get(i));
+				}
+			}
+			Collections.sort(dias);
+			Integer mayorDiaMayorMes = dias.get(dias.size()-1);
+			System.out.println(mayorDiaMayorMes);
+			String sqlUpdate = "UPDATE " + Pedido.NOMBRE + " SET diaEntrega = '" + Integer.toString(mayorDiaMayorMes) + "', mesEntrega = '" + Integer.toString(mayorMes) + "' WHERE id = '" + idPedido + "'";
+			crud.darConexion().createStatement().executeQuery(sqlUpdate);
 		}
+	}
 	
 	//--------------------------------------------------
 	// MAIN
@@ -1112,7 +1167,7 @@ public class AplicacionWeb {
 	public static void main(String[] args) {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try{
-			aplicacionWeb.darCantidadProductos(10);
+			//aplicacionWeb.desactivarEstacionProduccion("1");
 		}
 		catch (Exception e){
 			e.printStackTrace();
