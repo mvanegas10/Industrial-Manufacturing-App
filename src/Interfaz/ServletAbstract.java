@@ -38,6 +38,7 @@ public abstract class ServletAbstract extends HttpServlet{
      */
     private void procesarPedido( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
+    	imprimirUsuario( request, response );
         //
         // Comienza con el Header del template
         imprimirHeader( request, response );
@@ -48,6 +49,23 @@ public abstract class ServletAbstract extends HttpServlet{
         // Termina con el footer del template
         imprimirFooter( response );
 
+    }
+    
+    /**
+     * 
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    private void imprimirUsuario( HttpServletRequest request, HttpServletResponse response ) throws IOException
+    {
+    	PrintWriter respuesta = response.getWriter( );
+    	
+    	respuesta.write( "<table bgcolor=\"#ecf0f1\" width=100% cellpadding=\"40\">" );
+        respuesta.write( "<tr>" );
+        respuesta.write( "<form method=\"POST\" action=\"ingreso.htm\"><input type=\"hidden\" value=\"" + darTipoUsuario() + "\" name=\"reingreso\"><h2 align=\"center\"><input type=\"submit\" value=\"" + darUsuario() + "\" size=\"33\" name=\"reingreso\" class=\"normal\" style=\"border: none; background: #FFFFFF\"></h2></form>" );
+        respuesta.write( "</tr>" );
+        respuesta.write( "</table>" );
     }
 
     /**
@@ -68,6 +86,7 @@ public abstract class ServletAbstract extends HttpServlet{
         respuesta.write( "<a href=\"index.htm\"><title>ProdAndes - " + darTituloPagina(request) + "</title></a>" );
         respuesta.write( "<link rel=\"stylesheet\" href=\"bootstrap.min.css\">" );
         respuesta.write( "</head>" );
+        imprimirUsuario(request, response);
         respuesta.write( "<body bgcolor=\"#bdc3c7\">" );
         respuesta.write( "<table bgcolor=\"#ecf0f1\" width=100% cellpadding=\"40\">" );
         respuesta.write( "<tr>" );
@@ -159,4 +178,28 @@ public abstract class ServletAbstract extends HttpServlet{
      */
     public abstract void escribirContenido( HttpServletRequest request, HttpServletResponse response ) throws IOException;
 
+    /**
+     * 
+     * @param login
+     */
+    public abstract void setUsuario ( String login );
+    
+    /**
+     * 
+     * @param tipo
+     */
+    public abstract void setTipoUsuario ( String tipo );
+    
+    /**
+     * 
+     * @param request
+     * @return
+     */
+    public abstract String darUsuario ( );
+    
+    /**
+     * 
+     * @return
+     */
+    public abstract String darTipoUsuario ( );
 }

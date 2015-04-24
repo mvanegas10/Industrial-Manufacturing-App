@@ -19,6 +19,10 @@ import mundo.Usuario;
 
 public class ServletEliminar extends ServletAbstract{
 
+	private String tipoUsuario;
+	
+	private String usuario;
+	
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
 		return "Eliminar";
@@ -43,6 +47,8 @@ public class ServletEliminar extends ServletAbstract{
 	
 	public void eliminarPedido (HttpServletRequest request, PrintWriter respuesta){
 		String login = request.getParameter("login");
+		setTipoUsuario("cliente");
+		setUsuario(login);
 		String idPedido = request.getParameter("idPedido");
 		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 		try
@@ -86,7 +92,7 @@ public class ServletEliminar extends ServletAbstract{
         	noHayPedidos(login, respuesta);
         }
 	}
-	
+
 	public void desactivarEstacion(HttpServletRequest request, PrintWriter respuesta){
 		String idEstacion = request.getParameter("idEstacion");
 		System.out.println("La estacion a desactivar es: " + idEstacion);
@@ -127,13 +133,13 @@ public class ServletEliminar extends ServletAbstract{
 			}
 		}
 		catch(Exception e){
-			error(respuesta, "No se puede desactivar la estación, no hay estaciones suficientes para satisfacer los pedidos actuales.", "admin");
+			error(respuesta, "No se puede desactivar la estaciï¿½n, no hay estaciones suficientes para satisfacer los pedidos actuales.", "admin");
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void noHayPedidos(String login, PrintWriter respuesta){
-		respuesta.write( "<h4 align=\"center\">No has registrado ningún pedido con nosotros, creemos que estos productos que podrían interesarte.</h4>" );
+		respuesta.write( "<h4 align=\"center\">No has registrado ningï¿½n pedido con nosotros, creemos que estos productos que podrï¿½an interesarte.</h4>" );
     	ArrayList<Producto> productos = new ArrayList<Producto>();
     	try
 		{
@@ -204,5 +210,25 @@ public class ServletEliminar extends ServletAbstract{
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
 			
+	}
+
+	@Override
+	public String darUsuario() {
+		return usuario;
+	}
+
+	@Override
+	public String darTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	@Override
+	public void setUsuario(String login) {
+		usuario = login;
+	}
+
+	@Override
+	public void setTipoUsuario(String tipo) {
+		tipoUsuario = tipo;
 	}
 }
