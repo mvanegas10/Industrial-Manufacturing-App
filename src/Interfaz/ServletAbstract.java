@@ -38,6 +38,10 @@ public abstract class ServletAbstract extends HttpServlet{
      */
     private void procesarPedido( HttpServletRequest request, HttpServletResponse response ) throws IOException
     {
+    	setUsuario(request, response);
+    	
+    	setTipoUsuario(request, response);
+    	
     	imprimirUsuario( request, response );
         //
         // Comienza con el Header del template
@@ -63,7 +67,7 @@ public abstract class ServletAbstract extends HttpServlet{
     	
     	respuesta.write( "<table bgcolor=\"#ecf0f1\" width=100% cellpadding=\"40\">" );
         respuesta.write( "<tr>" );
-        respuesta.write( "<form method=\"POST\" action=\"ingreso.htm\"><input type=\"hidden\" value=\"" + darTipoUsuario() + "\" name=\"reingreso\"><h2 align=\"center\"><input type=\"submit\" value=\"" + darUsuario() + "\" size=\"33\" name=\"reingreso\" class=\"normal\" style=\"border: none; background: #FFFFFF\"></h2></form>" );
+        respuesta.write( "<form method=\"POST\" action=\"ingreso.htm\"><input type=\"hidden\" value=\"" + darTipoUsuario() + "\" name=\"reingreso\"><h4 align=\"right\"><input type=\"submit\" value=\"" + darUsuario() + "\" size=\"33\" name=\"reingreso\" class=\"normal\" style=\"border: none; background: #FFFFFF\"></h4></form>" );
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
     }
@@ -182,13 +186,13 @@ public abstract class ServletAbstract extends HttpServlet{
      * 
      * @param login
      */
-    public abstract void setUsuario ( String login );
+    public abstract void setUsuario ( HttpServletRequest request, HttpServletResponse response )  throws IOException;
     
     /**
      * 
      * @param tipo
      */
-    public abstract void setTipoUsuario ( String tipo );
+    public abstract void setTipoUsuario ( HttpServletRequest request, HttpServletResponse response )  throws IOException;
     
     /**
      * 

@@ -47,8 +47,6 @@ public class ServletEliminar extends ServletAbstract{
 	
 	public void eliminarPedido (HttpServletRequest request, PrintWriter respuesta){
 		String login = request.getParameter("login");
-		setTipoUsuario("cliente");
-		setUsuario(login);
 		String idPedido = request.getParameter("idPedido");
 		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 		try
@@ -223,12 +221,24 @@ public class ServletEliminar extends ServletAbstract{
 	}
 
 	@Override
-	public void setUsuario(String login) {
+	public void setUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{
+		PrintWriter respuesta = response.getWriter( );
+		
+		String login = AplicacionWeb.getInstancia().darUsuarioActual();
 		usuario = login;
 	}
 
 	@Override
-	public void setTipoUsuario(String tipo) {
+	public void setTipoUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{
+		PrintWriter respuesta = response.getWriter( );
+		
+		String login = AplicacionWeb.getInstancia().darUsuarioActual();
+		String tipo = "";
+		try {
+			tipo = AplicacionWeb.getInstancia().buscarUsuario(login);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		tipoUsuario = tipo;
 	}
 }

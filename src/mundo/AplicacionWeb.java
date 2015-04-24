@@ -527,6 +527,21 @@ public class AplicacionWeb {
 	 * @return
 	 * @throws Exception
 	 */
+	public String buscarUsuario (String login) throws Exception{
+		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "tipo", "login = '" + login + "'");
+		usuarioActual = login;
+		System.out.println("El usuario actual es:" + usuarioActual);
+		if ( usuario.get(0) != null )
+			return usuario.get(0);
+		return "";
+	}
+	
+	/**
+	 * @param login
+	 * @param password
+	 * @return
+	 * @throws Exception
+	 */
 	public String buscarUsuario (String login, String password) throws Exception{
 		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "tipo", "login = '" + login + "' AND password = '" + password + "'");
 		usuarioActual = login;
@@ -708,6 +723,7 @@ public class AplicacionWeb {
 	 * @return
 	 */
 	public String darUsuarioActual(){
+		System.out.println("El usuario que retorna es: " + usuarioActual);
 		return usuarioActual;
 	}
 	
