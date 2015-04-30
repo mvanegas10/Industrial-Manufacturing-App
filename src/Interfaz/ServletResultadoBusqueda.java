@@ -663,23 +663,17 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 	public void darEtapas (HttpServletRequest request, PrintWriter respuesta){
 		String filtro = request.getParameter("filtro");
 		String atributo = request.getParameter("atributo");
-		int diaMenor = 0;
-		int mesMenor = 0;
-		int anioMenor = 0;
-		int diaMayor = 0;
-		int mesMayor = 0;
-		int anioMayor = 0;
-		diaMenor = Integer.parseInt(request.getParameter("diaMenor"));
-		mesMenor = Integer.parseInt(request.getParameter("mesMenor"));
-		anioMenor = Integer.parseInt(request.getParameter("anioMenor"));
-		diaMayor = Integer.parseInt(request.getParameter("diaMayor"));
-		mesMayor = Integer.parseInt(request.getParameter("mesMayor"));
-		anioMayor = Integer.parseInt(request.getParameter("anioMayor"));
+		String diaMenor = request.getParameter("diaMenor");
+		String mesMenor = request.getParameter("mesMenor");
+		String anioMenor = request.getParameter("anioMenor");
+		String diaMayor = request.getParameter("diaMayor");
+		String mesMayor = request.getParameter("mesMayor");
+		String anioMayor = request.getParameter("anioMayor");
 		Date fechaInicial = null;
 		Date fechaFinal = null;
-		if (diaMenor != 0 && diaMayor != 0 && mesMenor != 0 && mesMayor != 0 && anioMenor != 0 && anioMayor != 0){
-			fechaInicial = new Date(anioMenor, mesMenor, diaMenor);
-			fechaFinal = new Date(anioMayor, mesMayor, diaMayor);
+		if (diaMenor != null && diaMayor != null && mesMenor != null && mesMayor != null && anioMenor != null && anioMayor != null){
+			fechaInicial = new Date(Integer.parseInt(anioMenor), Integer.parseInt(mesMenor), Integer.parseInt(diaMenor));
+			fechaFinal = new Date(Integer.parseInt(anioMayor), Integer.parseInt(mesMayor), Integer.parseInt(diaMayor));
 		}
 		String condicion = VERDADERO;
 		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
@@ -709,7 +703,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 			etapas = AplicacionWeb.getInstancia().darEtapas(condicion);
 			if (!etapas.isEmpty())
 			{
-				respuesta.write( "<h4 align=\"center\">ProdAndes tiene registrados " + etapas.size() + " pedidos en total:</h4>" );
+				respuesta.write( "<h4 align=\"center\">ProdAndes tiene registrados " + etapas.size() + " etapas en total:</h4>" );
         		respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\"><input name=\"criterio\" value=\"darEtapas\" type=\"hidden\">" );
         		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
         		respuesta.write( "<tr>" );
