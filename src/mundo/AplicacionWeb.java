@@ -527,8 +527,8 @@ public class AplicacionWeb {
 	 * @return
 	 * @throws Exception
 	 */
-	public String buscarUsuario (String login) throws Exception{
-		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "tipo", "login = '" + login + "'");
+	public String buscarUsuario (String login, String password) throws Exception{
+		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "tipo", "login = '" + login + "' AND password = '" + password + "'");
 		usuarioActual = login;
 		System.out.println("El usuario actual es:" + usuarioActual);
 		if ( usuario.get(0) != null )
@@ -538,12 +538,11 @@ public class AplicacionWeb {
 	
 	/**
 	 * @param login
-	 * @param password
 	 * @return
 	 * @throws Exception
 	 */
-	public String buscarUsuario (String login, String password) throws Exception{
-		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "tipo", "login = '" + login + "' AND password = '" + password + "'");
+	public String buscarUsuario (String login) throws Exception{
+		ArrayList<String> usuario = crud.darSubTabla(Usuario.NOMBRE, "tipo", "login = '" + login + "'");
 		usuarioActual = login;
 		System.out.println("El usuario actual es:" + usuarioActual);
 		if ( usuario.get(0) != null )
@@ -723,7 +722,6 @@ public class AplicacionWeb {
 	 * @return
 	 */
 	public String darUsuarioActual(){
-		System.out.println("El usuario que retorna es: " + usuarioActual);
 		return usuarioActual;
 	}
 	
@@ -732,11 +730,30 @@ public class AplicacionWeb {
 	 * @param condicion
 	 * @return
 	 */
-	public ArrayList<Etapa> darEtapas (String condicion){
+	public ArrayList<Etapa> darEtapas (String condicion) throws Exception{
 		ArrayList<Etapa> rta = new ArrayList<Etapa>();
 		String sql = "SELECT ConsultaC.idPedido, ConsultaC.dia, ConsultaC.mes, ConsultaC.idEtapa, ConsultaC.idMateriaPrima, RC.idComponente FROM " + Componente.NOMBRE_REGISTRO_COMPONENTES + " RC INNER JOIN (SELECT RMP.idMateriaPrima, ConsultaMP.idPedido, ConsultaMP.dia, ConsultaMP.mes, ConsultaMP.idEtapa, ConsultaMP.idRegistroComponente FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " RMP INNER JOIN (SELECT I.idPedido, ConsultaInventario.dia, ConsultaInventario.mes, ConsultaInventario.idEtapa, ConsultaInventario.idRegistroMateriaPrima, ConsultaInventario.idRegistroComponente FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " I INNER JOIN (SELECT A.*, B.idEtapa, B.idInventario, B.idRegistroMateriaPrima, B.idRegistroComponente FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " A INNER JOIN " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " B ON A.id = B.idRegistroEstacion) ConsultaInventario ON I.id = ConsultaInventario.idInventario) ConsultaMP ON RMP.id = ConsultaMP.idRegistroMateriaPrima) ConsultaC ON RC.id = ConsultaC.idRegistroComponente WHERE " + condicion + "";
 		System.out.println();
 		ResultSet rs = crud.darConexion().createStatement().executeQuery(sql);
+		while (rs.next()){
+			String idPedido = rs.getString(1);
+			int dia = Integer.parseInt(rs.getString(2));
+			int mes = Integer.parseInt(rs.getString(3));
+			String idEtapa = rs.getString(4);
+			String idMateriaPrima = rs.getString(5);
+			String idComponente = rs.getString(6);
+			String sqlEtapa = "SELECT E.nombre, E.idProducto, E.duracion, E.numeroSecuencia FROM " + Etapa.NOMBRE + " E WHERE E.id = '" + idEtapa + "'";
+			System.out.println(sqlEtapa);
+			ResultSet rs_etapas = crud.darConexion().createStatement().executeQuery(sqlEtapa);
+			while (rs_etapas.next()){
+				String nombre = rs_etapas.getString(1);
+				String idProducto = rs_etapas.getString(2);
+				int duracion = Integer.parseInt(rs_etapas.getString(3));
+				int numeroSecuencia = Integer.parseInt(rs_etapas.getString(4));
+				Etapa etapa = new Etapa(idEtapa, nombre, idProducto, idPedido, dia, mes, idMateriaPrima, idComponente, duracion, numeroSecuencia);
+				rta.add(etapa);
+			}
+		}
 		return rta;
 	}
 	

@@ -18,6 +18,12 @@ public class Etapa {
 
 	private String idProducto;
 	
+	private String idPedido;
+	
+	private int dia;
+	
+	private int mes;
+	
 	private String idEstacion;
 
 	private String idMateriaPrima;
@@ -47,6 +53,21 @@ public class Etapa {
 		this.duracion = duracion;
 		this.numeroSecuencia = numeroSecuencia;
 		this.idAnterior = idAnterior;
+	}
+	
+	public Etapa(String id, String nombre, String idProducto, String idPedido, int dia, int mes,
+			String materiaPrima, String componente, int duracion,
+			int numeroSecuencia) {
+		super();
+		this.id = id;
+		this.idProducto = idProducto;
+		this.idPedido = idPedido;
+		this.dia = dia;
+		this.mes = mes;
+		this.idMateriaPrima = materiaPrima;
+		this.idComponente = componente;
+		this.duracion = duracion;
+		this.numeroSecuencia = numeroSecuencia;
 	}
 	
 	public String getIdProducto() {
@@ -129,10 +150,34 @@ public class Etapa {
 		this.idProducto = idProducto;
 	}
 
+	public String getIdPedido() {
+		return idPedido;
+	}
+
+	public int getDia() {
+		return dia;
+	}
+
+	public int getMes() {
+		return mes;
+	}
+	
 	
 	//--------------------------------------------------
 	// MÉTODOS
 	//--------------------------------------------------
+
+	public void setIdPedido(String idPedido) {
+		this.idPedido = idPedido;
+	}
+
+	public void setDia(int dia) {
+		this.dia = dia;
+	}
+
+	public void setMes(int mes) {
+		this.mes = mes;
+	}
 
 	public String toString(){
 		return COLUMNAS[0] + " : " + id + " , " + COLUMNAS[1] + " : " + nombre + " , " + COLUMNAS[2] + " : " + idProducto + " , " + COLUMNAS[3] + " : " + idEstacion + " , " + COLUMNAS[4] + " : " + idMateriaPrima + " , " + COLUMNAS[5] + " : " + idComponente + " , " + COLUMNAS[6] + " : " + duracion + " , " + COLUMNAS[7] + " : " + numeroSecuencia + " , " + COLUMNAS[8] + " : " + idAnterior;
