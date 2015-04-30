@@ -57,9 +57,9 @@ public class AplicacionWeb {
 	public AplicacionWeb() {
 		conexion = new ConexionDAO();
 		conexion.iniciarConexion();
-		//conexion.crearTablas();
+//		conexion.crearTablas();
 		crud = new CRUD(conexion);
-		//poblarTablas();
+//		poblarTablas();
 		try
 		{
 			Statement s = crud.darConexion().createStatement();
@@ -712,6 +712,19 @@ public class AplicacionWeb {
 	}
 	
 	/**
+	 * 
+	 * @param condicion
+	 * @return
+	 */
+	public ArrayList<Etapa> darEtapas (String condicion){
+		ArrayList<Etapa> rta = new ArrayList<Etapa>();
+		String sql = "SELECT ConsultaC.idPedido, ConsultaC.dia, ConsultaC.mes, ConsultaC.idEtapa, ConsultaC.idMateriaPrima, RC.idComponente FROM " + Componente.NOMBRE_REGISTRO_COMPONENTES + " RC INNER JOIN (SELECT RMP.idMateriaPrima, ConsultaMP.idPedido, ConsultaMP.dia, ConsultaMP.mes, ConsultaMP.idEtapa, ConsultaMP.idRegistroComponente FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " RMP INNER JOIN (SELECT I.idPedido, ConsultaInventario.dia, ConsultaInventario.mes, ConsultaInventario.idEtapa, ConsultaInventario.idRegistroMateriaPrima, ConsultaInventario.idRegistroComponente FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " I INNER JOIN (SELECT A.*, B.idEtapa, B.idInventario, B.idRegistroMateriaPrima, B.idRegistroComponente FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " A INNER JOIN " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " B ON A.id = B.idRegistroEstacion) ConsultaInventario ON I.id = ConsultaInventario.idInventario) ConsultaMP ON RMP.id = ConsultaMP.idRegistroMateriaPrima) ConsultaC ON RC.id = ConsultaC.idRegistroComponente WHERE " + condicion + "";
+		System.out.println();
+		ResultSet rs = crud.darConexion().createStatement().executeQuery(sql);
+		return rta;
+	}
+	
+	/**
 	 * @return
 	 * @throws Exception
 	 */
@@ -1191,7 +1204,7 @@ public class AplicacionWeb {
 	public static void main(String[] args) {
 		AplicacionWeb aplicacionWeb = getInstancia();
 		try{
-			aplicacionWeb.desactivarEstacionProduccion("1");
+			
 		}
 		catch (Exception e){
 			e.printStackTrace();

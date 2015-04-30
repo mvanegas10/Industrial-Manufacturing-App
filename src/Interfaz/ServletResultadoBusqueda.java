@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import mundo.AplicacionWeb;
 import mundo.Componente;
 import mundo.Estacion;
+import mundo.Etapa;
 import mundo.MateriaPrima;
 import mundo.Pedido;
 import mundo.Producto;
@@ -64,6 +65,8 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		
 		else if (criterio.equals("darMaterial"))
 			darMateriales(request, respuesta);
+		else if (criterio.equals("darEtapas"))
+			darEtapas(request, respuesta);
 	}
 
 	public void buscarProductoCliente (HttpServletRequest request, PrintWriter respuesta){
@@ -648,6 +651,99 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		}
 		catch(Exception e){
 			error(respuesta, "Hubo un error, por favor inténtalo de nuevo.", "admin");
+		}
+	}
+	
+	public void darEtapas (HttpServletRequest request, PrintWriter respuesta){
+		String filtro = request.getParameter("filtro");
+		String atributo = request.getParameter("atributo");
+		int diaMenor = 0;
+		int mesMenor = 0;
+		int anioMenor = 0;
+		int diaMayor = 0;
+		int mesMayor = 0;
+		int anioMayor = 0;
+		diaMenor = Integer.parseInt(request.getParameter("diaMenor"));
+		mesMenor = Integer.parseInt(request.getParameter("mesMenor"));
+		anioMenor = Integer.parseInt(request.getParameter("anioMenor"));
+		diaMayor = Integer.parseInt(request.getParameter("diaMayor"));
+		mesMayor = Integer.parseInt(request.getParameter("mesMayor"));
+		anioMayor = Integer.parseInt(request.getParameter("anioMayor"));
+		Date fechaInicial;
+		Date fechaFinal;
+		if (diaMenor != 0 && diaMayor != 0 && mesMenor != 0 && mesMayor != 0 && anioMenor != 0 && anioMayor != 0){
+			fechaInicial = new Date(anioMenor, mesMenor, diaMenor);
+			fechaFinal = new Date(anioMayor, mesMayor, diaMayor);
+		}
+		String condicion = VERDADERO;
+		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
+		try
+		{
+			if (filtro != null)
+			{
+				if (atributo.equals("materiaPrima"))
+				{
+					condicion = "UPPER(idMateriaPrima) LIKE UPPER('%" + filtro + "%')";
+				}
+				else if (atributo.equals("componente"))
+				{
+					condicion = "UPPER(idComponente) LIKE UPPER('%" + filtro + "%')";
+				}
+				else if (atributo.equals("pedido"))
+				{
+					condicion = "idPedido = '" + filtro + "'";
+				}
+			}
+			
+			if	(!condicion.equals(VERDADERO) && fechaInicial != null && fechaFinal != null)
+				condicion += " AND dia >= " + diaMenor + " AND mes >= " + mesMenor + " AND dia <= " + diaMayor + " AND mes <= " + mesMayor + "";
+			else if (condicion.equals(VERDADERO) && fechaInicial != null && fechaFinal != null)
+				condicion = "dia >= " + diaMenor + " AND mes >= " + mesMenor + " AND dia <= " + diaMayor + " AND mes <= " + mesMayor + "";
+			
+			etapas = AplicacionWeb.getInstancia().darPedidos(filtroPedido, filtroNombreCliente, filtroLogin, filtroProducto);
+			if (!etapas.isEmpty())
+			{
+				respuesta.write( "<h4 align=\"center\">ProdAndes tiene registrados " + etapas.size() + " pedidos en total:</h4>" );
+        		respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\"><input name=\"criterio\" value=\"consultarPedidos\" type=\"hidden\">" );
+        		respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
+        		respuesta.write( "<tr>" );
+        		respuesta.write( "<td><h4 align=\"center\">Filtrar por: </h4></td>" );
+        		respuesta.write( "<td align=\"center\"><select style=\"font-size: 15px;\" name=\"atributo\" size=\"1\"  class=\"normal\" \">" );
+        		respuesta.write( "<option value=\"nombreCliente\">Nombre Cliente</option>" );
+        		respuesta.write( "<option value=\"login\">Usuario Cliente</option>" );
+        		respuesta.write( "<option value=\"pedido\">Pedido</option>" );
+    			respuesta.write( "<option value=\"producto\">Producto</option>" );
+    			respuesta.write( "</select></td>" );
+    			respuesta.write( "<td align=\"center\"><input name=\"filtro\" value=\"Ingrese un nombre\" type=\"text\"></td>" );
+    			respuesta.write( "<td align=\"center\"><input name=\"buscar\" value=\"Buscar\" type=\"submit\"></td>" );
+        		respuesta.write( "</tr>" );
+        		respuesta.write( "</table>" );
+        		respuesta.write( "</form>" );
+        		respuesta.write( "<hr>" );
+				respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=50%>" );
+		        for (Pedido ped : etapas) {
+		        	respuesta.write( "<form method=\"POST\" action=\"resultadoBusqueda.htm\">" );
+		        	respuesta.write( "<tr><td><h3>Id Pedido: " + ped.getId() + " -  Cliente: " + ped.getNombreCliente() + " (" + ped.getIdCliente() + ")</h3></td></tr>" );
+			        respuesta.write( "<tr><td><img alt=\"Producto\" src=\"imagenes/producto.jpg\" name=\"producto\"></td>" );
+			        respuesta.write( "<td><table align=\"center\" bgcolor=\"#ecf0f1\" width=30%>" );
+			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Producto Pedido: \" name=\"label1\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + ped.getIdProducto() + "</td></tr>" );
+			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Unidades Pedidas: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + ped.getCantidad() + "</td></tr>" );
+			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Pedido: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\">" + (ped.getFechaPedido().toLocaleString()).substring(0, 10) + "</td></tr>" );
+			        respuesta.write( "<tr><td align=\"left\"><h4><input value=\"Fecha Entrega: \" name=\"label2\" style=\"border: none;\" type=\"text\"\"></h4></td><td align=\"right\" size=\"\">" + (ped.getFechaEntrega().toLocaleString()).substring(0, 10) + "</td></tr>" );
+			        respuesta.write( "</table></td>" );
+			        respuesta.write( "</tr>" );
+			        respuesta.write( "<tr></tr>" );
+			        respuesta.write( "</form>" );
+		        }
+		        respuesta.write( "</table>" );
+			}
+			else{
+				error(respuesta, "No hay etapas de produccion registrados en ProdAndes.", "admin");
+			}
+		}
+		catch (Exception e){
+			error(respuesta, "No hay etapas de produccion registrados en ProdAndes.", "admin");
+			e.printStackTrace();
 		}
 	}
 	

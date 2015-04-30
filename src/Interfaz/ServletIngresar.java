@@ -178,6 +178,56 @@ public class ServletIngresar extends ServletAbstract{
 		respuesta.write( "<tr></tr>" );
 		respuesta.write( "</table>" );
 		respuesta.write( "</td>" );
+		respuesta.write( "</tr>" );
+		
+//		Siguiente Fila
+		
+		respuesta.write( "<tr><td>" );
+		respuesta.write( "<table align=\"left\" width=\"30%\">" );
+		respuesta.write( "<tr>" );
+		respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Etapas Produccion</h3></td>" );
+		respuesta.write( "</tr>" );
+		respuesta.write( "<tr>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"registrarEstacion.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Etapa\" name=\"regEst\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "</tr>" );
+		respuesta.write( "<tr>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input type=\"hidden\" value=\"darEtapas\" name=\"criterio\"><input type=\"submit\" value=\"Consultar Etapas\" name=\"consEtap\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "</tr>" );
+		respuesta.write( "<tr></tr>" );
+		respuesta.write( "</table>" );
+		respuesta.write( "</td>" );
+		
+////		Siguiente columna
+//		
+//		respuesta.write( "<td><table align=\"right\" width=\"30%\">" );
+//		respuesta.write( "<tr>" );
+//		respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Etapas Produccion</h3></td>" );
+//		respuesta.write( "</tr>" );
+//		respuesta.write( "<tr>" );
+//		respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Etapas\" name=\"regProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+//		respuesta.write( "</tr>" );
+//		respuesta.write( "<tr>" );
+//		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input value=\"darEtapas\" name=\"criterio\" type=\"hidden\"><input type=\"submit\" value=\"Consultar Etapas\" name=\"consEtap\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+//		respuesta.write( "</tr>" );
+//		respuesta.write( "<tr></tr>" );
+//		respuesta.write( "</table>" );
+//		respuesta.write( "</td>" );
+//		
+////		Siguiente columna
+//		
+//		respuesta.write( "<td><table align=\"right\" width=\"30%\">" );
+//		respuesta.write( "<tr>" );
+//		respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Etapas Produccion</h3></td>" );
+//		respuesta.write( "</tr>" );
+//		respuesta.write( "<tr>" );
+//		respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Etapas\" name=\"regProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+//		respuesta.write( "</tr>" );
+//		respuesta.write( "<tr>" );
+//		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input value=\"darEtapas\" name=\"criterio\" type=\"hidden\"><input type=\"submit\" value=\"Consultar Etapas\" name=\"consEtap\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+//		respuesta.write( "</tr>" );
+//		respuesta.write( "<tr></tr>" );
+//		respuesta.write( "</table>" );
+		respuesta.write( "</tr>" );
 		
 		respuesta.write("</tr>");
 		respuesta.write( "</table>" );
