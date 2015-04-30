@@ -20,6 +20,11 @@ import mundo.Usuario;
 
 public class ServletResultadoBusqueda extends ServletAbstract{
 	
+	private String usuario;
+	
+	private String tipoUsuario;
+
+	
 	public static final String VERDADERO = "'1'='1'"; 
 	
 	public static final String FALSO = "'1'='2'"; 
@@ -89,7 +94,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				rta = AplicacionWeb.getInstancia().darProducto(idProducto);
 			}
 			catch (Exception e){
-				error(respuesta, "No se encontró el producto que estas buscando.", "cliente");
+				error(respuesta, "No se encontrï¿½ el producto que estas buscando.", "cliente");
 			}
 		}
 		
@@ -650,7 +655,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 				error(respuesta, "No hay productos registrados en ProdAndes.", "admin");
 		}
 		catch(Exception e){
-			error(respuesta, "Hubo un error, por favor inténtalo de nuevo.", "admin");
+			error(respuesta, "Hubo un error, por favor intï¿½ntalo de nuevo.", "admin");
 		}
 	}
 	
@@ -762,7 +767,7 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 	
 	
 	public void noHayPedidos(String login, PrintWriter respuesta){
-		respuesta.write( "<h4 align=\"center\">No has registrado ningún pedido con nosotros, creemos que estos productos que podrían interesarte.</h4>" );
+		respuesta.write( "<h4 align=\"center\">No has registrado ningï¿½n pedido con nosotros, creemos que estos productos que podrï¿½an interesarte.</h4>" );
     	ArrayList<Producto> productos = new ArrayList<Producto>();
     	try
 		{
@@ -821,5 +826,38 @@ public class ServletResultadoBusqueda extends ServletAbstract{
 		catch (Exception e1){
 			e1.printStackTrace();
 		}
+	}
+	
+
+	@Override
+	public String darUsuario() {
+		return usuario;
+	}
+
+	@Override
+	public String darTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	@Override
+	public void setUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{
+		PrintWriter respuesta = response.getWriter( );
+		
+		String login = AplicacionWeb.getInstancia().darUsuarioActual();
+		usuario = login;
+	}
+
+	@Override
+	public void setTipoUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{
+		PrintWriter respuesta = response.getWriter( );
+		
+		String login = AplicacionWeb.getInstancia().darUsuarioActual();
+		String tipo = "";
+		try {
+			tipo = AplicacionWeb.getInstancia().buscarUsuario(login);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		tipoUsuario = tipo;
 	}
 }

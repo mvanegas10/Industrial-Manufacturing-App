@@ -15,6 +15,10 @@ import mundo.AplicacionWeb;
 import mundo.Producto;
 
 public class ServletIngresar extends ServletAbstract{
+	
+	private String usuario;
+	
+	private String tipoUsuario;
 
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
@@ -81,10 +85,10 @@ public class ServletIngresar extends ServletAbstract{
 		respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Proveedores</h3></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr>" );
-		respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Proveedores\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"registrarProveedor.htm\"><h4 align=\"left\"><input type=\"hidden\" value=\"" + login + "\" name=\"login\"><input type=\"submit\" value=\"Registrar Proveedores\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr>" );
-		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input value=\"darProveedores\" name=\"criterio\" type=\"hidden\"><input type=\"submit\" value=\"Consultar Proveedores\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input type=\"hidden\" value=\"" + login + "\" name=\"login\"><input value=\"darProveedores\" name=\"criterio\" type=\"hidden\"><input type=\"submit\" value=\"Consultar Proveedores\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr></tr>" );
 		respuesta.write( "</table>" );
@@ -108,10 +112,10 @@ public class ServletIngresar extends ServletAbstract{
 		respuesta.write( "</td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr>" );
-		respuesta.write( "<td><h4 align=\"left\"><input value=\"materiaPrima\" name=\"tipo\" type=\"hidden\"><input type=\"submit\" value=\"Registrar Materiales\" name=\"regMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "<td><h4 align=\"left\"><input value=\"materiaPrima\" name=\"tipo\" type=\"hidden\"><input type=\"hidden\" value=\"" + login + "\" name=\"login\"><input type=\"submit\" value=\"Registrar Materiales\" name=\"regMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr>" );
-		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input value=\"darMaterial\" name=\"criterio\" type=\"hidden\"><h4><input type=\"submit\" value=\"Consultar Materiales\" name=\"consMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input type=\"hidden\" value=\"" + login + "\" name=\"login\"><h4 align=\"left\"><input value=\"darMaterial\" name=\"criterio\" type=\"hidden\"><h4><input type=\"submit\" value=\"Consultar Materiales\" name=\"consMate\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr></tr>" );
 		respuesta.write( "</table>" );
@@ -125,10 +129,10 @@ public class ServletIngresar extends ServletAbstract{
 		respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Productos</h3></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr>" );
-		respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Productos\" name=\"regProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"registrarProducto.htm\"><input type=\"hidden\" value=\"" + login + "\" name=\"login\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Productos\" name=\"regProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr>" );
-		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input value=\"darProductos\" name=\"criterio\" type=\"hidden\"><input type=\"submit\" value=\"Consultar Productos\" name=\"consProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input type=\"hidden\" value=\"" + login + "\" name=\"login\"><h4 align=\"left\"><input value=\"darProductos\" name=\"criterio\" type=\"hidden\"><input type=\"submit\" value=\"Consultar Productos\" name=\"consProd\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr></tr>" );
 		respuesta.write( "</table>" );
@@ -143,10 +147,10 @@ public class ServletIngresar extends ServletAbstract{
 		respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Estaciones</h3></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr>" );
-		respuesta.write( "<td><form method=\"POST\" action=\"registrarEstacion.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Estaciones\" name=\"regEst\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"registrarEstacion.htm\"><input type=\"hidden\" value=\"" + login + "\" name=\"login\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Estaciones\" name=\"regEst\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr>" );
-		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input type=\"hidden\" value=\"darEstaciones\" name=\"criterio\"><input type=\"submit\" value=\"Consultar Estaciones\" name=\"consEst\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input type=\"hidden\" value=\"" + login + "\" name=\"login\"><h4 align=\"left\"><input type=\"hidden\" value=\"darEstaciones\" name=\"criterio\"><input type=\"submit\" value=\"Consultar Estaciones\" name=\"consEst\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr></tr>" );
 		respuesta.write( "</table>" );
@@ -160,7 +164,7 @@ public class ServletIngresar extends ServletAbstract{
 		respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Clientes</h3></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr>" );
-		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input value=\"darClientes\" name=\"criterio\" type=\"hidden\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Clientes\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input type=\"hidden\" value=\"" + login + "\" name=\"login\"><input value=\"darClientes\" name=\"criterio\" type=\"hidden\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Clientes\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr></tr>" );
 		respuesta.write( "</table>" );
@@ -173,7 +177,7 @@ public class ServletIngresar extends ServletAbstract{
 		respuesta.write( "<td><h3 style=\"padding:0.5em;\"> Pedidos</h3></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr>" );
-		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input value=\"consultarPedidos\" name=\"criterio\" type=\"hidden\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Pedidos\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><input type=\"hidden\" value=\"" + login + "\" name=\"login\"><input value=\"consultarPedidos\" name=\"criterio\" type=\"hidden\"><h4 align=\"left\"><input type=\"submit\" value=\"Consultar Pedidos\" name=\"regProve\" class=\"normal\" style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr></tr>" );
 		respuesta.write( "</table>" );
@@ -261,7 +265,7 @@ public class ServletIngresar extends ServletAbstract{
 	        respuesta.write( "</table>" );
 	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
 	        respuesta.write( "<tr>" );
-	        respuesta.write( "<td><h3> Productos que podrían interesarte </h3></td>" );
+	        respuesta.write( "<td><h3> Productos que podrï¿½an interesarte </h3></td>" );
 	        respuesta.write( "</tr>" );
 	        respuesta.write( "</table>" );
 	        respuesta.write( "<table align=\"center\" bgcolor=\"#ecf0f1\" width=80%>" );
@@ -336,5 +340,38 @@ public class ServletIngresar extends ServletAbstract{
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
 		
+	}
+	
+
+	@Override
+	public String darUsuario() {
+		return usuario;
+	}
+
+	@Override
+	public String darTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	@Override
+	public void setUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{
+		PrintWriter respuesta = response.getWriter( );
+		
+		String login = request.getParameter("usuario");
+		usuario = login;
+	}
+
+	@Override
+	public void setTipoUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{
+		PrintWriter respuesta = response.getWriter( );
+		
+		String login = request.getParameter("usuario");
+		String tipo = "";
+		try {
+			tipo = AplicacionWeb.getInstancia().buscarUsuario(login);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		tipoUsuario = tipo;
 	}
 }

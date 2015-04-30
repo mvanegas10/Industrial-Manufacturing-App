@@ -13,6 +13,10 @@ import mundo.Pedido;
 import mundo.Producto;
 
 public class ServletProducto extends ServletAbstract{
+	
+	private String usuario;
+	
+	private String tipoUsuario;
 
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
@@ -72,6 +76,39 @@ public class ServletProducto extends ServletAbstract{
         respuesta.write( "</tr>" );
         respuesta.write( "</table>" );
 		
+	}
+
+
+	@Override
+	public String darUsuario() {
+		return usuario;
+	}
+
+	@Override
+	public String darTipoUsuario() {
+		return tipoUsuario;
+	}
+
+	@Override
+	public void setUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{
+		PrintWriter respuesta = response.getWriter( );
+		
+		String login = AplicacionWeb.getInstancia().darUsuarioActual();
+		usuario = login;
+	}
+
+	@Override
+	public void setTipoUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{
+		PrintWriter respuesta = response.getWriter( );
+		
+		String login = AplicacionWeb.getInstancia().darUsuarioActual();
+		String tipo = "";
+		try {
+			tipo = AplicacionWeb.getInstancia().buscarUsuario(login);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		tipoUsuario = tipo;
 	}
 
 }
