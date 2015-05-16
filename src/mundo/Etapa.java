@@ -1,5 +1,7 @@
 package mundo;
 
+import java.util.ArrayList;
+
 public class Etapa {
 	
 	public static final String NOMBRE = "etapas";
@@ -18,7 +20,7 @@ public class Etapa {
 
 	private String idProducto;
 	
-	private String idPedido;
+	private ArrayList<String> pedidos;
 	
 	private int dia;
 	
@@ -46,6 +48,7 @@ public class Etapa {
 			int numeroSecuencia, String idAnterior) {
 		super();
 		this.id = id;
+		this.nombre = nombre;
 		this.idProducto = idProducto;
 		this.idEstacion = idEstacion;
 		this.idMateriaPrima = idMateriaPrima;
@@ -55,13 +58,14 @@ public class Etapa {
 		this.idAnterior = idAnterior;
 	}
 	
-	public Etapa(String id, String nombre, String idProducto, String idPedido, int dia, int mes,
+	public Etapa(String id, String nombre, String idProducto, int dia, int mes,
 			String materiaPrima, String componente, int duracion,
 			int numeroSecuencia) {
 		super();
 		this.id = id;
+		this.nombre = nombre;
 		this.idProducto = idProducto;
-		this.idPedido = idPedido;
+		this.pedidos = new ArrayList<String>();
 		this.dia = dia;
 		this.mes = mes;
 		this.idMateriaPrima = materiaPrima;
@@ -150,8 +154,8 @@ public class Etapa {
 		this.idProducto = idProducto;
 	}
 
-	public String getIdPedido() {
-		return idPedido;
+	public ArrayList<String> getIdPedido() {
+		return pedidos;
 	}
 
 	public int getDia() {
@@ -167,8 +171,12 @@ public class Etapa {
 	// MÉTODOS
 	//--------------------------------------------------
 
-	public void setIdPedido(String idPedido) {
-		this.idPedido = idPedido;
+	public void addIdPedido (String idPedido){
+		this.pedidos.add(idPedido);
+	}
+	
+	public void setIdPedido(ArrayList<String> idPedido) {
+		this.pedidos = idPedido;
 	}
 
 	public void setDia(int dia) {

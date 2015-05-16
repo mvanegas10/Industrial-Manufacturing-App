@@ -1,5 +1,9 @@
 package mundo;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,11 +13,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.Set;
+import java.util.TreeMap;
 
 
 public class AplicacionWeb {
@@ -57,7 +66,7 @@ public class AplicacionWeb {
 	public AplicacionWeb() {
 		conexion = new ConexionDAO();
 		conexion.iniciarConexion();
-//		conexion.crearTablas();
+		conexion.crearTablas();
 		crud = new CRUD(conexion);
 //		poblarTablas();
 		try
@@ -391,7 +400,7 @@ public class AplicacionWeb {
 	 * @param entrega
 	 * @throws Exception
 	 */
-	public Date registrarPedido (String login, String idProducto, int cantidad, Date fechaPedido) throws Exception{
+	public Date registrarPedido (String login, String idProducto, int cantidad, Date fechaPedido) throws Exception{		
 		System.out.println(login + " - " + idProducto + " - " + cantidad + " - " + fechaPedido.toLocaleString());
 		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
 		String idPedido = Integer.toString(darContadorId());
@@ -452,6 +461,7 @@ public class AplicacionWeb {
 			etapas.add(etapa);
 			System.out.println(etapa.toString());
 		}
+		rs_etapas.close();
 		return etapas;
 	}
 	
@@ -471,7 +481,7 @@ public class AplicacionWeb {
 		
 		String verificarEstacionesText = "SELECT a.id AS idRegistroEstacion FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " a INNER JOIN " + Estacion.NOMBRE + " b ON a." + Estacion.COLUMNAS_REGISTRO_ESTACIONES[1] + "=b." + Estacion.COLUMNAS[0] + " WHERE b.tipo = '" + etapa.getIdEstacion() + "' AND NOT EXISTS (SELECT c.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " c WHERE idRegistroEstacion = a.id)";
 		System.out.println(verificarEstacionesText);
-		ResultSet rs_verificarEstaciones = crud.darConexion().createStatement().executeQuery(verificarEstacionesText);
+		ResultSet rs_verificarEstaciones = crud.darConexion().createStatement().executeQuery(verificarEstacionesText);	
 		
 		String verificarMateriasPrimasText = "SELECT a.id FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " a WHERE a.idMateriaPrima = '" + etapa.getIdMateriaPrima() + "' AND NOT EXISTS (SELECT b.id FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " b WHERE idRegistroMateriaPrima = a.id)";
 		System.out.println(verificarMateriasPrimasText);
@@ -512,6 +522,9 @@ public class AplicacionWeb {
 				}
 			}
 		}
+		rs_verificarComponentes.close();
+		rs_verificarEstaciones.close();
+		rs_verificarMateriasPrimas.close();
 		return fechaEntrega;
 	}
 	
@@ -641,15 +654,40 @@ public class AplicacionWeb {
 
 	public ArrayList<MateriaPrima> darMateriasPrimas (String condicion) throws Exception{
 		ArrayList<MateriaPrima> materiales = new ArrayList<MateriaPrima>();
-		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + MateriaPrima.NOMBRE + " WHERE " + condicion);
+		TreeMap<String, MateriaPrima> rta = new TreeMap<String, MateriaPrima>();
+		String sql = "SELECT E.dia, E.mes, consultaEsta.* FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " E INNER JOIN (SELECT I.idPedido, consultaPedidos.* FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " I INNER JOIN (SELECT RP.IDINVENTARIO, RP.IDREGISTROESTACION, registros.id AS idMateriaPrima, registros.UNIDADMEDIDA, registros.CANTIDADINICIAL, registros.idRegistroMP FROM " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " RP INNER JOIN (SELECT MP.*, RMP.id AS idRegistroMP FROM " + MateriaPrima.NOMBRE + " MP INNER JOIN " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " RMP ON MP.id = RMP.IDMATERIAPRIMA WHERE UPPER(MP.id) LIKE UPPER('%" + condicion + "%')) registros ON RP.IDREGISTROMATERIAPRIMA = registros.idRegistroMP) consultaPedidos ON I.id = consultaPedidos.IDINVENTARIO) consultaEsta ON E.id = consultaEsta.idRegistroEstacion";
+		System.out.println(sql);
+		Statement s = crud.darConexion().createStatement();
+		ResultSet rs = s.executeQuery(sql);
 		while(rs.next())
 		{
-			String id = rs.getString(1);
-			String unidadMedida = rs.getString(2);
-			int cantidad = Integer.parseInt(rs.getString(3));
-			MateriaPrima material = new MateriaPrima(id, unidadMedida, cantidad);
-			materiales.add(material);
+			int dia = Integer.parseInt(rs.getString(1));
+			int mes = Integer.parseInt(rs.getString(2));
+			String idPedido = rs.getString(3);
+			String id = rs.getString(6);
+			String unidadMedida = rs.getString(7);
+			int cantidad = Integer.parseInt(rs.getString(8));
+			MateriaPrima material = new MateriaPrima(id, unidadMedida, cantidad, dia, mes);
+			if(rta.containsKey(id)){
+				MateriaPrima actual = rta.get(id);
+				MateriaPrima nueva = new MateriaPrima(actual.getId(), actual.getUnidadMedida(), actual.getCantidadInicial(), actual.getDia(), actual.getMes());
+				nueva.setPedidos(actual.getPedidos());
+				rta.remove(id);
+				nueva.addPedido(idPedido);
+				rta.put(nueva.getId(), nueva);
+			}
+			else{
+				MateriaPrima nueva = new MateriaPrima(id, unidadMedida, cantidad, dia, mes);
+				nueva.addPedido(idPedido);
+				rta.put(id, nueva);
+			}
 		}
+		Collection<MateriaPrima> e = rta.values();
+		Iterator<MateriaPrima> i = e.iterator();
+		while(i.hasNext())
+			materiales.add(i.next());
+		rs.close();
+		s.close();
 		return materiales;
 	}
 	
@@ -661,30 +699,34 @@ public class AplicacionWeb {
 	 * @return
 	 * @throws Exception
 	 */
-	public ArrayList<Pedido> darPedidos (String condicionPedido, String condicionNombreCliente, String condicionLoginCliente, String condicionProducto) throws Exception{
+	public ArrayList<Pedido> darPedidos (String condicionPedido, String condicionNombreCliente, String condicionLoginCliente, String condicionProducto, String condicionMaterial, String condicionCantidad ) throws Exception{
 		ArrayList<Pedido> rta = new ArrayList<Pedido>();
-		String sql = "SELECT * FROM (SELECT user1.login AS login, user1.nombre AS nombreCliente, proPed.id AS idPedido, proPed.nombre AS nombreProducto, proPed.cantidad AS cantidad, proPed.diaPedido AS diaPedido, proPed.mesPedido AS mesPedido, proPed.diaEntrega AS diaEntrega, proPed.mesEntrega AS mesEntrega FROM usuarios user1 INNER JOIN (SELECT ped.id, prod.nombre, ped.idUsuario, ped.cantidad, ped.diaPedido, ped.mesPedido, ped.diaEntrega, ped.mesEntrega FROM pedidos ped INNER JOIN productos prod ON ped.idProducto = prod.id) proPed ON user1.login = proPed.idUsuario WHERE user1.tipo = 'natural' OR user1.tipo = 'juridica')  WHERE " + condicionNombreCliente + " AND "+ condicionLoginCliente + " AND " + condicionPedido + " AND " + condicionProducto;
+		TreeMap<String, Pedido> arbol = new TreeMap<String, Pedido>();
+		String sql = "SELECT etapPed.login, etapPed.nombreCliente, etapPed.idProducto, etapPed.idPedido, etapPed.nombreProducto, etapPed.cantidad, etapPed.diaPedido, etapPed.mesPedido, etapPed.diaEntrega, etapPed.mesEntrega, etapas.idMateriaPrima, etapas.idComponente FROM etapas INNER JOIN (SELECT user1.login AS login, user1.nombre AS nombreCliente, proPed.idProducto, proPed.id AS idPedido, proPed.nombre AS nombreProducto, proPed.cantidad AS cantidad, proPed.diaPedido AS diaPedido, proPed.mesPedido AS mesPedido, proPed.diaEntrega AS diaEntrega, proPed.mesEntrega AS mesEntrega FROM usuarios user1 INNER JOIN (SELECT /*+ index(\"ISIS2304461510\".\"PEDIDOS\" P_idProd) */ ped.id, prod.id AS idProducto, prod.nombre, ped.idUsuario, ped.cantidad, ped.diaPedido, ped.mesPedido, ped.diaEntrega, ped.mesEntrega FROM pedidos ped INNER JOIN productos prod ON ped.idProducto = prod.id) proPed ON user1.login = proPed.idUsuario WHERE user1.tipo = 'natural' OR user1.tipo = 'juridica') etapPed ON etapas.idProducto = etapPed.idProducto  WHERE " + condicionNombreCliente + " AND "+ condicionLoginCliente + " AND " + condicionPedido + " AND " + condicionProducto + " AND " + condicionMaterial + " AND " + condicionCantidad + "";
 		System.out.println(sql);
 		ResultSet rs = crud.darConexion().createStatement().executeQuery(sql);
 		while(rs.next())
 		{
 			String login = rs.getString(1);		
 			String nombre = rs.getString(2);
-						
-			String idPedido = rs.getString(3);
-			String nombreProducto = rs.getString(4);
-			int cantidad = Integer.parseInt(rs.getString(5));
-			int diaPedido = Integer.parseInt(rs.getString(6));
-			int mesPedido = Integer.parseInt(rs.getString(7));
-			int diaEntrega = Integer.parseInt(rs.getString(8));
-			int mesEntrega = Integer.parseInt(rs.getString(9));
+			String idProducto = rs.getString(3);
+			String idPedido = rs.getString(4);
+			String nombreProducto = rs.getString(5);
+			int cantidad = Integer.parseInt(rs.getString(6));
+			int diaPedido = Integer.parseInt(rs.getString(7));
+			int mesPedido = Integer.parseInt(rs.getString(8));
+			int diaEntrega = Integer.parseInt(rs.getString(9));
+			int mesEntrega = Integer.parseInt(rs.getString(10));
 			
 			Date fechaPedido = new Date(2015, mesPedido, diaPedido);
 			Date fechaEntrega = new Date(2015, mesEntrega, diaEntrega);
 			Pedido pedido = new Pedido(idPedido, nombreProducto, login, nombre, cantidad, fechaPedido, fechaEntrega);
-			System.out.println(pedido.getNombreCliente());
-			rta.add(pedido);
+			arbol.put(pedido.getId(),pedido);
 		}
+		Collection<Pedido> e = arbol.values();
+		Iterator<Pedido> i = e.iterator();
+		while(i.hasNext())
+			rta.add(i.next());
 		return rta;
 	}
 	
@@ -731,10 +773,17 @@ public class AplicacionWeb {
 	 * @return
 	 */
 	public ArrayList<Etapa> darEtapas (String condicion) throws Exception{
-		ArrayList<Etapa> rta = new ArrayList<Etapa>();
-		String sql = "SELECT ConsultaC.idPedido, ConsultaC.dia, ConsultaC.mes, ConsultaC.idEtapa, ConsultaC.idMateriaPrima, RC.idComponente FROM " + Componente.NOMBRE_REGISTRO_COMPONENTES + " RC INNER JOIN (SELECT RMP.idMateriaPrima, ConsultaMP.idPedido, ConsultaMP.dia, ConsultaMP.mes, ConsultaMP.idEtapa, ConsultaMP.idRegistroComponente FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " RMP INNER JOIN (SELECT I.idPedido, ConsultaInventario.dia, ConsultaInventario.mes, ConsultaInventario.idEtapa, ConsultaInventario.idRegistroMateriaPrima, ConsultaInventario.idRegistroComponente FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " I INNER JOIN (SELECT A.*, B.idEtapa, B.idInventario, B.idRegistroMateriaPrima, B.idRegistroComponente FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " A INNER JOIN " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " B ON A.id = B.idRegistroEstacion) ConsultaInventario ON I.id = ConsultaInventario.idInventario) ConsultaMP ON RMP.id = ConsultaMP.idRegistroMateriaPrima) ConsultaC ON RC.id = ConsultaC.idRegistroComponente WHERE " + condicion + "";
-		System.out.println();
-		ResultSet rs = crud.darConexion().createStatement().executeQuery(sql);
+		int contador = 0;
+		conexion.cerrarConexion();
+		conexion = new ConexionDAO();
+		conexion.iniciarConexion();
+		crud = new CRUD(conexion);
+		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
+		TreeMap<String, Etapa> rta = new TreeMap<String, Etapa>();
+		String sql = "SELECT ConsultaC.idPedido, ConsultaC.dia, ConsultaC.mes, ConsultaC.idEtapa, ConsultaC.idMateriaPrima, RC.idComponente FROM " + Componente.NOMBRE_REGISTRO_COMPONENTES + " RC INNER JOIN (SELECT RMP.idMateriaPrima, ConsultaMP.idPedido, ConsultaMP.dia, ConsultaMP.mes, ConsultaMP.idEtapa, ConsultaMP.idRegistroComponente FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " RMP INNER JOIN (SELECT I.idPedido, ConsultaInventario.dia, ConsultaInventario.mes, ConsultaInventario.idEtapa, ConsultaInventario.idRegistroMateriaPrima, ConsultaInventario.idRegistroComponente FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " I INNER JOIN (SELECT /*+ index(\"ISIS2304461510\".\"REGISTROSPRODUCTOS\" RP_idInventario) */ A.*, B.idEtapa, B.idInventario, B.idRegistroMateriaPrima, B.idRegistroComponente FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " A INNER JOIN " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " B ON A.id = B.idRegistroEstacion) ConsultaInventario ON I.id = ConsultaInventario.idInventario) ConsultaMP ON RMP.id = ConsultaMP.idRegistroMateriaPrima) ConsultaC ON RC.id = ConsultaC.idRegistroComponente WHERE " + condicion + "";
+		System.out.println(sql);
+		Statement s = crud.darConexion().createStatement();
+		ResultSet rs = s.executeQuery(sql);
 		while (rs.next()){
 			String idPedido = rs.getString(1);
 			int dia = Integer.parseInt(rs.getString(2));
@@ -744,17 +793,93 @@ public class AplicacionWeb {
 			String idComponente = rs.getString(6);
 			String sqlEtapa = "SELECT E.nombre, E.idProducto, E.duracion, E.numeroSecuencia FROM " + Etapa.NOMBRE + " E WHERE E.id = '" + idEtapa + "'";
 			System.out.println(sqlEtapa);
+			System.out.println(contador++);
 			ResultSet rs_etapas = crud.darConexion().createStatement().executeQuery(sqlEtapa);
 			while (rs_etapas.next()){
 				String nombre = rs_etapas.getString(1);
 				String idProducto = rs_etapas.getString(2);
 				int duracion = Integer.parseInt(rs_etapas.getString(3));
 				int numeroSecuencia = Integer.parseInt(rs_etapas.getString(4));
-				Etapa etapa = new Etapa(idEtapa, nombre, idProducto, idPedido, dia, mes, idMateriaPrima, idComponente, duracion, numeroSecuencia);
-				rta.add(etapa);
+				if(rta.containsKey(idEtapa)){
+					Etapa actual = rta.get(idEtapa);
+					Etapa nueva = new Etapa(actual.getId(), actual.getNombre(), actual.getIdProducto(), actual.getDia(), actual.getMes(), actual.getIdMateriaPrima(), actual.getIdComponente(), actual.getDuracion(), actual.getNumeroSecuencia());
+					nueva.setIdPedido(actual.getIdPedido());
+					rta.remove(idEtapa);
+					nueva.addIdPedido(idPedido);
+					rta.put(nueva.getId(), nueva);
+				}
+				else{
+					Etapa etapa = new Etapa(idEtapa, nombre, idProducto, dia, mes, idMateriaPrima, idComponente, duracion, numeroSecuencia);
+					etapa.addIdPedido(idPedido);
+					rta.put(idEtapa, etapa);
+				}
 			}
+			rs_etapas.close();
 		}
-		return rta;
+		rs.close();
+		s.close();
+		Collection<Etapa> e = rta.values();
+		Iterator<Etapa> i = e.iterator();
+		while(i.hasNext())
+			etapas.add(i.next());
+		conexion.cerrarConexion();
+		conexion = new ConexionDAO();
+		conexion.iniciarConexion();
+		crud = new CRUD(conexion);
+		return etapas;
+	}
+	
+	/**
+	 * 
+	 * @param condicion
+	 * @return
+	 */
+	public ArrayList<Etapa> darEtapasNo (String condicion, String condicionFecha) throws Exception{
+		ArrayList<Etapa> etapas = new ArrayList<Etapa>();
+		TreeMap<String, Etapa> rta = new TreeMap<String, Etapa>();
+		String sql = "SELECT ConsultaC.idPedido, ConsultaC.dia, ConsultaC.mes, ConsultaC.idEtapa, ConsultaC.idMateriaPrima, RC.idComponente FROM " + Componente.NOMBRE_REGISTRO_COMPONENTES + " RC INNER JOIN (SELECT RMP.idMateriaPrima, ConsultaMP.idPedido, ConsultaMP.dia, ConsultaMP.mes, ConsultaMP.idEtapa, ConsultaMP.idRegistroComponente FROM " + MateriaPrima.NOMBRE_REGISTRO_MATERIAS_PRIMAS + " RMP INNER JOIN (SELECT I.idPedido, ConsultaInventario.dia, ConsultaInventario.mes, ConsultaInventario.idEtapa, ConsultaInventario.idRegistroMateriaPrima, ConsultaInventario.idRegistroComponente FROM " + Producto.NOMBRE_INVENTARIO_PRODUCTOS + " I INNER JOIN (SELECT A.*, B.idEtapa, B.idInventario, B.idRegistroMateriaPrima, B.idRegistroComponente FROM " + Estacion.NOMBRE_REGISTRO_ESTACIONES + " A INNER JOIN " + Producto.NOMBRE_REGISTRO_PRODUCTOS + " B ON A.id = B.idRegistroEstacion) ConsultaInventario ON I.id = ConsultaInventario.idInventario) ConsultaMP ON RMP.id = ConsultaMP.idRegistroMateriaPrima) ConsultaC ON RC.id = ConsultaC.idRegistroComponente WHERE " + condicionFecha + " AND NOT (" + condicion + ")";
+		System.out.println(sql);
+		Statement s = crud.darConexion().createStatement();
+		ResultSet rs = s.executeQuery(sql);
+		while (rs.next()){
+			String idPedido = rs.getString(1);
+			int dia = Integer.parseInt(rs.getString(2));
+			int mes = Integer.parseInt(rs.getString(3));
+			String idEtapa = rs.getString(4);
+			String idMateriaPrima = rs.getString(5);
+			String idComponente = rs.getString(6);
+			String sqlEtapa = "SELECT E.nombre, E.idProducto, E.duracion, E.numeroSecuencia FROM " + Etapa.NOMBRE + " E WHERE E.id = '" + idEtapa + "'";
+			Statement s1 = crud.darConexion().createStatement();
+			ResultSet rs_etapas = s1.executeQuery(sqlEtapa);
+			while (rs_etapas.next()){
+				String nombre = rs_etapas.getString(1);
+				String idProducto = rs_etapas.getString(2);
+				int duracion = Integer.parseInt(rs_etapas.getString(3));
+				int numeroSecuencia = Integer.parseInt(rs_etapas.getString(4));
+				if(rta.containsKey(idEtapa)){
+					Etapa actual = rta.get(idEtapa);
+					Etapa nueva = new Etapa(actual.getId(), actual.getNombre(), actual.getIdProducto(), actual.getDia(), actual.getMes(), actual.getIdMateriaPrima(), actual.getIdComponente(), actual.getDuracion(), actual.getNumeroSecuencia());
+					nueva.setIdPedido(actual.getIdPedido());
+					rta.remove(idEtapa);
+					nueva.addIdPedido(idPedido);
+					rta.put(nueva.getId(), nueva);
+				}
+				else{
+					Etapa etapa = new Etapa(idEtapa, nombre, idProducto, dia, mes, idMateriaPrima, idComponente, duracion, numeroSecuencia);
+					etapa.addIdPedido(idPedido);
+					rta.put(idEtapa, etapa);
+				}
+			}
+			s1.close();
+			rs_etapas.close();
+		}
+		s.close();
+		rs.close();
+		Collection<Etapa> e = rta.values();
+		Iterator<Etapa> i = e.iterator();
+		while(i.hasNext())
+			etapas.add(i.next());
+		return etapas;
 	}
 	
 	/**
@@ -836,18 +961,42 @@ public class AplicacionWeb {
 	 * @throws Exception
 	 */
 	public ArrayList<Componente> darComponentes( String condicion ) throws Exception {
-		ArrayList<Componente> rta = new ArrayList<Componente>();
-		ResultSet rs = crud.darConexion().createStatement().executeQuery("SELECT * FROM " + Componente.NOMBRE + " WHERE " + condicion);
+		ArrayList<Componente> compenentes = new ArrayList<Componente>();
+		TreeMap<String, Componente> rta = new TreeMap<>();
+		String sql = "SELECT E.dia, E.mes, consultaEsta.* FROM registrosEstaciones E INNER JOIN (SELECT I.idPedido, consultaPedidos.* FROM inventarioProductos I INNER JOIN (SELECT RP.IDINVENTARIO, RP.IDREGISTROESTACION, registros.* FROM registrosProductos RP INNER JOIN (SELECT MP.*, RMP.id AS idRegistroMP FROM componentes MP INNER JOIN registroscomponentes RMP ON MP.id = RMP.IDcomponente WHERE UPPER(MP.id) LIKE UPPER('%" + condicion + "%'))  registros ON RP.IDREGISTROcomponente = registros.idRegistroMP) consultaPedidos ON I.id = consultaPedidos.IDINVENTARIO) consultaEsta ON E.id = consultaEsta.idRegistroEstacion";
+		System.out.println(sql);
+		Statement s = crud.darConexion().createStatement();
+		ResultSet rs = s.executeQuery(sql);
 		while(rs.next())
 		{
-			String id = rs.getString(1);
-			String unidadMedida = rs.getString(2);
-			int cantidad = Integer.parseInt(rs.getString(3));
-			Componente estacion = new Componente(id,unidadMedida, cantidad);
-			System.out.println(estacion.toString());
-			rta.add(estacion);
+			int dia = Integer.parseInt(rs.getString(1));
+			int mes = Integer.parseInt(rs.getString(2));
+			String idPedido = rs.getString(3);
+			String id = rs.getString(6);
+			String unidadMedida = rs.getString(7);
+			int cantidad = Integer.parseInt(rs.getString(8));
+			Componente componente = new Componente(id, unidadMedida, cantidad, dia, mes);
+			if(rta.containsKey(id)){
+				Componente actual = rta.get(id);
+				Componente nueva = new Componente(actual.getId(), actual.getUnidadMedida(), actual.getCantidadInicial(), actual.getDia(), actual.getMes());
+				nueva.setPedidos(actual.getPedidos());
+				rta.remove(id);
+				nueva.addPedido(idPedido);
+				rta.put(nueva.getId(), nueva);
+			}
+			else{
+				Componente nueva = new Componente(id, unidadMedida, cantidad, dia, mes);
+				nueva.addPedido(idPedido);
+				rta.put(id, nueva);
+			}
 		}
-		return rta;
+		Collection<Componente> e = rta.values();
+		Iterator<Componente> i = e.iterator();
+		while(i.hasNext())
+			compenentes.add(i.next());
+		rs.close();
+		s.close();
+		return compenentes;
 	}
 
 	public ArrayList<MateriaPrima> darMateriasPrimasProveedor(String idProveedor) throws Exception{
@@ -1236,8 +1385,39 @@ public class AplicacionWeb {
 	 */
 	public static void main(String[] args) {
 		AplicacionWeb aplicacionWeb = getInstancia();
-		try{
-			
+		ArrayList<String> usuarios = new ArrayList<String>();
+		ArrayList<String> idProductos = new ArrayList<String>();
+		ArrayList<String> productos = new ArrayList<String>();
+		try {
+//			BufferedReader lector = new BufferedReader(new FileReader("C:\\Users\\Meili\\Dropbox\\Sistemas Transaccionales\\Datos\\usuarios.csv"));
+//			String linea = lector.readLine();
+//			while(linea != null){
+//				String usuario = linea.substring(0, linea.indexOf(","));
+//				System.out.println(usuario);
+//				if (!usuario.equals("MeiMei"))
+//					usuarios.add(usuario);
+//				linea = lector.readLine();
+//			}
+//			lector.close();
+//			BufferedReader lector2 = new BufferedReader(new FileReader("C:\\Users\\Meili\\Dropbox\\Sistemas Transaccionales\\Datos\\productos.csv"));
+//			linea = lector2.readLine();
+//			while(linea != null){
+//				String[] datos = linea.split(",");
+//				idProductos.add(datos[0]);
+//				productos.add(datos[1]);
+//				System.out.println(datos[1]);
+//				linea = lector2.readLine();
+//			}
+//			lector2.close();
+//			for (int i = 0; i < 100000; i++) {
+//				Random randUsuario = new Random();
+//			    int usuario = randUsuario.nextInt(9 - 0);
+//				Random randProducto = new Random();
+//				int producto = randProducto.nextInt(9-0);
+//				System.out.println("El usuario: " + usuarios.get(usuario) + " pidió el producto: " + productos.get(producto));
+//				Date dia = new Date();
+//				aplicacionWeb.registrarPedido(usuarios.get(usuario), idProductos.get(producto), 1, dia);
+//			}
 		}
 		catch (Exception e){
 			e.printStackTrace();

@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class ServletAbstract extends HttpServlet{
+	
+	protected String usuario;
+	
+	protected String tipoUsuario;
 
     /**
      * Maneja un pedido GET de un cliente
@@ -41,8 +45,9 @@ public abstract class ServletAbstract extends HttpServlet{
     	setUsuario(request, response);
     	
     	setTipoUsuario(request, response);
+   
+    	System.out.println(usuario);
     	
-    	imprimirUsuario( request, response );
         //
         // Comienza con el Header del template
         imprimirHeader( request, response );
@@ -199,11 +204,16 @@ public abstract class ServletAbstract extends HttpServlet{
      * @param request
      * @return
      */
-    public abstract String darUsuario ( );
+    public String darUsuario ( ){
+    	return usuario;
+    }
+    
     
     /**
      * 
      * @return
      */
-    public abstract String darTipoUsuario ( );
+    public String darTipoUsuario ( ){
+    	return tipoUsuario;
+    }
 }

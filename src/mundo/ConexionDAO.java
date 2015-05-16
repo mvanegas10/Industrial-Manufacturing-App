@@ -40,8 +40,10 @@ public class ConexionDAO
 	 */
 	public ConexionDAO (){
 		
-		usuario = "ISIS2304461510";
-		contrasenia = "cjdsault";
+//		usuario = "ISIS2304461510";
+//		contrasenia = "cjdsault";
+		usuario = "ISIS2304311510";
+		contrasenia = "tquz5";
 		url = "jdbc:oracle:thin:@prod.oracle.virtual.uniandes.edu.co:1531:prod";
 	}
 	

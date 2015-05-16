@@ -176,7 +176,7 @@ public class ServletRegistrar extends ServletAbstract{
 		respuesta.write( "<td><form method=\"POST\" action=\"registrarEstacion.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Etapa\" name=\"regEst\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr>" );
-		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input type=\"hidden\" value=\"darEtapas\" name=\"criterio\"><input type=\"submit\" value=\"Consultar Etapas\" name=\"consEtap\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input type=\"hidden\" value=\"coincidirEtapas\" name=\"criterio\"><input type=\"submit\" value=\"Consultar Etapas\" name=\"consEtap\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr></tr>" );
 		respuesta.write( "</table>" );

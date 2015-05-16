@@ -19,7 +19,7 @@ public class CRUD {
 		conexion = dao.darConexion();
 	}
 	
-	public Connection darConexion(){
+	public Connection darConexion(){	
 		return conexion;
 	}
 	
@@ -69,11 +69,11 @@ public class CRUD {
 			System.out.println(sql);
 			
 			int filasInsertadas = statement.executeUpdate();
-			
+			statement.close();
 			if (filasInsertadas > 0) {
 			    System.out.println("Nuevo registro fue ingresado con exito a la tabla " + tabla);
 			}
-		}	
+		}
 		
 	}
 	

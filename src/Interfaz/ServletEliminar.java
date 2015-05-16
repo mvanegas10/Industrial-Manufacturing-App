@@ -18,10 +18,6 @@ import mundo.Proveedor;
 import mundo.Usuario;
 
 public class ServletEliminar extends ServletAbstract{
-
-	private String tipoUsuario;
-	
-	private String usuario;
 	
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
@@ -222,16 +218,12 @@ public class ServletEliminar extends ServletAbstract{
 
 	@Override
 	public void setUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{
-		PrintWriter respuesta = response.getWriter( );
-		
 		String login = AplicacionWeb.getInstancia().darUsuarioActual();
-		usuario = login;
+		super.usuario = login;
 	}
 
 	@Override
 	public void setTipoUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{
-		PrintWriter respuesta = response.getWriter( );
-		
 		String login = AplicacionWeb.getInstancia().darUsuarioActual();
 		String tipo = "";
 		try {
@@ -239,6 +231,6 @@ public class ServletEliminar extends ServletAbstract{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		tipoUsuario = tipo;
+		super.tipoUsuario = tipo;
 	}
 }

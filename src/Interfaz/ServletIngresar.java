@@ -15,10 +15,6 @@ import mundo.AplicacionWeb;
 import mundo.Producto;
 
 public class ServletIngresar extends ServletAbstract{
-	
-	private String usuario;
-	
-	private String tipoUsuario;
 
 	@Override
 	public String darTituloPagina(HttpServletRequest request) {
@@ -195,7 +191,7 @@ public class ServletIngresar extends ServletAbstract{
 		respuesta.write( "<td><form method=\"POST\" action=\"registrarEstacion.htm\"><h4 align=\"left\"><input type=\"submit\" value=\"Registrar Etapa\" name=\"regEst\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr>" );
-		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input type=\"hidden\" value=\"darEtapas\" name=\"criterio\"><input type=\"submit\" value=\"Consultar Etapas\" name=\"consEtap\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
+		respuesta.write( "<td><form method=\"POST\" action=\"resultadoBusqueda.htm\"><h4 align=\"left\"><input type=\"hidden\" value=\"coincidirEtapas\" name=\"criterio\"><input type=\"submit\" value=\"Consultar Etapas\" name=\"consEtap\" class=\"normal\"style=\"background: #FFF; border: none; padding-left: 5em\"></h4></form></td>" );
 		respuesta.write( "</tr>" );
 		respuesta.write( "<tr></tr>" );
 		respuesta.write( "</table>" );
@@ -354,17 +350,14 @@ public class ServletIngresar extends ServletAbstract{
 	}
 
 	@Override
-	public void setUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{
-		PrintWriter respuesta = response.getWriter( );
-		
+	public void setUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{	
 		String login = request.getParameter("usuario");
-		usuario = login;
+		super.usuario = login;
+		System.out.println("Servlet Ingreso: " + super.tipoUsuario);
 	}
 
 	@Override
 	public void setTipoUsuario( HttpServletRequest request, HttpServletResponse response )  throws IOException{
-		PrintWriter respuesta = response.getWriter( );
-		
 		String login = request.getParameter("usuario");
 		String tipo = "";
 		try {
@@ -372,6 +365,7 @@ public class ServletIngresar extends ServletAbstract{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		tipoUsuario = tipo;
+		super.tipoUsuario = tipo;
+		System.out.println("Servlet Ingreso: " + super.tipoUsuario);
 	}
 }

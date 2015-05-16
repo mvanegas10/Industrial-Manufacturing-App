@@ -28,6 +28,14 @@ public class MateriaPrima {
 	
 	private String tipo;
 	
+	private int dia;
+	
+	private int mes;
+	
+	private ArrayList<String> pedidos;
+	
+	
+	
 	//--------------------------------------------------
 	// CONSTRUCTOR
 	//--------------------------------------------------
@@ -36,6 +44,16 @@ public class MateriaPrima {
 		this.id = pId;
 		this.unidadMedida = pUnidadMedidad;
 		this.cantidadInicial = pCantidadInicial;
+		this.tipo = "Materia Prima";
+	}
+	
+	public MateriaPrima(String pId, String pUnidadMedidad, int pCantidadInicial, int dia, int mes) {
+		this.id = pId;
+		this.unidadMedida = pUnidadMedidad;
+		this.cantidadInicial = pCantidadInicial;
+		this.dia = dia;
+		this.mes = mes;
+		this.pedidos = new ArrayList<String>();
 		this.tipo = "Materia Prima";
 	}
 	
@@ -74,6 +92,34 @@ public class MateriaPrima {
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public int getDia() {
+		return dia;
+	}
+
+	public int getMes() {
+		return mes;
+	}
+
+	public ArrayList<String> getPedidos() {
+		return pedidos;
+	}
+
+	public void setDia(int dia) {
+		this.dia = dia;
+	}
+
+	public void setMes(int mes) {
+		this.mes = mes;
+	}
+	
+	public void addPedido(String idPedido){
+		this.pedidos.add(idPedido);
+	}
+
+	public void setPedidos(ArrayList<String> pedido) {
+		this.pedidos = pedido;
 	}
 
 	public String toString(){
