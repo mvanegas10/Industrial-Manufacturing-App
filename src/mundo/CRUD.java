@@ -13,14 +13,20 @@ import java.util.List;
 
 public class CRUD {
 
-	private Connection conexion;
+	private Connection conexion1;
+	private Connection conexion2;
 	
-	public CRUD (ConexionDAO dao){
-		conexion = dao.darConexion();
+	public CRUD (ConexionDAO dao1, ConexionDAO dao2){
+		conexion1 = dao1.darConexion1();
+		conexion2 = dao2.darConexion2();
 	}
 	
-	public Connection darConexion(){	
-		return conexion;
+	public Connection darConexion1(){	
+		return conexion1;
+	}
+	
+	public Connection darConexion2(){	
+		return conexion2;
 	}
 	
 	/**
@@ -49,7 +55,7 @@ public class CRUD {
 		    	}
 		    }
 			String sql = "INSERT INTO " + tabla + " " + atributos + " VALUES " + values;
-			PreparedStatement statement = conexion.prepareStatement(sql); 
+			PreparedStatement statement = conexion1.prepareStatement(sql); 
 			for(int i =0; i<columnas.length; i++){
 				if(tipos[i].equals("String")){
 					statement.setString(i+1, datos[i]);
@@ -78,13 +84,13 @@ public class CRUD {
 	}
 	
 	public void eliminarTupla(String tabla,String condicion) throws Exception{
-		Statement s = conexion.createStatement();
+		Statement s = conexion1.createStatement();
 		s.executeQuery ("DELETE FROM " + tabla + " WHERE " + condicion);
 		s.close(); 
 	}
 	
 	public void eliminarTuplaPorId(String tabla,String id) throws Exception{
-		Statement s = conexion.createStatement();
+		Statement s = conexion1.createStatement();
 		s.executeQuery ("DELETE FROM " + tabla + " WHERE " + "id="+id);
 		s.close(); 
 	}
@@ -98,7 +104,7 @@ public class CRUD {
 			}
 			try 
 			{
-				Statement s = conexion.createStatement();
+				Statement s = conexion1.createStatement();
 				s.executeQuery ("UPDATE " + tabla + " SET " + consulta + " WHERE " + condicion);
 				System.out.println("Se actualiz� la tabla " + tabla);
 				s.close();
@@ -116,7 +122,7 @@ public class CRUD {
 		ArrayList<String> resultado = new ArrayList<String>();
 		try
 		{
-			Statement s = conexion.createStatement();
+			Statement s = conexion1.createStatement();
 			ResultSet rS = s.executeQuery ("SELECT id FROM " + tabla);
 			while (rS.next()){
 				resultado.add(rS.getString(1));
@@ -133,7 +139,7 @@ public class CRUD {
 	public ArrayList<String> darSubTabla (String tabla, String listaColumnas, String condicion) throws Exception{
 		int contador = 0;
 		ArrayList<String> resultado = new ArrayList<String>();
-		Statement s = conexion.createStatement();
+		Statement s = conexion1.createStatement();
 		String sql = "SELECT " + listaColumnas + " FROM " + tabla + " WHERE " + condicion ;
 		System.out.println(sql);
 		ResultSet rS = s.executeQuery (sql);

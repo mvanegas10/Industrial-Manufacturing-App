@@ -16,7 +16,7 @@ public class TestDataBaseCRUD extends TestCase{
 	 */
 	public void setupEscenario1(){
 		dao = new ConexionDAO();
-		crud = new CRUD(dao);
+		crud = new CRUD(dao,dao);
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class TestDataBaseCRUD extends TestCase{
 		{
 			String[] datos = { "1", "1", "admin"};
 			crud.insertarTupla(Usuario.NOMBRE, Usuario.COLUMNAS, Usuario.TIPO, datos);
-			fail("No debió haber agregado la tupla");
+			fail("No debiï¿½ haber agregado la tupla");
 		}
 		catch (Exception e){
 			

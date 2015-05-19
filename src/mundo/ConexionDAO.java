@@ -5,6 +5,15 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import java.sql.*;
+import javax.sql.*;
+import oracle.jdbc.*;
+import oracle.jdbc.pool.*;
+import oracle.jdbc.xa.OracleXid;
+import oracle.jdbc.xa.OracleXAException;
+import oracle.jdbc.xa.client.*;
+import javax.transaction.xa.*;
+
 
 
 public class ConexionDAO
@@ -13,22 +22,39 @@ public class ConexionDAO
 	/**
 	 * Conexi�n
 	 */
-	private Connection conexion;
+	private Connection conexion1;
+	private Connection conexion2;
 	
 	/**
 	 * Usuario
 	 */
-	private String usuario;
+	private String usuario1;
+	private String usuario2;
 	
 	/**
 	 * Constrase�a
 	 */
-	private String contrasenia;
+	private String contrasenia1;
+	private String contrasenia2;
 	
 	/**
 	 * URL
 	 */
-	private String url;
+	private String url1;
+	private String url2;
+	
+	/**
+	 * Conexiones XA
+	 */
+	private XAConnection pc1;
+	private XAConnection pc2;
+	
+	/**
+	 * Recursos XA
+	 */
+	private XAResource oxar1;
+	private XAResource oxar2;
+	
 	
 	/**
 	 * Class name
@@ -40,29 +66,43 @@ public class ConexionDAO
 	 */
 	public ConexionDAO (){
 		
-//		usuario = "ISIS2304461510";
-//		contrasenia = "cjdsault";
-		usuario = "ISIS2304311510";
-		contrasenia = "tquz5";
-		url = "jdbc:oracle:thin:@prod.oracle.virtual.uniandes.edu.co:1531:prod";
+		usuario1 = "ISIS2304311510";
+		contrasenia1 = "tquz5";
+		url1 = "jdbc:oracle:thin:@prod.oracle.virtual.uniandes.edu.co:1531:prod";
+		
+		usuario2 ="ISIS2304401510";
+		contrasenia2="sveinlg";
+		url2 = "jdbc:oracle:thin:@prod.oracle.virtual.uniandes.edu.co:1531:prod";
 	}
 	
 	/**
 	 * Constructor de la clase
 	 */
-	public ConexionDAO (String url, String usuario, String contrasenia){
+	public ConexionDAO (String url1, String usuario1, String contrasenia1, String url2, String usuario2, String contrasenia2){
 		
-		this.usuario = usuario;
-		this.contrasenia = contrasenia;
-		this.url = url;
+		this.usuario1 = usuario1;
+		this.contrasenia1 = contrasenia1;
+		this.url1 = url1;
+		
+		this.usuario2 = usuario2;
+		this.contrasenia2 = contrasenia2;
+		this.url2 = url2;
 	}
 	
 	/**
-	 * Retorna la conexion
-	 * @return la conexion
+	 * Retorna la conexion1
+	 * @return la conexion1
 	 */
-	public Connection darConexion(){
-		return conexion;
+	public Connection darConexion1(){
+		return conexion1;
+	}
+	
+	/**
+	 * Retorna la conexion2
+	 * @return la conexion2
+	 */
+	public Connection darConexion2(){
+		return conexion2;
 	}
 	
 	/**
@@ -72,21 +112,113 @@ public class ConexionDAO
 		try
 		{
 			Class.forName(CLASS_NAME);
-			conexion = DriverManager.getConnection(url, usuario, contrasenia);
+			
+	        OracleXADataSource oxds1 = new OracleXADataSource();
+	        oxds1.setURL(url1);
+	        oxds1.setUser(usuario1);
+	        oxds1.setPassword(contrasenia1);
+	        
+	        OracleXADataSource oxds2 = new OracleXADataSource();
+	        oxds2.setURL(url2);
+	        oxds2.setUser(usuario2);
+	        oxds2.setPassword(contrasenia2);
+			
+	        pc1  = oxds1.getXAConnection();
+	        pc2  = oxds2.getXAConnection();
+	        
+	        conexion1 = pc1.getConnection();
+	        conexion2 = pc2.getConnection();
+	        
+	        oxar1 = pc1.getXAResource();
+	        oxar2 = pc2.getXAResource();
+	        
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
+	
+	public Xid[] iniciarTransaccionDistribuida() throws XAException{
+		Xid[] xids = new Xid[2]; 
+		try{
+	        Xid xid1 = createXid(1);
+	        xids[0] = xid1;
+	        Xid xid2 = createXid(2);
+	        xids[1] = xid2;
+	        
+	        oxar1.start (xid1, XAResource.TMNOFLAGS);
+	        oxar2.start (xid2, XAResource.TMNOFLAGS);
+	        
+	        return xids;
+	        
+		}
+		catch (XAException e) {
+			e.printStackTrace();
+		}
+		return xids;
+
+	}
+	
+	public void finalizarTransaccionDistribuida(Xid xid1, Xid xid2) throws XAException{
+		try{
+	        oxar1.end(xid1, XAResource.TMSUCCESS);
+	        oxar2.end(xid2, XAResource.TMSUCCESS);
+
+	        int prp1 =  oxar1.prepare (xid1);
+	        int prp2 =  oxar2.prepare (xid2);
+	        
+	        boolean do_commit = true;
+
+	        if (!((prp1 == XAResource.XA_OK) || (prp1 == XAResource.XA_RDONLY)))
+	           do_commit = false;
+
+	        if (!((prp2 == XAResource.XA_OK) || (prp2 == XAResource.XA_RDONLY)))
+	           do_commit = false;
+
+	       System.out.println("do_commit is " + do_commit);
+	       System.out.println("Is oxar1 same as oxar2 ? " + oxar1.isSameRM(oxar2));
+
+	        if (prp1 == XAResource.XA_OK)
+	          if (do_commit)
+	             oxar1.commit (xid1, false);
+	          else
+	             oxar1.rollback (xid1);
+
+	        if (prp2 == XAResource.XA_OK)
+	          if (do_commit)
+	             oxar2.commit (xid2, false);
+	          else
+	             oxar2.rollback (xid2);
+	        
+		}
+		catch (XAException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+    static Xid createXid(int bids) throws XAException
+    {
+    	byte gID[] = new byte[5];
+    	gID[0] = 0;
+    	gID[1] = 0;
+    	gID[2] = 0;
+    	gID[3] = 0;
+    	gID[4] = 0;
+    	
+    	Xid id = new OracleXid(bids,gID,gID);
+    	return id;
+    	
+    }
 
 	/**
 	 * Cierra la conexi�n con la base de datos
 	 */
     public void cerrarConexion() throws Exception{        
 		try {
-			conexion.close();
-			conexion = null;
+			conexion1.close();
+			conexion1 = null;
 		} catch (SQLException exception) {
 			throw new Exception("Error al intentar cerrar la conexi�n.");
 		}
@@ -97,7 +229,7 @@ public class ConexionDAO
      */
     public int darNivelAislamiento(){
     	try{
-        	return conexion.getTransactionIsolation();
+        	return conexion1.getTransactionIsolation();
     	}
     	catch(Exception e){
     		e.printStackTrace();
@@ -110,7 +242,7 @@ public class ConexionDAO
      */
     public void setAutoCommitFalso(){
     	try{
-        	conexion.setAutoCommit(false);
+        	conexion1.setAutoCommit(false);
     	}
     	catch(Exception e){
     		e.printStackTrace();
@@ -122,12 +254,13 @@ public class ConexionDAO
      */
     public void setAutoCommitVerdadero(){
     	try{
-        	conexion.setAutoCommit(true);
+        	conexion1.setAutoCommit(true);
     	}
     	catch(Exception e){
     		e.printStackTrace();
     	}
     }
+    
 
 	/**
 	 * Crea las tablas
@@ -137,7 +270,7 @@ public class ConexionDAO
 		{
 			// TABLA 1: PRODUCTOS ------------------------------------------------------------
 		
-			Statement s = conexion.createStatement( );
+			Statement s = conexion1.createStatement( );
 			
 			boolean crearTabla = false;
 			
@@ -167,7 +300,7 @@ public class ConexionDAO
 
 			crearTabla = false;
 
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -194,7 +327,7 @@ public class ConexionDAO
 
 			crearTabla = false;
 
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -219,7 +352,7 @@ public class ConexionDAO
 			
 			// TABLA 4: MATERIAS PRIMAS ------------------------------------------------------------
 
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -246,7 +379,7 @@ public class ConexionDAO
 			
 			crearTabla = false;
 
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -273,7 +406,7 @@ public class ConexionDAO
 			
 			crearTabla = false;
 			
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -300,7 +433,7 @@ public class ConexionDAO
 
 			crearTabla = false;
 			
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -327,7 +460,7 @@ public class ConexionDAO
 
 			crearTabla = false;
 			
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -354,7 +487,7 @@ public class ConexionDAO
 
 			crearTabla = false;
 			
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -381,7 +514,7 @@ public class ConexionDAO
 
 			crearTabla = false;
 			
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -408,7 +541,7 @@ public class ConexionDAO
 
 			crearTabla = false;
 			
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -435,7 +568,7 @@ public class ConexionDAO
 
 			crearTabla = false;
 			
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -462,7 +595,7 @@ public class ConexionDAO
 
 			crearTabla = false;
 			
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -490,7 +623,7 @@ public class ConexionDAO
 			
 			crearTabla = false;
 			
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -514,7 +647,7 @@ public class ConexionDAO
 			
 			crearTabla = false;
 			
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -541,7 +674,7 @@ public class ConexionDAO
 
 			crearTabla = false;
 			
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
@@ -568,7 +701,7 @@ public class ConexionDAO
 			
 			crearTabla = false;
 			
-			s = conexion.createStatement( );
+			s = conexion1.createStatement( );
 			try
 			{
 				// Verificar si ya existe la tabla
